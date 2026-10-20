@@ -1,0 +1,17 @@
+HTTP/1.1 503 Service Unavailable
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicio temporalmente no disponible</title>
+</head>
+<body>
+    <h1>Servicio temporalmente no disponible</h1>
+    <p>En este momento, nuestros servidores web no están disponibles.</p>
+    <p>Por favor, intenta nuevamente más tarde.</p>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ver Productos</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+
+<body class="bg-light">
+
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2>
+                Productos del almacén
+            </h2>
+
+            <p class="text-muted mb-0">
+                Lista de productos registrados.
+            </p>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="btn btn-secondary">
+
+            Inicio
+
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-striped table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Nombre</th>
+
+                            <th>Precio</th>
+
+                            <th>Cantidad</th>
+
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="productos-table-body">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="mensaje"
+                class="alert d-none mt-3">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function cargarProductos() {
+
+    const tabla =
+        document.getElementById(
+            'productos-table-body'
+        );
+
+
+    try {
+
+        const respuesta = await fetch(
+            'http://192.168.100.3:3000/api/productos'
+        );
+
+
+        const productos =
+            await respuesta.json();
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                'No se pudieron obtener los productos'
+            );
+
+        }
+
+
+        tabla.innerHTML = '';
+
+
+        if (productos.length === 0) {
+
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">
+                        No hay productos registrados.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        productos.forEach(producto => {
+
+            const fila =
+                document.createElement('tr');
+
+
+            fila.innerHTML = `
+
+                <td>${producto.id}</td>
+
+                <td>${producto.nombre}</td>
+
+                <td>$${Number(producto.precio).toLocaleString()}</td>
+
+                <td>${producto.cantidad}</td>
+
+                <td>
+
+                    <a
+                        href="editar_producto.html?id=${producto.id}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="borrar_producto.html?id=${producto.id}"
+                        class="btn btn-danger btn-sm">
+
+                        Borrar
+
+                    </a>
+
+                </td>
+
+            `;
+
+
+            tabla.appendChild(fila);
+
+        });
+
+
+    } catch (error) {
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center text-danger">
+                    Error al cargar los productos.
+                </td>
+            </tr>
+        `;
+
+        console.error(error);
+
+    }
+
+}
+
+
+cargarProductos();
+
+</script>
+
+
+</body>
+
+</html>

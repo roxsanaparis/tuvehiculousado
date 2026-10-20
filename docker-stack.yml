@@ -1,0 +1,80 @@
+services:
+
+  mysql-usuarios:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: usuarios_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_usuarios_data:/var/lib/mysql
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
+
+  mysql-vehiculos:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vehiculos_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_vehiculos_data:/var/lib/mysql
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
+
+  mysql-compras:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: compras_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_compras_data:/var/lib/mysql
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
+
+  usuarios:
+    image: proyecto-docker-usuarios
+    ports:
+      - "3010:3010"
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 2
+
+  vehiculos:
+    image: proyecto-docker-vehiculos
+    ports:
+      - "3011:3011"
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 2
+
+  compras:
+    image: proyecto-docker-compras
+    ports:
+      - "3012:3012"
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 2
+
+networks:
+  almacen-net:
+    driver: overlay
+    attachable: true
+
+volumes:
+  mysql_usuarios_data:
+  mysql_vehiculos_data:
+  mysql_compras_data:

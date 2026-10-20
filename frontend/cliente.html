@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tu Vehículo Usado | Vehículos</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f6f8;
+            color: #1f2937;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar-custom {
+            background: #111827;
+            padding: 18px 0;
+        }
+
+        .brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: #2563eb;
+        }
+
+        .navbar-user {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            border: 1px solid #4b5563;
+            color: white;
+            background: transparent;
+            border-radius: 6px;
+            padding: 8px 16px;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: white;
+            color: #111827;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 55px 0;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 17px;
+            max-width: 650px;
+        }
+
+
+        /* =========================
+           CONTENIDO
+        ========================= */
+
+        .section-title {
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           TARJETAS
+        ========================= */
+
+        .vehicle-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+
+        /* =========================
+           IMAGEN
+        ========================= */
+
+        .vehicle-image {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            background: #e5e7eb;
+        }
+
+
+        /* =========================
+           INFORMACIÓN
+        ========================= */
+
+        .vehicle-content {
+            padding: 22px;
+        }
+
+        .vehicle-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .vehicle-type {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .vehicle-price {
+            color: #111827;
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-info {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .vehicle-info div {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .vehicle-info strong {
+            color: #374151;
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 14px;
+            min-height: 42px;
+            margin-top: 15px;
+        }
+
+
+        /* =========================
+           BOTÓN
+        ========================= */
+
+        .btn-buy {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .btn-buy:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-disabled {
+            width: 100%;
+            background: #e5e7eb;
+            color: #6b7280;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+
+        /* =========================
+           ESTADOS
+        ========================= */
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+        }
+
+        .empty {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 50px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            margin-top: 70px;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero {
+                padding: 40px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar-custom">
+
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <a
+                href="cliente.html"
+                class="brand">
+
+                Tu Vehículo <span>Usado</span>
+
+            </a>
+
+
+            <div class="d-flex align-items-center gap-3">
+
+                <span
+                    id="nombreUsuario"
+                    class="navbar-user">
+                </span>
+
+                <button
+                    onclick="cerrarSesion()"
+                    class="btn-logout">
+
+                    Cerrar sesión
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <h1>
+            Encuentra tu próximo vehículo
+        </h1>
+
+        <p>
+            Explora nuestra selección de vehículos disponibles,
+            consulta sus características y encuentra la opción
+            que mejor se adapte a ti.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     VEHÍCULOS
+========================= -->
+
+<main class="container py-5">
+
+    <div class="mb-4">
+
+        <h2 class="section-title">
+            Vehículos disponibles
+        </h2>
+
+        <p class="section-subtitle">
+            Consulta los vehículos actualmente disponibles.
+        </p>
+
+    </div>
+
+
+    <div
+        id="productos"
+        class="row g-4">
+
+        <div class="loading">
+
+            Cargando vehículos...
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container">
+
+        Tu Vehículo Usado · Plataforma de compra y venta de vehículos
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+
+// ==========================================
+// URL DE LOS MICROSERVICIOS
+// ==========================================
+
+const URL_VEHICULOS =
+    "/api/vehiculos";
+
+const URL_COMPRAS =
+    "/api/compras";
+
+// ==========================================
+// COMPROBAR USUARIO
+// ==========================================
+
+const usuarioGuardado =
+    localStorage.getItem("usuario");
+
+
+if (!usuarioGuardado) {
+
+    window.location.href = "index.html";
+
+}
+
+
+const usuario =
+    JSON.parse(usuarioGuardado);
+
+
+if (usuario.rol !== "cliente") {
+
+    window.location.href = "index.html";
+
+}
+
+
+document.getElementById("nombreUsuario").textContent =
+    usuario.nombre;
+
+
+
+// ==========================================
+// IMÁGENES
+// ==========================================
+
+function obtenerImagen(tipo, marca) {
+
+    const texto =
+        `${tipo} ${marca}`.toLowerCase();
+
+
+    if (texto.includes("moto")) {
+
+        return "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("ferrari")) {
+
+        return "https://images.unsplash.com/photo-1592198084033-aade902d1aae?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("bmw")) {
+
+        return "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("audi")) {
+
+        return "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("toyota")) {
+
+        return "https://images.unsplash.com/photo-1623869675781-80aa31012a5a?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("mazda")) {
+
+        return "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    if (texto.includes("chevrolet")) {
+
+        return "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=80";
+
+    }
+
+
+    return "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=80";
+
+}
+
+
+
+// ==========================================
+// CARGAR VEHÍCULOS
+// ==========================================
+
+async function cargarVehiculos() {
+
+    const contenedor =
+        document.getElementById("productos");
+
+
+    contenedor.innerHTML = `
+
+        <div class="loading">
+
+            Cargando vehículos...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const respuesta =
+            await fetch(URL_VEHICULOS);
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudieron consultar los vehículos"
+            );
+
+        }
+
+
+        const vehiculos =
+            await respuesta.json();
+
+
+        if (vehiculos.length === 0) {
+
+            contenedor.innerHTML = `
+
+                <div class="col-12">
+
+                    <div class="empty">
+
+                        <h4>
+                            No hay vehículos disponibles
+                        </h4>
+
+                        <p>
+                            Actualmente no tenemos vehículos
+                            registrados para mostrar.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        contenedor.innerHTML = "";
+
+
+        vehiculos.forEach(vehiculo => {
+
+            const disponible =
+                Number(vehiculo.cantidad) > 0;
+
+
+            const imagen =
+                obtenerImagen(
+                    vehiculo.tipo,
+                    vehiculo.marca
+                );
+
+
+            const tarjeta =
+                document.createElement("div");
+
+
+            tarjeta.className =
+                "col-12 col-md-6 col-lg-4";
+
+
+            tarjeta.innerHTML = `
+
+                <div class="vehicle-card">
+
+                    <img
+                        src="${imagen}"
+                        class="vehicle-image"
+                        alt="${vehiculo.nombre}"
+                        onerror="this.src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=80'"
+                    >
+
+
+                    <div class="vehicle-content">
+
+                        <h3 class="vehicle-title">
+
+                            ${vehiculo.nombre}
+
+                        </h3>
+
+
+                        <div class="vehicle-type">
+
+                            ${vehiculo.tipo} · ${vehiculo.marca}
+
+                        </div>
+
+
+                        <div class="vehicle-price">
+
+                            $${Number(
+                                vehiculo.precio
+                            ).toLocaleString("es-CO")}
+
+                        </div>
+
+
+                        <div class="vehicle-info">
+
+                            <div>
+
+                                <strong>
+                                    Modelo:
+                                </strong>
+
+                                ${vehiculo.modelo}
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Año:
+                                </strong>
+
+                                ${vehiculo.anio}
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Disponibles:
+                                </strong>
+
+                                ${vehiculo.cantidad}
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="description">
+
+                            ${vehiculo.descripcion ||
+                            "Vehículo sin descripción disponible."}
+
+                        </p>
+
+
+                        ${
+                            disponible
+
+                            ?
+
+                            `
+
+                            <button
+                                class="btn-buy"
+                                onclick="comprarProducto(${vehiculo.id})">
+
+                                Comprar vehículo
+
+                            </button>
+
+                            `
+
+                            :
+
+                            `
+
+                            <button
+                                class="btn-disabled"
+                                disabled>
+
+                                Vehículo agotado
+
+                            </button>
+
+                            `
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            contenedor.appendChild(tarjeta);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        contenedor.innerHTML = `
+
+            <div class="col-12">
+
+                <div class="alert alert-danger">
+
+                    No fue posible cargar los vehículos.
+                    Verifica la conexión con el servidor.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+// ==========================================
+// COMPRAR VEHÍCULO
+// ==========================================
+
+async function comprarProducto(id) {
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de que desea comprar este vehículo?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const respuesta =
+            await fetch(
+                URL_COMPRAS,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            usuario_id:
+                                usuario.id,
+
+                            vehiculo_id:
+                                id
+
+                        })
+
+                }
+            );
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!respuesta.ok) {
+
+            alert(
+
+                datos.mensaje ||
+                datos.error ||
+                "No se pudo realizar la compra."
+
+            );
+
+            return;
+
+        }
+
+
+        alert(
+
+            "Compra realizada correctamente.\n\n" +
+            "Número de compra: " +
+            datos.id
+
+        );
+
+
+        cargarVehiculos();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        alert(
+            "Error de conexión con el microservicio de compras."
+        );
+
+    }
+
+}
+
+
+
+// ==========================================
+// CERRAR SESIÓN
+// ==========================================
+
+function cerrarSesion() {
+
+    localStorage.removeItem("usuario");
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+// ==========================================
+// INICIAR
+// ==========================================
+
+cargarVehiculos();
+
+
+</script>
+
+
+</body>
+
+</html>

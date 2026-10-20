@@ -1,0 +1,81 @@
+services:
+
+  mysql-usuarios:
+    image: mysql:8.0
+    container_name: mysql-usuarios
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: usuarios_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_usuarios_data:/var/lib/mysql
+    networks:
+      - almacen-net
+
+  mysql-vehiculos:
+    image: mysql:8.0
+    container_name: mysql-vehiculos
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vehiculos_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_vehiculos_data:/var/lib/mysql
+    networks:
+      - almacen-net
+
+  mysql-compras:
+    image: mysql:8.0
+    container_name: mysql-compras
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: compras_db
+      MYSQL_USER: capasapp
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_compras_data:/var/lib/mysql
+    networks:
+      - almacen-net
+
+  usuarios:
+    build: ./usuarios
+    container_name: microservicio-usuarios
+    ports:
+      - "3010:3010"
+    depends_on:
+      - mysql-usuarios
+    networks:
+      - almacen-net
+
+  vehiculos:
+    build: ./vehiculos
+    container_name: microservicio-vehiculos
+    ports:
+      - "3011:3011"
+    depends_on:
+      - mysql-vehiculos
+    networks:
+      - almacen-net
+
+  compras:
+    build: ./compras
+    container_name: microservicio-compras
+    ports:
+      - "3012:3012"
+    depends_on:
+      - mysql-compras
+      - usuarios
+      - vehiculos
+    networks:
+      - almacen-net
+
+networks:
+  almacen-net:
+    driver: bridge
+
+volumes:
+  mysql_usuarios_data:
+  mysql_vehiculos_data:
+  mysql_compras_data:

@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel de vendedor | Tu Vehículo Usado</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .navbar-custom {
+            background: #101828;
+            min-height: 70px;
+        }
+
+        .brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: #f59e0b;
+        }
+
+        .navbar-user {
+            color: #d0d5dd;
+            margin-right: 18px;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 35px 20px 60px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #667085;
+            margin: 0;
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 3px 15px rgba(16, 24, 40, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .card-header-custom {
+            padding: 22px 25px;
+            border-bottom: 1px solid #eaecf0;
+        }
+
+        .card-header-custom h2 {
+            font-size: 21px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-body-custom {
+            padding: 25px;
+        }
+
+        .btn-main {
+            background: #101828;
+            color: white;
+            border: none;
+        }
+
+        .btn-main:hover {
+            background: #1d2939;
+            color: white;
+        }
+
+        .btn-warning-custom {
+            background: #f59e0b;
+            color: #172033;
+            border: none;
+        }
+
+        .btn-warning-custom:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        .vehicle-card {
+            border: 1px solid #eaecf0;
+            border-radius: 12px;
+            padding: 22px;
+            height: 100%;
+            background: #fff;
+            transition: 0.2s ease;
+        }
+
+        .vehicle-card:hover {
+            box-shadow: 0 5px 18px rgba(16, 24, 40, 0.09);
+            transform: translateY(-2px);
+        }
+
+        .vehicle-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-info {
+            margin-bottom: 8px;
+            color: #475467;
+        }
+
+        .vehicle-info strong {
+            color: #172033;
+        }
+
+        .vehicle-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #101828;
+            margin: 15px 0;
+        }
+
+        .stock {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #ecfdf3;
+            color: #027a48;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-section {
+            background: #f8fafc;
+            border: 1px solid #eaecf0;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #344054;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            padding: 11px 13px;
+            border-color: #d0d5dd;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #98a2b3;
+            box-shadow: 0 0 0 3px rgba(16, 24, 40, 0.08);
+        }
+
+        .sale-item {
+            border: 1px solid #eaecf0;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 12px;
+            background: #fff;
+        }
+
+        .sale-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+            color: #667085;
+        }
+
+        .section-description {
+            color: #667085;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+
+            .navbar-user {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .card-body-custom {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     BARRA SUPERIOR
+================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid px-4">
+
+        <a href="vendedor.html" class="brand">
+            Tu Vehículo <span>Usado</span>
+        </a>
+
+        <div class="d-flex align-items-center">
+
+            <span
+                id="nombreUsuario"
+                class="navbar-user">
+            </span>
+
+            <button
+                onclick="cerrarSesion()"
+                class="btn btn-outline-light btn-sm">
+
+                Cerrar sesión
+
+            </button>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ==================================================
+     CONTENIDO
+================================================== -->
+
+<main class="page-container">
+
+
+    <!-- ENCABEZADO -->
+
+    <div class="page-header">
+
+        <h1>
+            Panel de vendedor
+        </h1>
+
+        <p>
+            Gestiona tus vehículos y consulta las ventas realizadas.
+        </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         VEHÍCULOS
+    ================================================== -->
+
+    <section class="card-custom">
+
+        <div class="card-header-custom">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h2>
+                        Mis vehículos
+                    </h2>
+
+                    <p class="section-description">
+                        Vehículos registrados por tu cuenta.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn btn-main"
+                    onclick="mostrarFormularioCrear()">
+
+                    + Registrar vehículo
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+            <div
+                id="listaVehiculos"
+                class="row g-4">
+
+                <div class="col-12">
+
+                    <div class="empty-state">
+                        Cargando vehículos...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         FORMULARIO
+    ================================================== -->
+
+    <section
+        id="formularioVehiculo"
+        class="card-custom d-none">
+
+        <div class="card-header-custom">
+
+            <h2 id="tituloFormulario">
+                Registrar vehículo
+            </h2>
+
+            <p class="section-description">
+                Completa la información del vehículo.
+            </p>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+            <div class="form-section">
+
+                <form id="formVehiculo">
+
+                    <input
+                        type="hidden"
+                        id="vehiculoId">
+
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="tipo"
+                                class="form-label">
+
+                                Tipo de vehículo
+
+                            </label>
+
+                            <select
+                                id="tipo"
+                                class="form-select"
+                                required>
+
+                                <option value="Carro">
+                                    Carro
+                                </option>
+
+                                <option value="Moto">
+                                    Moto
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="marca"
+                                class="form-label">
+
+                                Marca
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="marca"
+                                class="form-control"
+                                placeholder="Ej. Toyota"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="modelo"
+                                class="form-label">
+
+                                Modelo
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="modelo"
+                                class="form-control"
+                                placeholder="Ej. Corolla"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="anio"
+                                class="form-label">
+
+                                Año
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="anio"
+                                class="form-control"
+                                min="1900"
+                                max="2100"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="precio"
+                                class="form-label">
+
+                                Precio
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="precio"
+                                class="form-control"
+                                min="0"
+                                placeholder="Ej. 85000000"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+
+                            <label
+                                for="cantidad"
+                                class="form-label">
+
+                                Cantidad disponible
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="cantidad"
+                                class="form-control"
+                                min="1"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-12 mb-3">
+
+                            <label
+                                for="descripcion"
+                                class="form-label">
+
+                                Descripción
+
+                            </label>
+
+                            <textarea
+                                id="descripcion"
+                                class="form-control"
+                                rows="4"
+                                placeholder="Describe brevemente el vehículo..."
+                                required></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-main">
+
+                            Guardar vehículo
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            onclick="cancelarFormulario()">
+
+                            Cancelar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         VENTAS
+    ================================================== -->
+
+    <section class="card-custom">
+
+        <div class="card-header-custom">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h2>
+                        Ventas realizadas
+                    </h2>
+
+                    <p class="section-description">
+                        Consulta las compras realizadas sobre tus vehículos.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn btn-outline-dark"
+                    onclick="cargarVentas()">
+
+                    Consultar ventas
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body-custom">
+
+            <div id="listaVentas">
+
+                <div class="empty-state">
+
+                    Selecciona "Consultar ventas" para visualizar la información.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+
+// ==================================================
+// URL DE LOS MICROSERVICIOS
+// ==================================================
+
+const URL_VEHICULOS =
+    "/api/vehiculos";
+
+const URL_COMPRAS =
+    "/api/compras";
+
+const URL_USUARIOS =
+    "/api/usuarios";
+
+// ==================================================
+// USUARIO
+// ==================================================
+
+const usuarioGuardado =
+    localStorage.getItem("usuario");
+
+
+if (!usuarioGuardado) {
+
+    window.location.href = "login.html";
+
+}
+
+
+const usuario =
+    JSON.parse(usuarioGuardado);
+
+
+if (
+    usuario.rol !== "vendedor" &&
+    usuario.rol !== "administrador"
+) {
+
+    window.location.href = "login.html";
+
+}
+
+
+document.getElementById("nombreUsuario").textContent =
+    usuario.nombre;
+
+
+// ==================================================
+// CARGAR VEHÍCULOS
+// ==================================================
+
+async function cargarVehiculos() {
+
+    const contenedor =
+        document.getElementById("listaVehiculos");
+
+
+    try {
+
+        const respuesta =
+            await fetch(URL_VEHICULOS);
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudieron consultar los vehículos"
+            );
+
+        }
+
+
+        const vehiculos =
+            await respuesta.json();
+
+
+        const misVehiculos =
+            vehiculos.filter(
+                vehiculo =>
+                    Number(vehiculo.usuario_id) ===
+                    Number(usuario.id)
+            );
+
+
+        if (misVehiculos.length === 0) {
+
+            contenedor.innerHTML = `
+
+                <div class="col-12">
+
+                    <div class="empty-state">
+
+                        <h5>
+                            No tienes vehículos registrados
+                        </h5>
+
+                        <p>
+                            Registra tu primer vehículo para comenzar.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        contenedor.innerHTML = "";
+
+
+        misVehiculos.forEach(vehiculo => {
+
+            const tarjeta =
+                document.createElement("div");
+
+
+            tarjeta.className =
+                "col-md-6 col-lg-4";
+
+
+            tarjeta.innerHTML = `
+
+                <div class="vehicle-card">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <div class="vehicle-title">
+
+                                ${vehiculo.nombre}
+
+                            </div>
+
+                        </div>
+
+                        <span class="stock">
+
+                            ${vehiculo.cantidad} disponibles
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="vehicle-info">
+
+                        <strong>Tipo:</strong>
+                        ${vehiculo.tipo}
+
+                    </div>
+
+
+                    <div class="vehicle-info">
+
+                        <strong>Marca:</strong>
+                        ${vehiculo.marca}
+
+                    </div>
+
+
+                    <div class="vehicle-info">
+
+                        <strong>Modelo:</strong>
+                        ${vehiculo.modelo}
+
+                    </div>
+
+
+                    <div class="vehicle-info">
+
+                        <strong>Año:</strong>
+                        ${vehiculo.anio}
+
+                    </div>
+
+
+                    <div class="vehicle-price">
+
+                        $${Number(vehiculo.precio)
+                            .toLocaleString("es-CO")}
+
+                    </div>
+
+
+                    <p class="text-muted small">
+
+                        ${vehiculo.descripcion || "Sin descripción"}
+
+                    </p>
+
+
+                    <div class="mt-3 pt-3 border-top">
+
+                        <button
+                            class="btn btn-warning-custom btn-sm me-2"
+                            onclick="editarVehiculo(${vehiculo.id})">
+
+                            Editar
+
+                        </button>
+
+
+                        <button
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="eliminarVehiculo(${vehiculo.id})">
+
+                            Eliminar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            contenedor.appendChild(tarjeta);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        contenedor.innerHTML = `
+
+            <div class="col-12">
+
+                <div class="alert alert-danger">
+
+                    No fue posible cargar los vehículos.
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ==================================================
+// MOSTRAR FORMULARIO
+// ==================================================
+
+function mostrarFormularioCrear() {
+
+    document
+        .getElementById("formVehiculo")
+        .reset();
+
+
+    document
+        .getElementById("vehiculoId")
+        .value = "";
+
+
+    document
+        .getElementById("cantidad")
+        .value = 1;
+
+
+    document
+        .getElementById("tituloFormulario")
+        .textContent = "Registrar vehículo";
+
+
+    document
+        .getElementById("formularioVehiculo")
+        .classList.remove("d-none");
+
+
+    document
+        .getElementById("formularioVehiculo")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+// ==================================================
+// CANCELAR
+// ==================================================
+
+function cancelarFormulario() {
+
+    document
+        .getElementById("formularioVehiculo")
+        .classList.add("d-none");
+
+}
+
+
+// ==================================================
+// EDITAR VEHÍCULO
+// ==================================================
+
+async function editarVehiculo(id) {
+
+    try {
+
+        const respuesta =
+            await fetch(
+                URL_VEHICULOS + "/" + id
+            );
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudo consultar el vehículo"
+            );
+
+        }
+
+
+        const vehiculo =
+            await respuesta.json();
+
+
+        if (
+            Number(vehiculo.usuario_id) !==
+            Number(usuario.id)
+        ) {
+
+            alert(
+                "No puedes editar un vehículo que no te pertenece."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById("vehiculoId").value =
+            vehiculo.id;
+
+        document.getElementById("tipo").value =
+            vehiculo.tipo;
+
+        document.getElementById("marca").value =
+            vehiculo.marca;
+
+        document.getElementById("modelo").value =
+            vehiculo.modelo;
+
+        document.getElementById("anio").value =
+            vehiculo.anio;
+
+        document.getElementById("precio").value =
+            vehiculo.precio;
+
+        document.getElementById("cantidad").value =
+            vehiculo.cantidad;
+
+        document.getElementById("descripcion").value =
+            vehiculo.descripcion;
+
+
+        document.getElementById("tituloFormulario")
+            .textContent =
+            "Editar vehículo";
+
+
+        document
+            .getElementById("formularioVehiculo")
+            .classList.remove("d-none");
+
+
+        document
+            .getElementById("formularioVehiculo")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No se pudo cargar el vehículo."
+        );
+
+    }
+
+}
+
+
+// ==================================================
+// GUARDAR VEHÍCULO
+// ==================================================
+
+document
+    .getElementById("formVehiculo")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById("vehiculoId").value;
+
+
+            const vehiculo = {
+
+                tipo:
+                    document.getElementById("tipo").value,
+
+                marca:
+                    document.getElementById("marca").value.trim(),
+
+                modelo:
+                    document.getElementById("modelo").value.trim(),
+
+                anio:
+                    Number(
+                        document.getElementById("anio").value
+                    ),
+
+                precio:
+                    Number(
+                        document.getElementById("precio").value
+                    ),
+
+                cantidad:
+                    Number(
+                        document.getElementById("cantidad").value
+                    ),
+
+                descripcion:
+                    document
+                        .getElementById("descripcion")
+                        .value
+                        .trim(),
+
+                usuario_id:
+                    usuario.id
+
+            };
+
+
+            try {
+
+                let url =
+                    URL_VEHICULOS;
+
+                let metodo =
+                    "POST";
+
+
+                if (id) {
+
+                    url =
+                        URL_VEHICULOS + "/" + id;
+
+                    metodo =
+                        "PUT";
+
+                }
+
+
+                const respuesta =
+                    await fetch(
+                        url,
+                        {
+
+                            method: metodo,
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "rol":
+                                    usuario.rol
+
+                            },
+
+                            body:
+                                JSON.stringify(vehiculo)
+
+                        }
+                    );
+
+
+                const datos =
+                    await respuesta.json();
+
+
+                if (!respuesta.ok) {
+
+                    alert(
+                        datos.mensaje ||
+                        datos.error ||
+                        "No se pudo guardar el vehículo."
+                    );
+
+                    return;
+
+                }
+
+
+                alert(
+                    id
+                        ? "Vehículo actualizado correctamente."
+                        : "Vehículo registrado correctamente."
+                );
+
+
+                cancelarFormulario();
+
+                cargarVehiculos();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                alert(
+                    "Error de conexión con el microservicio de vehículos."
+                );
+
+            }
+
+        }
+    );
+
+
+// ==================================================
+// ELIMINAR VEHÍCULO
+// ==================================================
+
+async function eliminarVehiculo(id) {
+
+    const confirmar =
+        confirm(
+            "¿Seguro que deseas eliminar este vehículo?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const respuesta =
+            await fetch(
+                URL_VEHICULOS + "/" + id,
+                {
+
+                    method: "DELETE",
+
+                    headers: {
+
+                        "rol":
+                            usuario.rol
+
+                    }
+
+                }
+            );
+
+
+        const datos =
+            await respuesta.json();
+
+
+        if (!respuesta.ok) {
+
+            alert(
+                datos.mensaje ||
+                datos.error ||
+                "No se pudo eliminar el vehículo."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Vehículo eliminado correctamente."
+        );
+
+
+        cargarVehiculos();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        alert(
+            "Error de conexión con el microservicio."
+        );
+
+    }
+
+}
+
+
+// ==================================================
+// VENTAS
+// ==================================================
+
+async function cargarVentas() {
+
+    const contenedor =
+        document.getElementById("listaVentas");
+
+
+    contenedor.innerHTML = `
+
+        <div class="text-center py-4">
+
+            Consultando ventas...
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const respuesta =
+            await fetch(URL_COMPRAS);
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudieron consultar las compras"
+            );
+
+        }
+
+
+        const compras =
+            await respuesta.json();
+
+
+        const respuestaVehiculos =
+            await fetch(URL_VEHICULOS);
+
+
+        const vehiculos =
+            await respuestaVehiculos.json();
+
+
+        const misIds =
+            vehiculos
+                .filter(
+                    vehiculo =>
+                        Number(vehiculo.usuario_id) ===
+                        Number(usuario.id)
+                )
+                .map(
+                    vehiculo =>
+                        Number(vehiculo.id)
+                );
+
+
+        const misVentas =
+            compras.filter(
+                compra =>
+                    misIds.includes(
+                        Number(compra.vehiculo_id)
+                    )
+            );
+
+
+        if (misVentas.length === 0) {
+
+            contenedor.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h5>
+                        No hay ventas registradas
+                    </h5>
+
+                    <p>
+                        Las ventas de tus vehículos aparecerán aquí.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        contenedor.innerHTML = "";
+
+
+        misVentas.forEach(compra => {
+
+            const vehiculo =
+                vehiculos.find(
+                    v =>
+                        Number(v.id) ===
+                        Number(compra.vehiculo_id)
+                );
+
+
+            const venta =
+                document.createElement("div");
+
+
+            venta.className =
+                "sale-item";
+
+
+            venta.innerHTML = `
+
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+
+                    <div>
+
+                        <div class="sale-title">
+
+                            Venta #${compra.id}
+
+                        </div>
+
+                        <div class="text-muted">
+
+                            ${
+                                vehiculo
+                                    ? vehiculo.nombre
+                                    : "Vehículo no encontrado"
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+
+                        $${Number(compra.precio)
+                            .toLocaleString("es-CO")}
+
+                    </strong>
+
+                </div>
+
+
+                <hr>
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Cliente
+                        </small>
+
+                        <div>
+                            Usuario #${compra.usuario_id}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Vehículo
+                        </small>
+
+                        <div>
+                            #${compra.vehiculo_id}
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <small class="text-muted">
+                            Fecha
+                        </small>
+
+                        <div>
+                            ${compra.fecha}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            contenedor.appendChild(venta);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        contenedor.innerHTML = `
+
+            <div class="alert alert-danger">
+
+                No fue posible consultar las ventas.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ==================================================
+// CERRAR SESIÓN
+// ==================================================
+
+function cerrarSesion() {
+
+    localStorage.removeItem("usuario");
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+// ==================================================
+// INICIO
+// ==================================================
+
+cargarVehiculos();
+
+</script>
+
+
+</body>
+
+</html>

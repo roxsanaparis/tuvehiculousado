@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Agregar vehículo</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+
+<body class="bg-light">
+
+
+<div class="container py-5">
+
+    <div
+        class="card shadow-sm mx-auto"
+        style="max-width: 700px;">
+
+        <div class="card-body p-4">
+
+
+            <h2 class="text-center mb-4">
+                Agregar vehículo
+            </h2>
+
+
+            <p class="text-center text-muted">
+                Registra un nuevo vehículo en el sistema.
+            </p>
+
+
+            <!-- FORMULARIO -->
+
+            <form id="producto-form">
+
+
+                <!-- NOMBRE -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="nombre"
+                        class="form-label">
+
+                        Nombre del vehículo
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="nombre"
+                        placeholder="Ej: Carro Chevrolet rojo"
+                        required>
+
+                </div>
+
+
+                <!-- PRECIO -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="precio"
+                        class="form-label">
+
+                        Precio
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="precio"
+                        placeholder="Ej: 25000000"
+                        min="0"
+                        required>
+
+                </div>
+
+
+                <!-- CANTIDAD -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="cantidad"
+                        class="form-label">
+
+                        Cantidad
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="cantidad"
+                        value="1"
+                        min="0"
+                        required>
+
+                </div>
+
+
+                <!-- TIPO -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="tipo"
+                        class="form-label">
+
+                        Tipo de vehículo
+
+                    </label>
+
+
+                    <select
+                        class="form-select"
+                        id="tipo"
+                        required>
+
+                        <option value="">
+                            Selecciona un tipo
+                        </option>
+
+                        <option value="Carro">
+                            Carro
+                        </option>
+
+                        <option value="Moto">
+                            Moto
+                        </option>
+
+                        <option value="Camioneta">
+                            Camioneta
+                        </option>
+
+                        <option value="Camión">
+                            Camión
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MARCA -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="marca"
+                        class="form-label">
+
+                        Marca
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="marca"
+                        placeholder="Ej: Chevrolet"
+                        required>
+
+                </div>
+
+
+                <!-- MODELO -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="modelo"
+                        class="form-label">
+
+                        Modelo
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="modelo"
+                        placeholder="Ej: Spark"
+                        required>
+
+                </div>
+
+
+                <!-- AÑO -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="anio"
+                        class="form-label">
+
+                        Año
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="anio"
+                        placeholder="Ej: 2019"
+                        min="1900"
+                        max="2100"
+                        required>
+
+                </div>
+
+
+                <!-- DESCRIPCIÓN -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="descripcion"
+                        class="form-label">
+
+                        Descripción
+
+                    </label>
+
+
+                    <textarea
+                        class="form-control"
+                        id="descripcion"
+                        rows="4"
+                        placeholder="Descripción del vehículo"></textarea>
+
+                </div>
+
+
+                <!-- IMAGEN -->
+
+                <div class="mb-3">
+
+                    <label
+                        for="imagen"
+                        class="form-label">
+
+                        Imagen
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="imagen"
+                        placeholder="URL de la imagen">
+
+                </div>
+
+
+                <!-- BOTÓN -->
+
+                <div class="d-grid">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        Guardar vehículo
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+            <!-- MENSAJE -->
+
+            <div
+                id="mensaje"
+                class="alert mt-4 d-none">
+            </div>
+
+
+            <!-- VOLVER -->
+
+            <div class="text-center mt-3">
+
+                <a
+                    href="admin.html"
+                    class="btn btn-secondary">
+
+                    Volver al panel
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// ==================================================
+// OBTENER USUARIO
+// ==================================================
+
+function obtenerUsuario() {
+
+    const usuarioGuardado =
+        localStorage.getItem("usuario");
+
+
+    if (!usuarioGuardado) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        return JSON.parse(usuarioGuardado);
+
+    } catch (error) {
+
+        console.error(
+            "Error leyendo usuario:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+// ==================================================
+// USUARIO ACTUAL
+// ==================================================
+
+const usuario =
+    obtenerUsuario();
+
+
+console.log(
+    "Usuario actual:",
+    usuario
+);
+
+
+// ==================================================
+// COMPROBAR USUARIO
+// ==================================================
+
+if (!usuario) {
+
+    alert(
+        "No hay una sesión iniciada. Inicia sesión nuevamente."
+    );
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+// ==================================================
+// COMPROBAR ROL
+// ==================================================
+
+if (
+    usuario &&
+    String(usuario.rol).toLowerCase() !==
+        "administrador"
+) {
+
+    alert(
+        "Debes iniciar sesión como administrador para agregar vehículos."
+    );
+
+    window.location.href =
+        "admin.html";
+
+}
+
+
+// ==================================================
+// FORMULARIO
+// ==================================================
+
+document
+    .getElementById("producto-form")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            const mensaje =
+                document.getElementById(
+                    "mensaje"
+                );
+
+
+            // ==================================================
+            // DATOS DEL FORMULARIO
+            // ==================================================
+
+            const nombre =
+                document
+                    .getElementById("nombre")
+                    .value
+                    .trim();
+
+
+            const precio =
+                Number(
+                    document
+                        .getElementById("precio")
+                        .value
+                );
+
+
+            const cantidad =
+                Number(
+                    document
+                        .getElementById("cantidad")
+                        .value
+                );
+
+
+            const tipo =
+                document
+                    .getElementById("tipo")
+                    .value;
+
+
+            const marca =
+                document
+                    .getElementById("marca")
+                    .value
+                    .trim();
+
+
+            const modelo =
+                document
+                    .getElementById("modelo")
+                    .value
+                    .trim();
+
+
+            const anio =
+                Number(
+                    document
+                        .getElementById("anio")
+                        .value
+                );
+
+
+            const descripcion =
+                document
+                    .getElementById("descripcion")
+                    .value
+                    .trim();
+
+
+            const imagen =
+                document
+                    .getElementById("imagen")
+                    .value
+                    .trim();
+
+
+            // ==================================================
+            // VALIDACIONES
+            // ==================================================
+
+            if (!nombre) {
+
+                mostrarError(
+                    "Debes ingresar el nombre del vehículo."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isFinite(precio) ||
+                precio < 0
+            ) {
+
+                mostrarError(
+                    "Debes ingresar un precio válido."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isFinite(cantidad) ||
+                cantidad < 0
+            ) {
+
+                mostrarError(
+                    "La cantidad no puede ser negativa."
+                );
+
+                return;
+
+            }
+
+
+            if (!tipo) {
+
+                mostrarError(
+                    "Debes seleccionar el tipo de vehículo."
+                );
+
+                return;
+
+            }
+
+
+            if (!marca) {
+
+                mostrarError(
+                    "Debes ingresar la marca."
+                );
+
+                return;
+
+            }
+
+
+            if (!modelo) {
+
+                mostrarError(
+                    "Debes ingresar el modelo."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isInteger(anio) ||
+                anio < 1900 ||
+                anio > 2100
+            ) {
+
+                mostrarError(
+                    "Debes ingresar un año válido."
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // COMPROBAR USUARIO
+            // ==================================================
+
+            const usuario_id =
+                usuario &&
+                usuario.id
+                    ? Number(usuario.id)
+                    : null;
+
+
+            if (!usuario_id) {
+
+                mostrarError(
+                    "No se encontró el ID del administrador."
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // DATOS PARA EL BACKEND
+            // ==================================================
+
+            const datos = {
+
+                nombre:
+                    nombre,
+
+                precio:
+                    precio,
+
+                cantidad:
+                    cantidad,
+
+                tipo:
+                    tipo,
+
+                marca:
+                    marca,
+
+                modelo:
+                    modelo,
+
+                anio:
+                    anio,
+
+                descripcion:
+                    descripcion,
+
+                imagen:
+                    imagen || null,
+
+                usuario_id:
+                    usuario_id
+
+            };
+
+
+            console.log(
+                "Usuario enviado:",
+                usuario
+            );
+
+
+            console.log(
+                "Datos enviados:",
+                datos
+            );
+
+
+            // ==================================================
+            // DESACTIVAR BOTÓN
+            // ==================================================
+
+            const boton =
+                document.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            boton.disabled = true;
+
+            boton.textContent =
+                "Guardando vehículo...";
+
+
+            // ==================================================
+            // ENVIAR AL BACKEND
+            // ==================================================
+
+            try {
+
+
+                const respuesta =
+                    await fetch(
+                        "/api/productos",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    datos
+                                )
+
+                        }
+                    );
+
+
+                // ==================================================
+                // LEER RESPUESTA
+                // ==================================================
+
+                const texto =
+                    await respuesta.text();
+
+
+                let data = {};
+
+
+                try {
+
+                    data =
+                        texto
+                            ? JSON.parse(texto)
+                            : {};
+
+                } catch (error) {
+
+                    data = {
+
+                        mensaje:
+                            texto
+
+                    };
+
+                }
+
+
+                console.log(
+                    "Respuesta del servidor:",
+                    data
+                );
+
+
+                // ==================================================
+                // ERROR HTTP
+                // ==================================================
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+
+                        data.error ||
+
+                        data.mensaje ||
+
+                        data.message ||
+
+                        "El servidor rechazó el vehículo."
+
+                    );
+
+                }
+
+
+                // ==================================================
+                // ÉXITO
+                // ==================================================
+
+                mensaje.className =
+                    "alert alert-success mt-4";
+
+
+                mensaje.textContent =
+                    data.mensaje ||
+
+                    data.message ||
+
+                    "Vehículo creado correctamente.";
+
+
+                // Limpiar formulario
+
+                document
+                    .getElementById(
+                        "producto-form"
+                    )
+                    .reset();
+
+
+                // Restaurar cantidad
+
+                document
+                    .getElementById(
+                        "cantidad"
+                    )
+                    .value =
+                        "1";
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Error creando vehículo:",
+                    error
+                );
+
+
+                mensaje.className =
+                    "alert alert-danger mt-4";
+
+
+                mensaje.textContent =
+                    "Error al crear el vehículo: " +
+                    error.message;
+
+
+            } finally {
+
+
+                boton.disabled =
+                    false;
+
+
+                boton.textContent =
+                    "Guardar vehículo";
+
+
+            }
+
+        }
+
+    );
+
+
+// ==================================================
+// MOSTRAR ERROR
+// ==================================================
+
+function mostrarError(texto) {
+
+    const mensaje =
+        document.getElementById(
+            "mensaje"
+        );
+
+
+    mensaje.className =
+        "alert alert-danger mt-4";
+
+
+    mensaje.textContent =
+        texto;
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

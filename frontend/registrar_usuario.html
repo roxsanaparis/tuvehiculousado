@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tu Vehículo Usado | Crear cuenta</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a 0%,
+                    #1e293b 50%,
+                    #334155 100%
+                );
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #0f172a;
+        }
+
+        .page-container {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 520px;
+
+            background: #ffffff;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.30);
+
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background: #ffffff;
+
+            padding: 34px 40px 10px;
+        }
+
+        .brand {
+            font-size: 13px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            color: #64748b;
+
+            margin-bottom: 8px;
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+
+            margin: 0;
+
+            color: #0f172a;
+        }
+
+        .subtitle {
+            color: #64748b;
+
+            margin-top: 8px;
+            margin-bottom: 0;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+        .form-container {
+            padding: 28px 40px 38px;
+        }
+
+        .form-label {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #334155;
+
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 48px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 9px;
+
+            padding: 10px 14px;
+
+            font-size: 15px;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .role-description {
+            font-size: 12px;
+
+            color: #64748b;
+
+            margin-top: 7px;
+        }
+
+        .btn-register {
+
+            width: 100%;
+
+            min-height: 48px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s,
+                transform 0.1s;
+        }
+
+        .btn-register:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-register:active {
+            transform: scale(0.99);
+        }
+
+        .login-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #475569;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+        .login-link:hover {
+            color: #2563eb;
+        }
+
+        #mensaje {
+            margin-top: 18px;
+        }
+
+        .alert {
+            border-radius: 9px;
+
+            font-size: 14px;
+        }
+
+        .footer-text {
+
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        @media (max-width: 576px) {
+
+            .page-container {
+                padding: 20px 15px;
+            }
+
+            .card-header-custom {
+                padding: 28px 25px 10px;
+            }
+
+            .form-container {
+                padding: 24px 25px 30px;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="page-container">
+
+        <section class="register-card">
+
+            <!-- ENCABEZADO -->
+
+            <div class="card-header-custom">
+
+                <div class="brand">
+                    Tu Vehículo Usado
+                </div>
+
+                <h1 class="title">
+                    Crear una cuenta
+                </h1>
+
+                <p class="subtitle">
+                    Regístrate para acceder a las funciones de la plataforma.
+                </p>
+
+            </div>
+
+
+            <!-- FORMULARIO -->
+
+            <div class="form-container">
+
+                <form id="formUsuario">
+
+                    <!-- NOMBRE -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="nombre"
+                            class="form-label">
+
+                            Nombre completo
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            class="form-control"
+                            placeholder="Ingresa tu nombre completo"
+                            autocomplete="name"
+                            required>
+
+                    </div>
+
+
+                    <!-- CORREO -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="correo"
+                            class="form-label">
+
+                            Correo electrónico
+
+                        </label>
+
+                        <input
+                            type="email"
+                            id="correo"
+                            class="form-control"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+
+                    <!-- CONTRASEÑA -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="password"
+                            class="form-label">
+
+                            Contraseña
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Ingresa una contraseña"
+                            autocomplete="new-password"
+                            required>
+
+                    </div>
+
+
+                    <!-- ROL -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="rol"
+                            class="form-label">
+
+                            Tipo de usuario
+
+                        </label>
+
+                        <select
+                            id="rol"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Selecciona un tipo de usuario
+                            </option>
+
+                            <option value="cliente">
+                                Cliente
+                            </option>
+
+                            <option value="vendedor">
+                                Vendedor
+                            </option>
+
+                            <option value="administrador">
+                                Administrador
+                            </option>
+
+                        </select>
+
+                        <div class="role-description">
+                            Selecciona el perfil que corresponde a tu cuenta.
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTÓN -->
+
+                    <button
+                        type="submit"
+                        class="btn-register">
+
+                        Crear cuenta
+
+                    </button>
+
+
+                </form>
+
+
+                <!-- MENSAJE -->
+
+                <div id="mensaje"></div>
+
+
+                <!-- LOGIN -->
+
+                <a
+                    href="index.html"
+                    class="login-link">
+
+                    ¿Ya tienes una cuenta? Inicia sesión
+
+                </a>
+
+
+                <div class="footer-text">
+
+                    Tu Vehículo Usado · Plataforma de vehículos
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        document
+            .getElementById("formUsuario")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const nombre =
+                        document
+                            .getElementById("nombre")
+                            .value
+                            .trim();
+
+
+                    const correo =
+                        document
+                            .getElementById("correo")
+                            .value
+                            .trim();
+
+
+                    const password =
+                        document
+                            .getElementById("password")
+                            .value;
+
+
+                    const rol =
+                        document
+                            .getElementById("rol")
+                            .value;
+
+
+                    const mensaje =
+                        document
+                            .getElementById("mensaje");
+
+
+                    if (!rol) {
+
+                        mensaje.innerHTML = `
+                            <div class="alert alert-warning">
+                                Selecciona un tipo de usuario.
+                            </div>
+                        `;
+
+                        return;
+                    }
+
+
+                    try {
+
+                        const respuesta =
+    await fetch(
+        "/api/usuarios",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify({
+                                        nombre: nombre,
+                                        correo: correo,
+                                        password: password,
+                                        rol: rol
+                                    })
+                                }
+                            );
+
+
+                        const datos =
+                            await respuesta.json();
+
+
+                        if (!respuesta.ok) {
+
+                            mensaje.innerHTML = `
+                                <div class="alert alert-danger">
+                                    ${datos.error ||
+                                    "No se pudo registrar el usuario."}
+                                </div>
+                            `;
+
+                            return;
+                        }
+
+
+                        const usuarioRegistrado = {
+
+                            nombre: nombre,
+
+                            correo: correo,
+
+                            rol: rol
+
+                        };
+
+
+                        localStorage.setItem(
+                            "usuario",
+                            JSON.stringify(
+                                usuarioRegistrado
+                            )
+                        );
+
+
+                        mensaje.innerHTML = `
+                            <div class="alert alert-success">
+                                Cuenta creada correctamente.
+                                Redirigiendo...
+                            </div>
+                        `;
+
+
+                        setTimeout(
+                            function() {
+
+                                if (
+                                    rol ===
+                                    "administrador"
+                                ) {
+
+                                    window.location.href =
+                                        "admin.html";
+
+                                }
+
+                                else if (
+                                    rol ===
+                                    "vendedor"
+                                ) {
+
+                                    window.location.href =
+                                        "vendedor.html";
+
+                                }
+
+                                else {
+
+                                    window.location.href =
+                                        "cliente.html";
+
+                                }
+
+                            },
+                            1000
+                        );
+
+
+                    }
+
+                    catch (error) {
+
+                        console.error(error);
+
+
+                        mensaje.innerHTML = `
+                            <div class="alert alert-danger">
+                                Error al conectar con el servidor.
+                            </div>
+                        `;
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>

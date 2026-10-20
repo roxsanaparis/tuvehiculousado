@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS compras_db;
+USE compras_db;
+
+CREATE TABLE IF NOT EXISTS compra (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario_id INT NOT NULL,
+    vehiculo_id INT NOT NULL,
+    precio DECIMAL(15,2) NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
