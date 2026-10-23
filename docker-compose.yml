@@ -40,7 +40,7 @@ services:
       - almacen-net
 
   usuarios:
-    build: ./usuarios
+    image: roxsanaparis/proyecto-usuarios:1.0
     container_name: microservicio-usuarios
     ports:
       - "3010:3010"
@@ -50,7 +50,7 @@ services:
       - almacen-net
 
   vehiculos:
-    build: ./vehiculos
+    image: roxsanaparis/proyecto-vehiculos:1.0
     container_name: microservicio-vehiculos
     ports:
       - "3011:3011"
@@ -60,7 +60,7 @@ services:
       - almacen-net
 
   compras:
-    build: ./compras
+    image: roxsanaparis/proyecto-compras:1.0
     container_name: microservicio-compras
     ports:
       - "3012:3012"
@@ -70,6 +70,16 @@ services:
       - vehiculos
     networks:
       - almacen-net
+  haproxy:
+    image: haproxy:2.9
+    ports:
+      - "5081:80"
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
 
 networks:
   almacen-net:

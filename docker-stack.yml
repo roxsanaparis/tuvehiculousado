@@ -43,7 +43,7 @@ services:
       replicas: 1
 
   usuarios:
-    image: proyecto-docker-usuarios
+    image: roxsanaparis/proyecto-usuarios:1.0
     ports:
       - "3010:3010"
     networks:
@@ -52,7 +52,7 @@ services:
       replicas: 2
 
   vehiculos:
-    image: proyecto-docker-vehiculos
+    image: roxsanaparis/proyecto-vehiculos:1.0
     ports:
       - "3011:3011"
     networks:
@@ -61,13 +61,24 @@ services:
       replicas: 2
 
   compras:
-    image: proyecto-docker-compras
+    image: roxsanaparis/proyecto-compras:1.0
     ports:
       - "3012:3012"
     networks:
       - almacen-net
     deploy:
       replicas: 2
+
+  haproxy:
+    image: haproxy:2.9
+    ports:
+      - "5081:80"
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
 
 networks:
   almacen-net:
