@@ -2,8 +2,12 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Tu Vehículo Usado | Crear cuenta</title>
 
@@ -13,235 +17,144 @@
 
     <style>
 
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             min-height: 100vh;
-            margin: 0;
 
             background:
                 linear-gradient(
+                    rgba(15, 23, 42, 0.90),
+                    rgba(15, 23, 42, 0.94)
+                ),
+                linear-gradient(
                     135deg,
-                    #0f172a 0%,
-                    #1e293b 50%,
-                    #334155 100%
+                    #1e293b,
+                    #334155
                 );
 
             font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
+                Arial,
+                Helvetica,
                 sans-serif;
-
-            color: #0f172a;
-        }
-
-        .page-container {
-            min-height: 100vh;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            padding: 40px 20px;
+            padding: 30px 15px;
         }
 
-        .register-card {
+
+        .register-wrapper {
             width: 100%;
-            max-width: 520px;
-
-            background: #ffffff;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.30);
-
-            overflow: hidden;
+            max-width: 600px;
         }
 
-        .card-header-custom {
-            background: #ffffff;
-
-            padding: 34px 40px 10px;
-        }
 
         .brand {
-            font-size: 13px;
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+
+        .brand h1 {
+            font-size: 32px;
             font-weight: 700;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-
-            color: #64748b;
-
             margin-bottom: 8px;
         }
 
-        .title {
-            font-size: 30px;
-            font-weight: 700;
 
+        .brand p {
+            color: #cbd5e1;
             margin: 0;
-
-            color: #0f172a;
         }
+
+
+        .register-card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.30);
+        }
+
+
+        .register-card h2 {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
 
         .subtitle {
             color: #64748b;
-
-            margin-top: 8px;
-            margin-bottom: 0;
-
-            font-size: 15px;
-
-            line-height: 1.5;
+            margin-bottom: 30px;
         }
 
-        .form-container {
-            padding: 28px 40px 38px;
-        }
 
         .form-label {
-            font-size: 14px;
-
             font-weight: 600;
-
             color: #334155;
-
-            margin-bottom: 8px;
         }
 
-        .form-control,
-        .form-select {
-            min-height: 48px;
 
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 14px;
             border: 1px solid #cbd5e1;
-
-            border-radius: 9px;
-
-            padding: 10px 14px;
-
-            font-size: 15px;
-
-            transition:
-                border-color 0.2s,
-                box-shadow 0.2s;
         }
 
-        .form-control:focus,
-        .form-select:focus {
 
-            border-color: #2563eb;
+        .form-control:focus {
+            border-color: #334155;
 
             box-shadow:
-                0 0 0 3px rgba(37, 99, 235, 0.12);
+                0 0 0 0.2rem
+                rgba(51, 65, 85, 0.15);
         }
 
-        .field-group {
-            margin-bottom: 20px;
-        }
-
-        .role-description {
-            font-size: 12px;
-
-            color: #64748b;
-
-            margin-top: 7px;
-        }
 
         .btn-register {
-
             width: 100%;
-
-            min-height: 48px;
-
             border: none;
+            border-radius: 10px;
+            padding: 13px;
 
-            border-radius: 9px;
-
-            background: #2563eb;
-
+            background: #1e293b;
             color: white;
 
-            font-size: 15px;
-
             font-weight: 600;
-
-            transition:
-                background 0.2s,
-                transform 0.1s;
         }
+
 
         .btn-register:hover {
-            background: #1d4ed8;
+            background: #0f172a;
         }
 
-        .btn-register:active {
-            transform: scale(0.99);
-        }
-
-        .login-link {
-
-            display: block;
-
-            text-align: center;
-
-            margin-top: 22px;
-
-            color: #475569;
-
-            text-decoration: none;
-
-            font-size: 14px;
-        }
-
-        .login-link:hover {
-            color: #2563eb;
-        }
 
         #mensaje {
-            margin-top: 18px;
-        }
-
-        .alert {
-            border-radius: 9px;
-
+            min-height: 24px;
+            margin-top: 15px;
+            text-align: center;
             font-size: 14px;
         }
 
-        .footer-text {
 
+        .login-link {
             text-align: center;
-
-            margin-top: 24px;
-
-            color: #94a3b8;
-
-            font-size: 12px;
+            margin-top: 25px;
+            padding-top: 22px;
+            border-top: 1px solid #e2e8f0;
         }
 
-        @media (max-width: 576px) {
 
-            .page-container {
-                padding: 20px 15px;
-            }
-
-            .card-header-custom {
-                padding: 28px 25px 10px;
-            }
-
-            .form-container {
-                padding: 24px 25px 30px;
-            }
-
-            .title {
-                font-size: 26px;
-            }
+        .login-link p {
+            color: #64748b;
+            margin-bottom: 10px;
         }
+
 
     </style>
 
@@ -250,364 +163,453 @@
 
 <body>
 
-    <main class="page-container">
 
-        <section class="register-card">
+<div class="register-wrapper">
 
-            <!-- ENCABEZADO -->
 
-            <div class="card-header-custom">
+    <div class="brand">
 
-                <div class="brand">
-                    Tu Vehículo Usado
-                </div>
+        <h1>
+            Tu Vehículo Usado
+        </h1>
 
-                <h1 class="title">
-                    Crear una cuenta
-                </h1>
+        <p>
+            Compra y venta de vehículos usados
+        </p>
 
-                <p class="subtitle">
-                    Regístrate para acceder a las funciones de la plataforma.
-                </p>
+    </div>
+
+
+    <div class="register-card">
+
+
+        <h2 class="text-center">
+            Crear cuenta
+        </h2>
+
+
+        <p class="subtitle text-center">
+            Regístrate para comenzar
+        </p>
+
+
+        <form id="formRegistro">
+
+
+            <!-- NOMBRE -->
+
+            <div class="mb-3">
+
+                <label
+                    for="nombre"
+                    class="form-label">
+
+                    Nombre completo
+
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    class="form-control"
+                    placeholder="Tu nombre completo"
+                    autocomplete="name"
+                    required>
 
             </div>
 
 
-            <!-- FORMULARIO -->
+            <!-- CORREO -->
 
-            <div class="form-container">
+            <div class="mb-3">
 
-                <form id="formUsuario">
+                <label
+                    for="correo"
+                    class="form-label">
 
-                    <!-- NOMBRE -->
+                    Correo electrónico
 
-                    <div class="field-group">
+                </label>
 
-                        <label
-                            for="nombre"
-                            class="form-label">
-
-                            Nombre completo
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nombre"
-                            class="form-control"
-                            placeholder="Ingresa tu nombre completo"
-                            autocomplete="name"
-                            required>
-
-                    </div>
-
-
-                    <!-- CORREO -->
-
-                    <div class="field-group">
-
-                        <label
-                            for="correo"
-                            class="form-label">
-
-                            Correo electrónico
-
-                        </label>
-
-                        <input
-                            type="email"
-                            id="correo"
-                            class="form-control"
-                            placeholder="correo@ejemplo.com"
-                            autocomplete="email"
-                            required>
-
-                    </div>
-
-
-                    <!-- CONTRASEÑA -->
-
-                    <div class="field-group">
-
-                        <label
-                            for="password"
-                            class="form-label">
-
-                            Contraseña
-
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            class="form-control"
-                            placeholder="Ingresa una contraseña"
-                            autocomplete="new-password"
-                            required>
-
-                    </div>
-
-
-                    <!-- ROL -->
-
-                    <div class="field-group">
-
-                        <label
-                            for="rol"
-                            class="form-label">
-
-                            Tipo de usuario
-
-                        </label>
-
-                        <select
-                            id="rol"
-                            class="form-select"
-                            required>
-
-                            <option value="">
-                                Selecciona un tipo de usuario
-                            </option>
-
-                            <option value="cliente">
-                                Cliente
-                            </option>
-
-                            <option value="vendedor">
-                                Vendedor
-                            </option>
-
-                            <option value="administrador">
-                                Administrador
-                            </option>
-
-                        </select>
-
-                        <div class="role-description">
-                            Selecciona el perfil que corresponde a tu cuenta.
-                        </div>
-
-                    </div>
-
-
-                    <!-- BOTÓN -->
-
-                    <button
-                        type="submit"
-                        class="btn-register">
-
-                        Crear cuenta
-
-                    </button>
-
-
-                </form>
-
-
-                <!-- MENSAJE -->
-
-                <div id="mensaje"></div>
-
-
-                <!-- LOGIN -->
-
-                <a
-                    href="index.html"
-                    class="login-link">
-
-                    ¿Ya tienes una cuenta? Inicia sesión
-
-                </a>
-
-
-                <div class="footer-text">
-
-                    Tu Vehículo Usado · Plataforma de vehículos
-
-                </div>
+                <input
+                    type="email"
+                    id="correo"
+                    class="form-control"
+                    placeholder="correo@ejemplo.com"
+                    autocomplete="email"
+                    required>
 
             </div>
 
-        </section>
 
-    </main>
+            <!-- TELEFONO -->
 
+            <div class="mb-3">
 
-    <script>
+                <label
+                    for="telefono"
+                    class="form-label">
 
-        document
-            .getElementById("formUsuario")
-            .addEventListener(
-                "submit",
-                async function(event) {
+                    Teléfono
 
-                    event.preventDefault();
+                </label>
 
+                <input
+                    type="tel"
+                    id="telefono"
+                    class="form-control"
+                    placeholder="3001234567"
+                    autocomplete="tel"
+                    required>
 
-                    const nombre =
-                        document
-                            .getElementById("nombre")
-                            .value
-                            .trim();
-
-
-                    const correo =
-                        document
-                            .getElementById("correo")
-                            .value
-                            .trim();
+            </div>
 
 
-                    const password =
-                        document
-                            .getElementById("password")
-                            .value;
+            <!-- CIUDAD -->
+
+            <div class="mb-3">
+
+                <label
+                    for="ciudad"
+                    class="form-label">
+
+                    Ciudad
+
+                </label>
+
+                <input
+                    type="text"
+                    id="ciudad"
+                    class="form-control"
+                    placeholder="Cali"
+                    autocomplete="address-level2"
+                    required>
+
+            </div>
 
 
-                    const rol =
-                        document
-                            .getElementById("rol")
-                            .value;
+            <!-- PASSWORD -->
+
+            <div class="mb-3">
+
+                <label
+                    for="password"
+                    class="form-label">
+
+                    Contraseña
+
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Crea una contraseña"
+                    autocomplete="new-password"
+                    required>
+
+            </div>
 
 
-                    const mensaje =
-                        document
-                            .getElementById("mensaje");
+            <!-- CONFIRMAR PASSWORD -->
+
+            <div class="mb-4">
+
+                <label
+                    for="passwordConfirm"
+                    class="form-label">
+
+                    Confirmar contraseña
+
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordConfirm"
+                    class="form-control"
+                    placeholder="Repite la contraseña"
+                    autocomplete="new-password"
+                    required>
+
+            </div>
 
 
-                    if (!rol) {
+            <button
+                type="submit"
+                class="btn-register">
 
-                        mensaje.innerHTML = `
-                            <div class="alert alert-warning">
-                                Selecciona un tipo de usuario.
-                            </div>
-                        `;
+                Crear cuenta
 
-                        return;
-                    }
+            </button>
 
 
-                    try {
-
-                        const respuesta =
-    await fetch(
-        "/api/usuarios",
-                                {
-                                    method: "POST",
-
-                                    headers: {
-                                        "Content-Type":
-                                            "application/json"
-                                    },
-
-                                    body: JSON.stringify({
-                                        nombre: nombre,
-                                        correo: correo,
-                                        password: password,
-                                        rol: rol
-                                    })
-                                }
-                            );
+        </form>
 
 
-                        const datos =
-                            await respuesta.json();
+        <div id="mensaje"></div>
 
 
-                        if (!respuesta.ok) {
+        <div class="login-link">
 
-                            mensaje.innerHTML = `
-                                <div class="alert alert-danger">
-                                    ${datos.error ||
-                                    "No se pudo registrar el usuario."}
-                                </div>
-                            `;
+            <p>
+                ¿Ya tienes una cuenta?
+            </p>
 
-                            return;
-                        }
+            <a
+                href="index.html"
+                class="btn btn-outline-dark">
 
+                Iniciar sesión
 
-                        const usuarioRegistrado = {
+            </a>
 
-                            nombre: nombre,
-
-                            correo: correo,
-
-                            rol: rol
-
-                        };
+        </div>
 
 
-                        localStorage.setItem(
-                            "usuario",
-                            JSON.stringify(
-                                usuarioRegistrado
-                            )
-                        );
+    </div>
 
 
-                        mensaje.innerHTML = `
-                            <div class="alert alert-success">
-                                Cuenta creada correctamente.
-                                Redirigiendo...
-                            </div>
-                        `;
+</div>
 
 
-                        setTimeout(
-                            function() {
+<script>
 
-                                if (
-                                    rol ===
-                                    "administrador"
-                                ) {
 
-                                    window.location.href =
-                                        "admin.html";
+document
+    .getElementById("formRegistro")
+    .addEventListener(
+        "submit",
+        async function(event) {
 
-                                }
+            event.preventDefault();
 
-                                else if (
-                                    rol ===
-                                    "vendedor"
-                                ) {
 
-                                    window.location.href =
-                                        "vendedor.html";
+            const nombre =
+                document
+                    .getElementById("nombre")
+                    .value
+                    .trim();
 
-                                }
 
-                                else {
+            const correo =
+                document
+                    .getElementById("correo")
+                    .value
+                    .trim();
 
-                                    window.location.href =
-                                        "cliente.html";
 
-                                }
+            const telefono =
+                document
+                    .getElementById("telefono")
+                    .value
+                    .trim();
+
+
+            const ciudad =
+                document
+                    .getElementById("ciudad")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            const passwordConfirm =
+                document
+                    .getElementById("passwordConfirm")
+                    .value;
+
+
+            const mensaje =
+                document.getElementById(
+                    "mensaje"
+                );
+
+
+            mensaje.className = "";
+            mensaje.textContent = "";
+
+
+            if (
+                password !==
+                passwordConfirm
+            ) {
+
+                mensaje.className =
+                    "text-danger";
+
+                mensaje.textContent =
+                    "Las contraseñas no coinciden.";
+
+                return;
+
+            }
+
+
+            if (
+                password.length < 4
+            ) {
+
+                mensaje.className =
+                    "text-danger";
+
+                mensaje.textContent =
+                    "La contraseña debe tener al menos 4 caracteres.";
+
+                return;
+
+            }
+
+
+            mensaje.className =
+                "text-info";
+
+            mensaje.textContent =
+                "Creando cuenta...";
+
+
+            try {
+
+
+                const usuario = {
+
+                    nombre:
+                        nombre,
+
+                    correo:
+                        correo,
+
+                    password:
+                        password,
+
+                    ciudad:
+                        ciudad,
+
+                    telefono:
+                        telefono,
+
+                    rol:
+                        "cliente"
+
+                };
+
+
+                console.log(
+                    "DATOS REGISTRO:",
+                    usuario
+                );
+
+
+                const respuesta =
+                    await fetch(
+                        "/api/usuarios",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
 
                             },
-                            1000
+
+                            body:
+                                JSON.stringify(
+                                    usuario
+                                )
+
+                        }
+                    );
+
+
+                const texto =
+                    await respuesta.text();
+
+
+                let datos;
+
+
+                try {
+
+                    datos =
+                        JSON.parse(
+                            texto
                         );
 
+                } catch {
 
-                    }
-
-                    catch (error) {
-
-                        console.error(error);
-
-
-                        mensaje.innerHTML = `
-                            <div class="alert alert-danger">
-                                Error al conectar con el servidor.
-                            </div>
-                        `;
-
-                    }
+                    datos = {
+                        mensaje: texto
+                    };
 
                 }
-            );
 
-    </script>
+
+                console.log(
+                    "RESPUESTA REGISTRO:",
+                    respuesta.status,
+                    datos
+                );
+
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        datos.error ||
+                        datos.mensaje ||
+                        "No fue posible crear la cuenta."
+                    );
+
+                }
+
+
+                mensaje.className =
+                    "text-success";
+
+                mensaje.textContent =
+                    "Cuenta creada correctamente. Redirigiendo...";
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "index.html";
+
+                    },
+                    1200
+                );
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "ERROR REGISTRO:",
+                    error
+                );
+
+
+                mensaje.className =
+                    "text-danger";
+
+                mensaje.textContent =
+                    error.message ||
+                    "No fue posible crear la cuenta.";
+
+            }
+
+        }
+    );
+
+
+</script>
+
 
 </body>
 

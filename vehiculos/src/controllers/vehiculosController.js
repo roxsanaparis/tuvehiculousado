@@ -7,19 +7,71 @@ const {
     obtenerVehiculoPorId,
     actualizarVehiculo,
     eliminarVehiculo,
-    disminuirCantidad,
-    obtenerPropietarioVehiculo
+    disminuirCantidad
 } = require('../models/vehiculosModel');
 
 const router = express.Router();
 
+// Notificar cambios exitosos al servicio de analítica en SU2
+const http = require('http');
+
+router.use((req, res, next) => {
+    const metodos = ['POST', 'PUT', 'PATCH', 'DELETE'];
+
+    if (metodos.includes(req.method)) {
+        res.on('finish', () => {
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+                const datos = JSON.stringify({
+                    servicio: req.baseUrl || req.path,
+                    metodo: req.method,
+                    ruta: req.originalUrl,
+                    fecha: new Date().toISOString()
+                });
+
+                const peticion = http.request({
+                    hostname: '192.168.100.3',
+                    port: 5050,
+                    path: '/evento',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Content-Length': Buffer.byteLength(datos)
+                    },
+                    timeout: 3000
+                });
+
+                peticion.on('error', error =>
+                    console.error('Aviso: no se notificó a Spark:', error.message)
+                );
+
+                peticion.on('timeout', () => peticion.destroy());
+                peticion.write(datos);
+                peticion.end();
+            }
+        });
+    }
+
+    next();
+});
+
+
+
 const URL_USUARIOS =
     process.env.USUARIOS_URL || 'http://usuarios:3010/api/usuarios';
 
-// =====================================================
-// FUNCIÓN PARA CONSULTAR EL USUARIO MEDIANTE AXIOS
-// =====================================================
+// NORMALIZAR ROLES
+function normalizarRol(rol) {
+    return String(rol || '').trim().toLowerCase();
+}
 
+function esAdministrador(rol) {
+    const rolNormalizado = normalizarRol(rol);
+
+    return rolNormalizado === 'admin' ||
+           rolNormalizado === 'administrador';
+}
+
+// CONSULTAR USUARIO MEDIANTE AXIOS
 async function obtenerUsuario(idUsuario) {
     try {
         const respuesta = await axios.get(
@@ -29,7 +81,6 @@ async function obtenerUsuario(idUsuario) {
         return respuesta.data;
 
     } catch (error) {
-
         if (error.response) {
             const respuestaError = new Error(
                 'No se pudo consultar el usuario'
@@ -48,123 +99,144 @@ async function obtenerUsuario(idUsuario) {
     }
 }
 
+// VALIDAR DATOS DEL VEHÍCULO
+function validarVehiculo(datos) {
+    const {
+        tipo,
+        marca,
+        modelo,
+        anio,
+        combustible,
+        transmision,
+        kilometraje,
+        precio,
+        estado,
+        cantidad
+    } = datos;
+
+    if (
+        !tipo ||
+        !marca ||
+        !modelo ||
+        !anio ||
+        !combustible ||
+        !transmision ||
+        kilometraje === undefined ||
+        precio === undefined ||
+        !estado ||
+        cantidad === undefined
+    ) {
+        return 'Todos los campos del vehículo son obligatorios';
+    }
+
+    if (
+        !Number.isInteger(Number(anio)) ||
+        Number(anio) < 1900 ||
+        Number(anio) > new Date().getFullYear() + 1
+    ) {
+        return 'El año del vehículo no es válido';
+    }
+
+    if (
+        !Number.isFinite(Number(kilometraje)) ||
+        Number(kilometraje) < 0
+    ) {
+        return 'El kilometraje no es válido';
+    }
+
+    if (
+        !Number.isFinite(Number(precio)) ||
+        Number(precio) <= 0
+    ) {
+        return 'El precio debe ser mayor que cero';
+    }
+
+    if (
+        !Number.isInteger(Number(cantidad)) ||
+        Number(cantidad) < 0
+    ) {
+        return 'La cantidad no es válida';
+    }
+
+    return null;
+}
 
 // =====================================================
 // POST - CREAR VEHÍCULO
 // =====================================================
 
 router.post('/api/vehiculos', async (req, res) => {
-
     try {
+        const datos = req.body;
+        const { usuario_id } = datos;
 
-        const {
-            tipo,
-            marca,
-            modelo,
-            anio,
-            precio,
-            cantidad,
-            descripcion,
-            usuario_id
-        } = req.body;
+        const errorValidacion = validarVehiculo(datos);
 
-
-        if (
-            !tipo ||
-            !marca ||
-            !modelo ||
-            !anio ||
-            precio === undefined ||
-            cantidad === undefined ||
-            !descripcion ||
-            !usuario_id
-        ) {
+        if (errorValidacion) {
             return res.status(400).json({
-                mensaje: 'Todos los campos son obligatorios'
+                mensaje: errorValidacion
             });
         }
 
+        if (!usuario_id) {
+            return res.status(400).json({
+                mensaje: 'Debe indicar el usuario que registra el vehículo'
+            });
+        }
 
-        // Consultamos al usuario mediante Axios
         const usuario = await obtenerUsuario(usuario_id);
+        const rol = normalizarRol(usuario.rol);
 
-
-        // Solo administrador y vendedor pueden crear vehículos
-        if (
-            usuario.rol !== 'administrador' &&
-            usuario.rol !== 'vendedor'
-        ) {
+        if (!esAdministrador(rol) && rol !== 'vendedor') {
             return res.status(403).json({
-                mensaje: 'El usuario no tiene permiso para crear vehículos',
-                rol: usuario.rol
+                mensaje: 'El usuario no tiene permiso para crear vehículos'
             });
         }
 
+        const resultado = await crearVehiculo(datos);
 
-        const resultado = await crearVehiculo(
-            tipo,
-            marca,
-            modelo,
-            anio,
-            precio,
-            cantidad,
-            descripcion,
-            usuario_id
-        );
-
-
-        res.status(201).json({
+        return res.status(201).json({
             mensaje: 'Vehículo creado correctamente',
             id: resultado.insertId,
+            id_vehiculo: resultado.insertId,
             usuario: usuario
         });
 
     } catch (error) {
+        console.error('Error al crear vehículo:', error);
 
-        console.error(error);
-
-        res.status(error.status || 500).json({
+        return res.status(error.status || 500).json({
             mensaje: error.message || 'Error al crear vehículo'
         });
     }
 });
-
 
 // =====================================================
 // GET - CONSULTAR TODOS LOS VEHÍCULOS
 // =====================================================
 
 router.get('/api/vehiculos', async (req, res) => {
-
     try {
-
         const vehiculos = await obtenerVehiculos();
 
-        res.status(200).json(vehiculos);
+        return res.status(200).json(vehiculos);
 
     } catch (error) {
+        console.error('Error al consultar vehículos:', error);
 
-        console.error(error);
-
-        res.status(500).json({
+        return res.status(500).json({
             mensaje: 'Error al consultar vehículos'
         });
     }
 });
-
 
 // =====================================================
 // GET - CONSULTAR VEHÍCULO POR ID
 // =====================================================
 
 router.get('/api/vehiculos/:id', async (req, res) => {
-
     try {
-
-        const { id } = req.params;
-
-        const vehiculo = await obtenerVehiculoPorId(id);
-
+        const vehiculo = await obtenerVehiculoPorId(req.params.id);
 
         if (!vehiculo) {
             return res.status(404).json({
@@ -172,181 +244,57 @@ router.get('/api/vehiculos/:id', async (req, res) => {
             });
         }
 
-
-        res.status(200).json(vehiculo);
+        return res.status(200).json(vehiculo);
 
     } catch (error) {
+        console.error('Error al consultar vehículo:', error);
 
-        console.error(error);
-
-        res.status(500).json({
+        return res.status(500).json({
             mensaje: 'Error al consultar vehículo'
         });
     }
 });
 
-
 // =====================================================
-// GET - CONSULTAR INFORMACIÓN DE UN USUARIO CON AXIOS
+// GET - CONSULTAR USUARIO MEDIANTE AXIOS
 // =====================================================
 
 router.get('/api/vehiculos/usuario/:id', async (req, res) => {
-
     try {
+        const usuario = await obtenerUsuario(req.params.id);
 
-        const { id } = req.params;
-
-        const usuario = await obtenerUsuario(id);
-
-
-        res.status(200).json({
+        return res.status(200).json({
             microservicio: 'Vehículos',
             relacion: 'Vehículos → Axios → Usuarios',
             usuario: usuario
         });
 
     } catch (error) {
+        console.error('Error al consultar usuario:', error);
 
-        console.error(error);
-
-        res.status(error.status || 500).json({
+        return res.status(error.status || 500).json({
             mensaje: error.message || 'Error al consultar usuario'
         });
     }
 });
-
 
 // =====================================================
 // PUT - ACTUALIZAR VEHÍCULO
 // =====================================================
 
 router.put('/api/vehiculos/:id', async (req, res) => {
-
     try {
-
         const { id } = req.params;
+        const datos = req.body;
+        const { usuario_id } = datos;
 
-        const {
-            tipo,
-            marca,
-            modelo,
-            anio,
-            precio,
-            cantidad,
-            descripcion,
-            usuario_id
-        } = req.body;
+        const errorValidacion = validarVehiculo(datos);
 
-
-        if (
-            !tipo ||
-            !marca ||
-            !modelo ||
-            !anio ||
-            precio === undefined ||
-            cantidad === undefined ||
-            !descripcion ||
-            !usuario_id
-        ) {
+        if (errorValidacion) {
             return res.status(400).json({
-                mensaje: 'Todos los campos son obligatorios'
+                mensaje: errorValidacion
             });
         }
-
-
-        // Consultar usuario mediante Axios
-        const usuario = await obtenerUsuario(usuario_id);
-
-
-        // Verificar que el vehículo exista
-        const vehiculo = await obtenerVehiculoPorId(id);
-
-
-        if (!vehiculo) {
-            return res.status(404).json({
-                mensaje: 'Vehículo no encontrado'
-            });
-        }
-
-
-        // Administrador puede actualizar cualquier vehículo
-        if (usuario.rol === 'administrador') {
-
-            await actualizarVehiculo(
-                id,
-                tipo,
-                marca,
-                modelo,
-                anio,
-                precio,
-                cantidad,
-                descripcion
-            );
-
-            return res.status(200).json({
-                mensaje: 'Vehículo actualizado correctamente',
-                usuario: usuario
-            });
-        }
-
-
-        // Vendedor solamente puede actualizar sus vehículos
-        if (usuario.rol === 'vendedor') {
-
-            if (vehiculo.usuario_id !== usuario_id) {
-
-                return res.status(403).json({
-                    mensaje: 'El vendedor solo puede actualizar sus propios vehículos'
-                });
-            }
-
-
-            await actualizarVehiculo(
-                id,
-                tipo,
-                marca,
-                modelo,
-                anio,
-                precio,
-                cantidad,
-                descripcion
-            );
-
-            return res.status(200).json({
-                mensaje: 'Vehículo actualizado correctamente',
-                usuario: usuario
-            });
-        }
-
-
-        // Cliente no puede actualizar
-        return res.status(403).json({
-            mensaje: 'Los clientes no pueden actualizar vehículos'
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        res.status(error.status || 500).json({
-            mensaje: error.message || 'Error al actualizar vehículo'
-        });
-    }
-});
-
-
-// =====================================================
-// DELETE - ELIMINAR VEHÍCULO
-// =====================================================
-
-router.delete('/api/vehiculos/:id', async (req, res) => {
-
-    try {
-
-        const { id } = req.params;
-
-        const { usuario_id } = req.body;
-
 
         if (!usuario_id) {
             return res.status(400).json({
@@ -354,14 +302,8 @@ router.delete('/api/vehiculos/:id', async (req, res) => {
             });
         }
 
-
-        // Consultar usuario mediante Axios
         const usuario = await obtenerUsuario(usuario_id);
-
-
-        // Verificar vehículo
         const vehiculo = await obtenerVehiculoPorId(id);
-
 
         if (!vehiculo) {
             return res.status(404).json({
@@ -369,63 +311,116 @@ router.delete('/api/vehiculos/:id', async (req, res) => {
             });
         }
 
+        const rol = normalizarRol(usuario.rol);
 
-        // Administrador puede eliminar cualquier vehículo
-        if (usuario.rol === 'administrador') {
-
-            await eliminarVehiculo(id);
+        if (esAdministrador(rol)) {
+            await actualizarVehiculo(id, datos);
 
             return res.status(200).json({
-                mensaje: 'Vehículo eliminado correctamente',
+                mensaje: 'Vehículo actualizado correctamente',
                 usuario: usuario
             });
         }
 
+        if (rol === 'vendedor') {
+            if (
+                String(vehiculo.usuario_id) !== String(usuario_id)
+            ) {
+                return res.status(403).json({
+                    mensaje: 'El vendedor solo puede actualizar sus propios vehículos'
+                });
+            }
 
-        // Vendedor solo puede eliminar sus propios vehículos
-        if (usuario.rol === 'vendedor') {
+            await actualizarVehiculo(id, datos);
 
-            if (vehiculo.usuario_id !== usuario_id) {
+            return res.status(200).json({
+                mensaje: 'Vehículo actualizado correctamente',
+                usuario: usuario
+            });
+        }
 
+        return res.status(403).json({
+            mensaje: 'Los clientes no pueden actualizar vehículos'
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar vehículo:', error);
+
+        return res.status(error.status || 500).json({
+            mensaje: error.message || 'Error al actualizar vehículo'
+        });
+    }
+});
+
+// =====================================================
+// DELETE - ELIMINAR VEHÍCULO
+// =====================================================
+
+router.delete('/api/vehiculos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { usuario_id } = req.body;
+
+        if (!usuario_id) {
+            return res.status(400).json({
+                mensaje: 'Debe indicar el usuario que realiza la operación'
+            });
+        }
+
+        const usuario = await obtenerUsuario(usuario_id);
+        const vehiculo = await obtenerVehiculoPorId(id);
+
+        if (!vehiculo) {
+            return res.status(404).json({
+                mensaje: 'Vehículo no encontrado'
+            });
+        }
+
+        const rol = normalizarRol(usuario.rol);
+
+        if (esAdministrador(rol)) {
+            await eliminarVehiculo(id);
+
+            return res.status(200).json({
+                mensaje: 'Vehículo eliminado correctamente'
+            });
+        }
+
+        if (rol === 'vendedor') {
+            if (
+                String(vehiculo.usuario_id) !== String(usuario_id)
+            ) {
                 return res.status(403).json({
                     mensaje: 'El vendedor solo puede eliminar sus propios vehículos'
                 });
             }
 
-
             await eliminarVehiculo(id);
 
             return res.status(200).json({
-                mensaje: 'Vehículo eliminado correctamente',
-                usuario: usuario
+                mensaje: 'Vehículo eliminado correctamente'
             });
         }
 
-
-        // Cliente no puede eliminar
         return res.status(403).json({
             mensaje: 'Los clientes no pueden eliminar vehículos'
         });
 
     } catch (error) {
+        console.error('Error al eliminar vehículo:', error);
 
-        console.error(error);
-
-        res.status(error.status || 500).json({
+        return res.status(error.status || 500).json({
             mensaje: error.message || 'Error al eliminar vehículo'
         });
     }
 });
 
-
 // =====================================================
-// PUT - DISMINUIR CANTIDAD
+// PUT - DISMINUIR CANTIDAD DESPUÉS DE UNA COMPRA
 // =====================================================
 
 router.put('/api/vehiculos/:id/disminuir', async (req, res) => {
-
     try {
-
         const { id } = req.params;
 
         const vehiculo = await obtenerVehiculoPorId(id);
@@ -458,16 +453,10 @@ router.put('/api/vehiculos/:id/disminuir', async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error(
-            'Error al disminuir cantidad:',
-            error
-        );
+        console.error('Error al disminuir cantidad:', error);
 
         return res.status(error.status || 500).json({
-            mensaje:
-                error.message ||
-                'Error al disminuir cantidad'
+            mensaje: error.message || 'Error al disminuir cantidad'
         });
     }
 });

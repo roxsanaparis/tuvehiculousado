@@ -20,12 +20,13 @@
                     rgba(15, 23, 42, 0.88),
                     rgba(15, 23, 42, 0.92)
                 ),
-                linear-gradient(135deg, #1e293b, #334155);
+                linear-gradient(
+                    135deg,
+                    #1e293b,
+                    #334155
+                );
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
 
             display: flex;
             align-items: center;
@@ -59,6 +60,7 @@
             background: white;
             border-radius: 18px;
             padding: 35px;
+
             box-shadow:
                 0 20px 50px rgba(0, 0, 0, 0.30);
         }
@@ -87,8 +89,10 @@
 
         .form-control:focus {
             border-color: #334155;
+
             box-shadow:
-                0 0 0 0.2rem rgba(51, 65, 85, 0.15);
+                0 0 0 0.2rem
+                rgba(51, 65, 85, 0.15);
         }
 
         .btn-login {
@@ -96,10 +100,11 @@
             border: none;
             border-radius: 10px;
             padding: 13px;
+
             background: #1e293b;
             color: white;
+
             font-weight: 600;
-            transition: 0.2s;
         }
 
         .btn-login:hover {
@@ -110,6 +115,7 @@
             text-align: center;
             margin-top: 25px;
             padding-top: 22px;
+
             border-top: 1px solid #e2e8f0;
         }
 
@@ -145,213 +151,360 @@
 
 <body>
 
-    <div class="login-wrapper">
+<div class="login-wrapper">
 
-        <div class="brand">
+    <div class="brand">
 
-            <h1>Tu Vehículo Usado</h1>
+        <h1>
+            Tu Vehículo Usado
+        </h1>
 
-            <p>
-                Compra y venta de vehículos usados
-            </p>
+        <p>
+            Compra y venta de vehículos usados
+        </p>
 
-        </div>
-
-
-        <div class="login-card">
-
-            <h2 class="text-center">
-                Iniciar sesión
-            </h2>
-
-            <p class="login-subtitle text-center">
-                Ingresa a tu cuenta para continuar
-            </p>
+    </div>
 
 
-            <form id="formLogin">
+    <div class="login-card">
 
-                <div class="mb-3">
+        <h2 class="text-center">
+            Iniciar sesión
+        </h2>
 
-                    <label
-                        for="correo"
-                        class="form-label">
-
-                        Correo electrónico
-
-                    </label>
-
-                    <input
-                        type="email"
-                        id="correo"
-                        class="form-control"
-                        placeholder="correo@ejemplo.com"
-                        autocomplete="email"
-                        required>
-
-                </div>
+        <p class="login-subtitle text-center">
+            Ingresa a tu cuenta para continuar
+        </p>
 
 
-                <div class="mb-4">
+        <form id="formLogin">
 
-                    <label
-                        for="password"
-                        class="form-label">
+            <div class="mb-3">
 
-                        Contraseña
+                <label
+                    for="correo"
+                    class="form-label">
 
-                    </label>
+                    Correo electrónico
 
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        placeholder="Ingresa tu contraseña"
-                        autocomplete="current-password"
-                        required>
+                </label>
 
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="btn-login">
-
-                    Iniciar sesión
-
-                </button>
-
-            </form>
-
-
-            <div id="mensaje"></div>
-
-
-            <div class="register-section">
-
-                <p>
-                    ¿Aún no tienes una cuenta?
-                </p>
-
-                <a
-                    href="registrar_usuario.html"
-                    class="btn btn-outline-dark btn-register">
-
-                    Crear una cuenta
-
-                </a>
+<input
+    type="email"
+    id="correo"
+    class="form-control"
+    placeholder="correo@ejemplo.com"
+    autocomplete="off"
+    required>
 
             </div>
 
-        </div>
+
+            <div class="mb-4">
+
+                <label
+                    for="password"
+                    class="form-label">
+
+                    Contraseña
+
+                </label>
+
+<input
+    type="password"
+    id="password"
+    class="form-control"
+    placeholder="Ingresa tu contraseña"
+    autocomplete="new-password"
+    required>
+
+            </div>
 
 
-        <div class="footer">
+            <button
+                type="submit"
+                class="btn-login">
 
-            Tu Vehículo Usado · Plataforma de compra y venta
+                Iniciar sesión
+
+            </button>
+
+        </form>
+
+
+        <div id="mensaje"></div>
+
+
+        <div class="register-section">
+
+            <p>
+                ¿Aún no tienes una cuenta?
+            </p>
+
+            <a
+                href="registrar_usuario.html"
+                class="btn btn-outline-dark btn-register">
+
+                Crear una cuenta
+
+            </a>
 
         </div>
 
     </div>
 
 
-    <script>
+    <div class="footer">
 
-        document
-            .getElementById("formLogin")
-            .addEventListener(
-                "submit",
-                async function(event) {
+        Tu Vehículo Usado · Plataforma de compra y venta
 
-                    event.preventDefault();
+    </div>
+
+</div>
 
 
-                    const correo =
-                        document
-                            .getElementById("correo")
-                            .value
-                            .trim();
+<script>
+
+document
+    .getElementById("formLogin")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const correo =
+                document
+                    .getElementById("correo")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+            const mensaje =
+                document.getElementById("mensaje");
 
 
-                    const password =
-                        document
-                            .getElementById("password")
-                            .value;
+            mensaje.className = "";
+
+            mensaje.textContent =
+                "Validando información...";
 
 
-                    const mensaje =
-                        document.getElementById("mensaje");
+            try {
 
-
-                    mensaje.className = "";
-                    mensaje.textContent =
-                        "Validando información...";
-
-
-                    try {
-
-                        const respuesta = await fetch(
-    `/api/usuarios/validar?correo=${encodeURIComponent(correo)}&password=${encodeURIComponent(password)}`
-);
-
-
-                        const datos =
-                            await respuesta.json();
-
-
-                        if (!respuesta.ok) {
-
-                            mensaje.className =
-                                "text-danger";
-
-                            mensaje.textContent =
-                                datos.mensaje ||
-                                "Correo o contraseña incorrectos.";
-
-                            return;
+                const respuesta =
+                    await fetch(
+                        "/api/usuarios/validar?correo=" +
+                        encodeURIComponent(correo) +
+                        "&password=" +
+                        encodeURIComponent(password),
+                        {
+                            cache: "no-store"
                         }
+                    );
 
 
-                        localStorage.setItem(
-                            "usuario",
-                            JSON.stringify(datos.usuario)
-                        );
+                const datos =
+                    await respuesta.json();
 
 
-                      if (datos.usuario.rol === "administrador") {
-
-    window.location.href = "admin.html";
-
-} else if (datos.usuario.rol === "vendedor") {
-
-    window.location.href = "vendedor.html";
-
-} else {
-
-    window.location.href = "cliente.html";
-
-}
+                console.log(
+                    "RESPUESTA LOGIN:",
+                    datos
+                );
 
 
-                    } catch (error) {
+                if (!respuesta.ok) {
 
-                        console.error(error);
+                    mensaje.className =
+                        "text-danger";
 
+                    mensaje.textContent =
+                        datos.mensaje ||
+                        datos.error ||
+                        "Correo o contraseña incorrectos.";
 
-                        mensaje.className =
-                            "text-danger";
-
-
-                        mensaje.textContent =
-                            "No fue posible conectar con el servidor.";
-
-                    }
+                    return;
 
                 }
-            );
 
-    </script>
+
+                if (
+                    !datos.usuario ||
+                    !datos.usuario.id
+                ) {
+
+                    mensaje.className =
+                        "text-danger";
+
+                    mensaje.textContent =
+                        "El servidor no devolvió un usuario válido.";
+
+                    return;
+
+                }
+
+
+                /*
+                 * ==========================================
+                 * NORMALIZAR USUARIO
+                 * ==========================================
+                 */
+
+                const usuario = {
+
+                    id:
+                        datos.usuario.id,
+
+                    nombre:
+                        datos.usuario.nombre || "",
+
+                    correo:
+                        datos.usuario.correo || "",
+
+                    rol:
+                        String(
+                            datos.usuario.rol || ""
+                        )
+                        .trim()
+                        .toLowerCase(),
+
+                    ciudad:
+                        datos.usuario.ciudad || null,
+
+                    telefono:
+                        datos.usuario.telefono || null
+
+                };
+
+
+                console.log(
+                    "USUARIO NORMALIZADO:",
+                    usuario
+                );
+
+
+                console.log(
+                    "ROL DETECTADO:",
+                    usuario.rol
+                );
+
+
+                /*
+                 * ==========================================
+                 * GUARDAR SESIÓN
+                 * ==========================================
+                 */
+
+                localStorage.setItem(
+                    "usuario",
+                    JSON.stringify(usuario)
+                );
+
+
+                /*
+                 * ==========================================
+                 * VERIFICAR QUE SE GUARDÓ
+                 * ==========================================
+                 */
+
+                console.log(
+                    "USUARIO EN LOCALSTORAGE:",
+                    localStorage.getItem("usuario")
+                );
+
+
+                /*
+                 * ==========================================
+                 * ADMIN
+                 * ==========================================
+                 */
+
+                if (
+                    usuario.rol === "admin" ||
+                    usuario.rol === "administrador"
+                ) {
+
+                    console.log(
+                        "ADMIN DETECTADO -> admin.html"
+                    );
+
+
+                    window.location.href =
+                        "/admin.html";
+
+                    return;
+
+                }
+
+
+                /*
+                 * ==========================================
+                 * VENDEDOR
+                 * ==========================================
+                 */
+
+                if (
+                    usuario.rol === "vendedor"
+                ) {
+
+                    console.log(
+                        "VENDEDOR DETECTADO -> vendedor.html"
+                    );
+
+
+                    window.location.href =
+                        "/vendedor.html";
+
+                    return;
+
+                }
+
+
+                /*
+                 * ==========================================
+                 * CLIENTE
+                 * ==========================================
+                 */
+
+                console.log(
+                    "CLIENTE DETECTADO -> cliente.html"
+                );
+
+
+                window.location.href =
+                    "/cliente.html";
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "ERROR LOGIN:",
+                    error
+                );
+
+
+                mensaje.className =
+                    "text-danger";
+
+
+                mensaje.textContent =
+                    "No fue posible conectar con el servidor.";
+
+            }
+
+        }
+    );
+
+</script>
 
 </body>
 
 </html>
+<!-- PRUEBA-ADMIN-TUVEHICULO-2026 -->

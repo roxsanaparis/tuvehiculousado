@@ -747,94 +747,63 @@ async function cargarVehiculos() {
 // COMPRAR VEHÍCULO
 // ==========================================
 
+// ==========================================
+// COMPRAR VEHICULO
+// ==========================================
 async function comprarProducto(id) {
+    const metodo_pago = prompt(
+        "Seleccione el método de pago:\n1. Efectivo\n2. Transferencia\n3. Tarjeta"
+    );
 
-    const confirmar =
-        confirm(
-            "¿Está seguro de que desea comprar este vehículo?"
-        );
+    const metodos = {
+        "1": "Efectivo",
+        "2": "Transferencia",
+        "3": "Tarjeta"
+    };
 
-
-    if (!confirmar) {
-
+    if (!metodo_pago || !metodos[metodo_pago.trim()]) {
+        alert("Compra cancelada. Seleccione un método de pago válido.");
         return;
-
     }
 
+    if (!confirm("¿Confirma la compra con pago mediante " +
+        metodos[metodo_pago.trim()] + "?")) {
+        return;
+    }
 
     try {
+        const respuesta = await fetch(URL_COMPRAS, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuario_id: usuario.id,
+                vehiculo_id: id,
+                metodo_pago: metodos[metodo_pago.trim()]
+            })
+        });
 
-        const respuesta =
-            await fetch(
-                URL_COMPRAS,
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            usuario_id:
-                                usuario.id,
-
-                            vehiculo_id:
-                                id
-
-                        })
-
-                }
-            );
-
-
-        const datos =
-            await respuesta.json();
-
+        const datos = await respuesta.json();
 
         if (!respuesta.ok) {
-
-            alert(
-
-                datos.mensaje ||
-                datos.error ||
-                "No se pudo realizar la compra."
-
-            );
-
+            alert(datos.mensaje || "No se pudo realizar la compra.");
             return;
-
         }
 
-
         alert(
-
-            "Compra realizada correctamente.\n\n" +
-            "Número de compra: " +
-            datos.id
-
+            "¡Compra realizada correctamente!\n\n" +
+            "Número de compra: " + (datos.compra_id || datos.id) +
+            "\nMétodo de pago: " + datos.metodo_pago +
+            "\nEstado: " + datos.estado
         );
-
 
         cargarVehiculos();
 
-
     } catch (error) {
-
         console.error(error);
-
-
-        alert(
-            "Error de conexión con el microservicio de compras."
-        );
-
+        alert("Error de conexión con el microservicio de compras.");
     }
-
 }
 
 

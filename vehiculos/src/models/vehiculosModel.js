@@ -1,37 +1,68 @@
 const mysql = require('mysql2/promise');
 
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+
+if (!DB_USER || !DB_PASSWORD) {
+    throw new Error('Faltan las variables DB_USER o DB_PASSWORD');
+}
+
 const connection = mysql.createPool({
     host: 'mysql-vehiculos',
-    user: 'capasapp',
-    password: 'admin',
+    user: DB_USER,
+    password: DB_PASSWORD,
     port: 3306,
-    database: 'vehiculos_db'
+    database: 'vehiculos_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    maxIdle: 5,
+    idleTimeout: 60000,
+    queueLimit: 0,
+    connectTimeout: 10000,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0
 });
-async function crearVehiculo(
-    tipo,
-    marca,
-    modelo,
-    anio,
-    precio,
-    cantidad,
-    descripcion,
-    usuario_id
-) {
+
+// CREAR VEHÍCULO
+async function crearVehiculo(datos) {
+    const {
+        tipo,
+        marca,
+        modelo,
+        anio,
+        combustible,
+        transmision,
+        kilometraje,
+        precio,
+        estado,
+        cantidad,
+        descripcion,
+        usuario_id
+    } = datos;
+
     const nombre = `${tipo} ${marca} ${modelo} (${anio})`;
 
     const [resultado] = await connection.execute(
         `INSERT INTO producto
-        (tipo, marca, modelo, anio, nombre, precio, cantidad, descripcion, usuario_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (
+            tipo, marca, modelo, anio, nombre,
+            combustible, transmision, kilometraje,
+            precio, estado, cantidad, descripcion, usuario_id
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             tipo,
             marca,
             modelo,
             anio,
             nombre,
+            combustible,
+            transmision,
+            kilometraje,
             precio,
+            estado,
             cantidad,
-            descripcion,
+            descripcion || '',
             usuario_id
         ]
     );
@@ -39,10 +70,25 @@ async function crearVehiculo(
     return resultado;
 }
 
+// CONSULTAR TODOS LOS VEHÍCULOS
 async function obtenerVehiculos() {
     const [vehiculos] = await connection.execute(
-        `SELECT id, nombre, precio, cantidad,
-                tipo, marca, modelo, anio, descripcion, usuario_id
+        `SELECT
+            id,
+            id AS id_vehiculo,
+            marca,
+            modelo,
+            anio,
+            tipo,
+            combustible,
+            transmision,
+            kilometraje,
+            precio,
+            estado,
+            cantidad,
+            nombre,
+            descripcion,
+            usuario_id
          FROM producto
          ORDER BY id ASC`
     );
@@ -50,10 +96,25 @@ async function obtenerVehiculos() {
     return vehiculos;
 }
 
+// CONSULTAR VEHÍCULO POR ID
 async function obtenerVehiculoPorId(id) {
     const [vehiculos] = await connection.execute(
-        `SELECT id, nombre, precio, cantidad,
-                tipo, marca, modelo, anio, descripcion, usuario_id
+        `SELECT
+            id,
+            id AS id_vehiculo,
+            marca,
+            modelo,
+            anio,
+            tipo,
+            combustible,
+            transmision,
+            kilometraje,
+            precio,
+            estado,
+            cantidad,
+            nombre,
+            descripcion,
+            usuario_id
          FROM producto
          WHERE id = ?`,
         [id]
@@ -62,28 +123,39 @@ async function obtenerVehiculoPorId(id) {
     return vehiculos[0];
 }
 
-async function actualizarVehiculo(
-    id,
-    tipo,
-    marca,
-    modelo,
-    anio,
-    precio,
-    cantidad,
-    descripcion
-) {
+// ACTUALIZAR VEHÍCULO
+async function actualizarVehiculo(id, datos) {
+    const {
+        tipo,
+        marca,
+        modelo,
+        anio,
+        combustible,
+        transmision,
+        kilometraje,
+        precio,
+        estado,
+        cantidad,
+        descripcion
+    } = datos;
+
     const nombre = `${tipo} ${marca} ${modelo} (${anio})`;
 
     const [resultado] = await connection.execute(
         `UPDATE producto
-         SET tipo = ?,
-             marca = ?,
-             modelo = ?,
-             anio = ?,
-             nombre = ?,
-             precio = ?,
-             cantidad = ?,
-             descripcion = ?
+         SET
+            tipo = ?,
+            marca = ?,
+            modelo = ?,
+            anio = ?,
+            nombre = ?,
+            combustible = ?,
+            transmision = ?,
+            kilometraje = ?,
+            precio = ?,
+            estado = ?,
+            cantidad = ?,
+            descripcion = ?
          WHERE id = ?`,
         [
             tipo,
@@ -91,9 +163,13 @@ async function actualizarVehiculo(
             modelo,
             anio,
             nombre,
+            combustible,
+            transmision,
+            kilometraje,
             precio,
+            estado,
             cantidad,
-            descripcion,
+            descripcion || '',
             id
         ]
     );
@@ -101,16 +177,17 @@ async function actualizarVehiculo(
     return resultado;
 }
 
+// ELIMINAR VEHÍCULO
 async function eliminarVehiculo(id) {
     const [resultado] = await connection.execute(
-        `DELETE FROM producto
-         WHERE id = ?`,
+        `DELETE FROM producto WHERE id = ?`,
         [id]
     );
 
     return resultado;
 }
 
+// DISMINUIR CANTIDAD DESPUÉS DE UNA COMPRA
 async function disminuirCantidad(id) {
     const [resultado] = await connection.execute(
         `UPDATE producto
@@ -123,6 +200,7 @@ async function disminuirCantidad(id) {
     return resultado;
 }
 
+// CONSULTAR PROPIETARIO
 async function obtenerPropietarioVehiculo(id) {
     const [vehiculos] = await connection.execute(
         `SELECT usuario_id

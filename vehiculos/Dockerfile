@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --omit=dev --no-audit --no-fund --fetch-retries=2 --fetch-timeout=60000 --progress=false
 
 COPY . .
 

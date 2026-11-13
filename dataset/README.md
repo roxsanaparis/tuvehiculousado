@@ -1,20 +1,15 @@
-# Dataset TuVehiculoUsado
+# Dataset de TuVehiculoUsado
 
-Dataset sintético generado para el proyecto académico de microservicios.
+Este directorio contiene los datos originales utilizados como base para el proyecto.
 
-Archivos:
-- usuarios.csv: 10,000 usuarios
-- vehiculos.csv: 5,000 vehículos
-- compras.csv: 30,000 compras
+## Archivos
 
-Relaciones:
-- compras.id_usuario -> usuarios.id_usuario
-- compras.id_vehiculo -> vehiculos.id_vehiculo
+- usuarios.csv: datos iniciales de usuarios.
+- vehiculos.csv: datos iniciales de vehículos.
+- compras.csv: datos iniciales de compras.
 
-Uso:
-- Poblar MySQL
-- Probar consultas SQL
-- Probar los microservicios de Usuarios, Vehículos y Compras
-- Generar carga con JMeter
+Los CSV representan el conjunto de datos de partida. Los registros agregados posteriormente durante las pruebas de la aplicación se encuentran en las exportaciones de las bases de datos de `bases_datos/estado_actual/`.
 
-Nota: es un dataset sintético, no contiene datos personales reales.
+## Uso
+
+Los archivos pueden consultarse con herramientas de análisis de datos como Python, pandas o Apache Spark.

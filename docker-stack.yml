@@ -1,12 +1,12 @@
-services:
 
+services:
   mysql-usuarios:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Falta MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: usuarios_db
-      MYSQL_USER: capasapp
-      MYSQL_PASSWORD: admin
+      MYSQL_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
     volumes:
       - mysql_usuarios_data:/var/lib/mysql
     networks:
@@ -17,10 +17,10 @@ services:
   mysql-vehiculos:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Falta MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: vehiculos_db
-      MYSQL_USER: capasapp
-      MYSQL_PASSWORD: admin
+      MYSQL_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
     volumes:
       - mysql_vehiculos_data:/var/lib/mysql
     networks:
@@ -31,10 +31,10 @@ services:
   mysql-compras:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Falta MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: compras_db
-      MYSQL_USER: capasapp
-      MYSQL_PASSWORD: admin
+      MYSQL_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      MYSQL_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
     volumes:
       - mysql_compras_data:/var/lib/mysql
     networks:
@@ -43,42 +43,78 @@ services:
       replicas: 1
 
   usuarios:
-    image: roxsanaparis/proyecto-usuarios:1.0
+    image: roxsanaparis/proyecto-usuarios:4.2
     ports:
       - "3010:3010"
+    environment:
+      DB_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      DB_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
+    secrets:
+      - source: jwt_secret
+        target: jwt_secret
     networks:
       - almacen-net
     deploy:
       replicas: 2
 
+
   vehiculos:
-    image: roxsanaparis/proyecto-vehiculos:1.0
+    image: roxsanaparis/proyecto-vehiculos:4.1
     ports:
       - "3011:3011"
+    environment:
+      DB_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      DB_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
     networks:
       - almacen-net
     deploy:
       replicas: 2
 
   compras:
-    image: roxsanaparis/proyecto-compras:1.0
+    image: roxsanaparis/proyecto-compras:4.4
     ports:
       - "3012:3012"
+    environment:
+      DB_USER: "${MYSQL_APP_USER:?Falta MYSQL_APP_USER}"
+      DB_PASSWORD: "${MYSQL_APP_PASSWORD:?Falta MYSQL_APP_PASSWORD}"
+    secrets:
+      - source: jwt_secret
+        target: jwt_secret
     networks:
       - almacen-net
     deploy:
       replicas: 2
 
+
   haproxy:
     image: haproxy:2.9
     ports:
       - "5081:80"
+      - "8404:8404"
     volumes:
-      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - /home/vagrant/tuvehiculousado/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
       - almacen-net
     deploy:
       replicas: 1
+
+  api-analitica:
+    image: roxsanaparis/api-analitica:1.7
+    environment:
+      DB_USUARIOS_HOST: mysql-usuarios
+      DB_VEHICULOS_HOST: mysql-vehiculos
+      DB_COMPRAS_HOST: mysql-compras
+      DB_USER: "${ANALYTICS_DB_USER:?Falta ANALYTICS_DB_USER}"
+      DB_PASSWORD: "${ANALYTICS_DB_PASSWORD:?Falta ANALYTICS_DB_PASSWORD}"
+    ports:
+      - "5000:5000"
+    networks:
+      - almacen-net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
 
 networks:
   almacen-net:
@@ -89,3 +125,7 @@ volumes:
   mysql_usuarios_data:
   mysql_vehiculos_data:
   mysql_compras_data:
+
+secrets:
+  jwt_secret:
+    external: true

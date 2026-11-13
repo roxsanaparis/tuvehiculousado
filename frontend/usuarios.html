@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0">
 
     <title>
-        Gestión de Usuarios - Tu Vehículo Usado
+        Gestión de usuarios - Tu Vehículo Usado
     </title>
 
     <link
@@ -19,47 +19,46 @@
 
 </head>
 
+
 <body class="bg-light">
 
-<div class="container py-5">
+
+<nav class="navbar navbar-dark bg-dark">
+
+    <div class="container">
+
+        <span class="navbar-brand">
+            Tu Vehículo Usado
+        </span>
+
+        <a
+            href="admin.html"
+            class="btn btn-outline-light">
+
+            Volver al panel
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container py-4">
+
 
     <!-- ENCABEZADO -->
 
-    <div
-        class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4">
 
-        <div>
+        <h2>
+            Gestión de usuarios
+        </h2>
 
-            <h2>
-                👥 Gestión de Usuarios
-            </h2>
-
-            <p
-                id="bienvenida"
-                class="text-muted mb-0">
-            </p>
-
-        </div>
-
-        <div class="d-flex gap-2">
-
-            <button
-                class="btn btn-secondary"
-                onclick="volverAdmin()">
-
-                🚗 Panel administrador
-
-            </button>
-
-            <button
-                class="btn btn-danger"
-                onclick="cerrarSesion()">
-
-                Cerrar sesión
-
-            </button>
-
-        </div>
+        <p
+            id="bienvenida"
+            class="text-muted">
+        </p>
 
     </div>
 
@@ -75,114 +74,203 @@
 
         <div class="card-body">
 
-            <h4
-                id="tituloFormulario"
-                class="mb-4">
-
-                Registrar usuario
-
+            <h4 class="mb-4">
+                Crear / editar usuario
             </h4>
 
+
             <form id="formUsuario">
+
 
                 <input
                     type="hidden"
                     id="usuarioId">
 
 
-                <!-- NOMBRE -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Nombre
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nombre"
-                        class="form-control"
-                        placeholder="Nombre completo"
-                        required>
-
-                </div>
+                <div class="row">
 
 
-                <!-- CORREO -->
+                    <!-- NOMBRE -->
 
-                <div class="mb-3">
+                    <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
-                        Correo
-                    </label>
+                        <label
+                            for="nombre"
+                            class="form-label">
 
-                    <input
-                        type="email"
-                        id="correo"
-                        class="form-control"
-                        placeholder="correo@ejemplo.com"
-                        required>
+                            Nombre completo
 
-                </div>
+                        </label>
 
+                        <input
+                            type="text"
+                            id="nombre"
+                            class="form-control"
+                            required>
 
-                <!-- CONTRASEÑA -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Contraseña
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        placeholder="Contraseña"
-                        required>
-
-                </div>
+                    </div>
 
 
-                <!-- ROL -->
+                    <!-- CORREO -->
 
-                <div class="mb-3">
+                    <div class="col-md-6 mb-3">
 
-                    <label class="form-label">
-                        Rol
-                    </label>
+                        <label
+                            for="correo"
+                            class="form-label">
 
-                    <select
-                        id="rol"
-                        class="form-select"
-                        required>
+                            Correo
 
-                        <option value="">
-                            Seleccione un rol
-                        </option>
+                        </label>
 
-                        <option value="cliente">
-                            Cliente
-                        </option>
+                        <input
+                            type="email"
+                            id="correo"
+                            class="form-control"
+                            required>
 
-                        <option value="vendedor">
-                            Vendedor
-                        </option>
+                    </div>
 
-                        <option value="administrador">
-                            Administrador
-                        </option>
 
-                    </select>
+                    <!-- PASSWORD -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="password"
+                            class="form-label">
+
+                            Contraseña
+
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- ROL -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="rol"
+                            class="form-label">
+
+                            Rol
+
+                        </label>
+
+                        <select
+                            id="rol"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Seleccione un rol
+                            </option>
+
+                            <option value="cliente">
+                                Cliente
+                            </option>
+
+                            <option value="vendedor">
+                                Vendedor
+                            </option>
+
+                            <option value="administrador">
+                                Administrador
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CIUDAD -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="ciudad"
+                            class="form-label">
+
+                            Ciudad
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="ciudad"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- TELEFONO -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="telefono"
+                            class="form-label">
+
+                            Teléfono
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="telefono"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- ESTADO -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label
+                            for="estado"
+                            class="form-label">
+
+                            Estado
+
+                        </label>
+
+                        <select
+                            id="estado"
+                            class="form-select"
+                            required>
+
+                            <option value="activo">
+                                Activo
+                            </option>
+
+                            <option value="inactivo">
+                                Inactivo
+                            </option>
+
+                        </select>
+
+                    </div>
+
 
                 </div>
 
 
                 <button
                     type="submit"
-                    class="btn btn-success">
+                    class="btn btn-primary">
 
-                    💾 Guardar usuario
+                    Guardar usuario
 
                 </button>
 
@@ -190,12 +278,12 @@
                 <button
                     type="button"
                     id="btnCancelar"
-                    class="btn btn-secondary d-none"
-                    onclick="cancelarEdicion()">
+                    class="btn btn-secondary">
 
-                    Cancelar edición
+                    Cancelar
 
                 </button>
+
 
             </form>
 
@@ -204,7 +292,7 @@
     </div>
 
 
-    <!-- LISTADO -->
+    <!-- TABLA -->
 
     <div class="card shadow">
 
@@ -213,15 +301,15 @@
             <div
                 class="d-flex justify-content-between align-items-center mb-3">
 
-                <h4 class="mb-0">
+                <h4>
                     Usuarios registrados
                 </h4>
 
                 <button
-                    class="btn btn-primary"
+                    class="btn btn-outline-primary"
                     onclick="cargarUsuarios()">
 
-                    🔄 Actualizar lista
+                    🔄 Actualizar
 
                 </button>
 
@@ -245,13 +333,25 @@
 
                             <th>Rol</th>
 
+                            <th>Ciudad</th>
+
+                            <th>Teléfono</th>
+
+                            <th>Fecha registro</th>
+
+                            <th>Estado</th>
+
                             <th>Acciones</th>
 
                         </tr>
 
                     </thead>
 
-                    <tbody id="tablaUsuarios"></tbody>
+
+                    <tbody
+                        id="tablaUsuarios">
+
+                    </tbody>
 
                 </table>
 
@@ -261,14 +361,18 @@
 
     </div>
 
+
 </div>
 
 
 <script>
 
-const API =
-    "/api/usuarios";
+const API = "/api/usuarios";
 
+
+// ==========================================
+// USUARIO ACTUAL
+// ==========================================
 
 const usuarioActual =
     JSON.parse(
@@ -276,17 +380,29 @@ const usuarioActual =
     );
 
 
-// COMPROBAR ADMINISTRADOR
+// ==========================================
+// COMPROBAR ADMIN
+// ==========================================
 
 if (
     !usuarioActual ||
-    usuarioActual.rol !== "administrador"
+    (
+        usuarioActual.rol !== "admin" &&
+        usuarioActual.rol !== "administrador"
+    )
 ) {
 
     window.location.href =
         "login.html";
 
-} else {
+}
+
+
+// ==========================================
+// BIENVENIDA
+// ==========================================
+
+if (usuarioActual) {
 
     document
         .getElementById("bienvenida")
@@ -297,9 +413,14 @@ if (
 }
 
 
-// MOSTRAR MENSAJE
+// ==========================================
+// MENSAJES
+// ==========================================
 
-function mostrarMensaje(texto, tipo) {
+function mostrarMensaje(
+    texto,
+    tipo
+) {
 
     document
         .getElementById("mensaje")
@@ -313,90 +434,81 @@ function mostrarMensaje(texto, tipo) {
 
         `;
 
-    setTimeout(() => {
-
-        document
-            .getElementById("mensaje")
-            .innerHTML = "";
-
-    }, 4000);
-
 }
 
 
+// ==========================================
 // CARGAR USUARIOS
+// ==========================================
 
 async function cargarUsuarios() {
 
     try {
 
-        const respuesta =
-            await fetch(API);
+        const respuesta = await fetch(API, {
+            cache: "no-store"
+        });
 
-        const datos =
-            await respuesta.json();
+        const datos = await respuesta.json();
+
+        console.log("USUARIOS RECIBIDOS:", datos);
 
         if (!respuesta.ok) {
-
             throw new Error(
                 datos.error ||
-                "No se pudieron consultar los usuarios"
+                "No se pudieron cargar los usuarios"
             );
-
         }
 
         const tabla =
-            document.getElementById(
-                "tablaUsuarios"
+            document.getElementById("tablaUsuarios");
+
+        if (!Array.isArray(datos)) {
+            throw new Error(
+                "La API no devolvió un arreglo de usuarios"
             );
-
-        tabla.innerHTML = "";
-
+        }
 
         if (datos.length === 0) {
 
             tabla.innerHTML = `
-
                 <tr>
-
-                    <td
-                        colspan="5"
-                        class="text-center">
-
+                    <td colspan="9" class="text-center">
                         No hay usuarios registrados.
-
                     </td>
-
                 </tr>
-
             `;
 
             return;
-
         }
 
+        const filas = datos.map(usuario => {
 
-        datos.forEach(usuario => {
+            let colorRol = "primary";
 
-            let colorRol;
-
-            if (usuario.rol === "administrador") {
-
+            if (
+                usuario.rol === "admin" ||
+                usuario.rol === "administrador"
+            ) {
                 colorRol = "danger";
-
-            } else if (usuario.rol === "vendedor") {
-
+            }
+            else if (usuario.rol === "vendedor") {
                 colorRol = "warning";
-
-            } else {
-
-                colorRol = "primary";
-
             }
 
+            const colorEstado =
+                usuario.estado === "activo"
+                    ? "success"
+                    : "secondary";
 
-            tabla.innerHTML += `
+            const fecha =
+                usuario.fecha_registro
+                    ? new Date(
+                        usuario.fecha_registro
+                    ).toLocaleString("es-CO")
+                    : "Sin fecha";
 
+            return `
                 <tr>
 
                     <td>
@@ -404,22 +516,35 @@ async function cargarUsuarios() {
                     </td>
 
                     <td>
-                        ${usuario.nombre}
+                        ${usuario.nombre || ""}
                     </td>
 
                     <td>
-                        ${usuario.correo}
+                        ${usuario.correo || ""}
                     </td>
 
                     <td>
-
-                        <span
-                            class="badge bg-${colorRol}">
-
-                            ${usuario.rol}
-
+                        <span class="badge bg-${colorRol}">
+                            ${usuario.rol || ""}
                         </span>
+                    </td>
 
+                    <td>
+                        ${usuario.ciudad || "Sin registrar"}
+                    </td>
+
+                    <td>
+                        ${usuario.telefono || "Sin registrar"}
+                    </td>
+
+                    <td>
+                        ${fecha}
+                    </td>
+
+                    <td>
+                        <span class="badge bg-${colorEstado}">
+                            ${usuario.estado || "Sin estado"}
+                        </span>
                     </td>
 
                     <td>
@@ -427,182 +552,44 @@ async function cargarUsuarios() {
                         <button
                             class="btn btn-warning btn-sm me-1"
                             onclick="editarUsuario(${usuario.id})">
-
-                            ✏️ Editar
-
+                            ✏️
                         </button>
 
                         <button
                             class="btn btn-danger btn-sm"
                             onclick="eliminarUsuario(${usuario.id})">
-
-                            🗑️ Eliminar
-
+                            🗑️
                         </button>
 
                     </td>
 
                 </tr>
-
             `;
+        }).join("");
 
-        });
-
+        tabla.innerHTML = filas;
 
     } catch (error) {
 
-        console.error(error);
-
-        mostrarMensaje(
-            "No se pudieron cargar los usuarios: " +
-            error.message,
-            "danger"
+        console.error(
+            "ERROR CARGANDO USUARIOS:",
+            error
         );
 
-    }
+        const tabla =
+            document.getElementById("tablaUsuarios");
 
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="9" class="text-center text-danger">
+                    Error cargando usuarios:
+                    ${error.message}
+                </td>
+            </tr>
+        `;
+    }
 }
 
-
-// GUARDAR USUARIO
-
-document
-    .getElementById("formUsuario")
-    .addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-
-            const id =
-                document
-                    .getElementById("usuarioId")
-                    .value;
-
-            const usuario = {
-
-                nombre:
-                    document
-                        .getElementById("nombre")
-                        .value
-                        .trim(),
-
-                correo:
-                    document
-                        .getElementById("correo")
-                        .value
-                        .trim(),
-
-                password:
-                    document
-                        .getElementById("password")
-                        .value,
-
-                rol:
-                    document
-                        .getElementById("rol")
-                        .value
-
-            };
-
-
-            try {
-
-                let respuesta;
-
-
-                if (!id) {
-
-                    respuesta =
-                        await fetch(
-                            API,
-                            {
-
-                                method: "POST",
-
-                                headers: {
-
-                                    "Content-Type":
-                                        "application/json"
-
-                                },
-
-                                body:
-                                    JSON.stringify(usuario)
-
-                            }
-                        );
-
-                } else {
-
-                    respuesta =
-                        await fetch(
-                            API + "/" + id,
-                            {
-
-                                method: "PUT",
-
-                                headers: {
-
-                                    "Content-Type":
-                                        "application/json"
-
-                                },
-
-                                body:
-                                    JSON.stringify(usuario)
-
-                            }
-                        );
-
-                }
-
-
-                const datos =
-                    await respuesta.json();
-
-
-                if (!respuesta.ok) {
-
-                    throw new Error(
-                        datos.error ||
-                        datos.mensaje ||
-                        "No se pudo guardar el usuario"
-                    );
-
-                }
-
-
-                mostrarMensaje(
-                    id
-                        ? "Usuario actualizado correctamente."
-                        : "Usuario registrado correctamente.",
-                    "success"
-                );
-
-
-                cancelarEdicion();
-
-                await cargarUsuarios();
-
-
-            } catch (error) {
-
-                console.error(error);
-
-                mostrarMensaje(
-                    error.message,
-                    "danger"
-                );
-
-            }
-
-        }
-    );
-
-
-// EDITAR
 
 async function editarUsuario(id) {
 
@@ -612,6 +599,7 @@ async function editarUsuario(id) {
             await fetch(
                 API + "/" + id
             );
+
 
         const usuario =
             await respuesta.json();
@@ -628,49 +616,83 @@ async function editarUsuario(id) {
 
 
         document
-            .getElementById("usuarioId")
+            .getElementById(
+                "usuarioId"
+            )
             .value =
             usuario.id;
 
+
         document
-            .getElementById("nombre")
+            .getElementById(
+                "nombre"
+            )
             .value =
             usuario.nombre;
 
+
         document
-            .getElementById("correo")
+            .getElementById(
+                "correo"
+            )
             .value =
             usuario.correo;
 
-        document
-            .getElementById("password")
-            .value = "";
 
         document
-            .getElementById("rol")
+            .getElementById(
+                "password"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "rol"
+            )
             .value =
             usuario.rol;
 
-        document
-            .getElementById("tituloFormulario")
-            .textContent =
-            "Editar usuario";
 
         document
-            .getElementById("btnCancelar")
-            .classList
-            .remove("d-none");
+            .getElementById(
+                "ciudad"
+            )
+            .value =
+            usuario.ciudad || "";
+
+
+        document
+            .getElementById(
+                "telefono"
+            )
+            .value =
+            usuario.telefono || "";
+
+
+        document
+            .getElementById(
+                "estado"
+            )
+            .value =
+            usuario.estado || "activo";
+
+
+        mostrarMensaje(
+            "Usuario cargado para editar.",
+            "info"
+        );
+
 
         window.scrollTo({
-
             top: 0,
-
             behavior: "smooth"
-
         });
 
 
     } catch (error) {
+
+        console.error(error);
 
         mostrarMensaje(
             error.message,
@@ -682,54 +704,19 @@ async function editarUsuario(id) {
 }
 
 
-// CANCELAR EDICIÓN
-
-function cancelarEdicion() {
-
-    document
-        .getElementById("formUsuario")
-        .reset();
-
-    document
-        .getElementById("usuarioId")
-        .value = "";
-
-    document
-        .getElementById("tituloFormulario")
-        .textContent =
-        "Registrar usuario";
-
-    document
-        .getElementById("btnCancelar")
-        .classList
-        .add("d-none");
-
-}
-
-
+// ==========================================
 // ELIMINAR
+// ==========================================
 
 async function eliminarUsuario(id) {
 
-    if (
-        Number(id) ===
-        Number(usuarioActual.id)
-    ) {
-
-        alert(
-            "No puedes eliminar el usuario con el que estás conectado."
+    const confirmar =
+        confirm(
+            "¿Seguro que deseas eliminar este usuario?"
         );
 
-        return;
 
-    }
-
-
-    if (
-        !confirm(
-            "¿Seguro que deseas eliminar este usuario?"
-        )
-    ) {
+    if (!confirmar) {
 
         return;
 
@@ -743,7 +730,8 @@ async function eliminarUsuario(id) {
                 API + "/" + id,
                 {
 
-                    method: "DELETE"
+                    method:
+                        "DELETE"
 
                 }
             );
@@ -757,14 +745,15 @@ async function eliminarUsuario(id) {
 
             throw new Error(
                 datos.error ||
-                "No se pudo eliminar el usuario"
+                "No se pudo eliminar"
             );
 
         }
 
 
         mostrarMensaje(
-            "Usuario eliminado correctamente.",
+            datos.mensaje ||
+            "Usuario eliminado correctamente",
             "success"
         );
 
@@ -773,6 +762,8 @@ async function eliminarUsuario(id) {
 
 
     } catch (error) {
+
+        console.error(error);
 
         mostrarMensaje(
             error.message,
@@ -784,35 +775,59 @@ async function eliminarUsuario(id) {
 }
 
 
-// VOLVER AL ADMIN
+// ==========================================
+// LIMPIAR FORMULARIO
+// ==========================================
 
-function volverAdmin() {
+function limpiarFormulario() {
 
-    window.location.href =
-        "admin.html";
+    document
+        .getElementById(
+            "formUsuario"
+        )
+        .reset();
+
+
+    document
+        .getElementById(
+            "usuarioId"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "estado"
+        )
+        .value =
+        "activo";
 
 }
 
 
-// CERRAR SESIÓN
+// ==========================================
+// CANCELAR
+// ==========================================
 
-function cerrarSesion() {
-
-    localStorage.removeItem(
-        "usuario"
+document
+    .getElementById(
+        "btnCancelar"
+    )
+    .addEventListener(
+        "click",
+        limpiarFormulario
     );
 
-    window.location.href =
-        "login.html";
 
-}
-
-
-// INICIAR
+// ==========================================
+// CARGAR AL ENTRAR
+// ==========================================
 
 cargarUsuarios();
 
+cargarUsuarios();
 </script>
+
 
 </body>
 

@@ -1,6 +1,77 @@
+
+.env
+*.env
+!.env.example
+
+*.log
+__pycache__/
+*.pyc
+
+.venv/
+venv/
+
+.DS_Store
+Thumbs.db
+
+# Dependencias
 node_modules/
+**/node_modules/
+
+# Copias de seguridad
+*.backup
+*_backup*
+*-backup*
+*antes_analitica*
+
+# Directorios de respaldo
+vehiculos_backup_antes_atributos/
+
+# Archivos temporales
+*.log
+__pycache__/
+*.pyc
+
+# Credenciales
+.env
+*.env
+!.env.example
+
+# Respaldos adicionales
+*antes-analitica*
+*.backup.*
+*.bak
+
+# Archivos temporales de Spark y analítica
+analitica/actualizacion.lock
+analitica/logs/
+analitica/resultados/
+analitica/procesamiento_backup.py
+analitica/resultados_powerbi_backup/
+analitica/**/__pycache__/
+analitica/**/*.pyc
+analitica/**/*.crc
+
+# Archivos temporales
+*.tmp
+
+# Variables de entorno y credenciales
 .env
 .env.*
+!.env.example
+
+# Credenciales
+.env
+.env.*
+
+# Dependencias y temporales
+node_modules/
+**/node_modules/
+__pycache__/
+*.pyc
 *.log
-npm-debug.log*
-.DS_Store
+*.tmp
+
+# Respaldos y archivos temporales
+*.backup
+*.bak
+frontend/favicon.ico

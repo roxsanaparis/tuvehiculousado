@@ -225,17 +225,13 @@ document
                 // ADMINISTRADOR
                 // ==================================
 
-                if (
-                    rol === "administrador"
-                ) {
-
-                    window.location.href =
-                        "admin.html";
-
-                    return;
-
-                }
-
+if (
+    rol === "admin" ||
+    rol === "administrador"
+) {
+    window.location.href = "admin.html";
+    return;
+}
 
                 // ==================================
                 // VENDEDOR
