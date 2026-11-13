@@ -2,7 +2,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     col, count, sum, avg, round, month, year,
-    to_date, desc, when, lit
+    to_date, desc, when, lit, lower, trim
 )
 from pyspark.sql.types import StructType, StructField, StringType, LongType
 import os
@@ -84,7 +84,8 @@ compras = compras.select(
     col("vehiculo_id"),
     col("precio").alias("monto"),
     to_date(col("fecha")).alias("fecha_compra"),
-    col("metodo_pago")
+    col("metodo_pago"),
+    col("estado")
 ).dropDuplicates(["id_compra"])
 
 # ==========================================
@@ -119,7 +120,12 @@ indicadores_usuarios = usuarios.agg(
     count("*").alias("total_usuarios")
 )
 
-usuarios_ciudad = usuarios.groupBy("ciudad").agg(
+
+usuarios_ciudad = usuarios.filter(
+    col("ciudad").isNotNull() & (trim(col("ciudad")) != "")
+).groupBy(
+    lower(trim(col("ciudad"))).alias("ciudad")
+).agg(
     count("*").alias("cantidad_usuarios")
 ).orderBy(desc("cantidad_usuarios"))
 
@@ -153,8 +159,12 @@ vehiculos_estado = vehiculos.withColumn(
 
 indicadores_compras = compras.agg(
     count("*").alias("total_compras"),
-    lit(None).cast("long").alias("compras_completadas"),
-    lit(None).cast("long").alias("compras_canceladas")
+    sum(
+        when(lower(trim(col("estado"))) == "completada", 1).otherwise(0)
+    ).alias("compras_completadas"),
+    sum(
+        when(lower(trim(col("estado"))) == "cancelada", 1).otherwise(0)
+    ).alias("compras_canceladas")
 )
 
 indicadores_ingresos = compras.agg(

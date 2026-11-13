@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard | Tu Vehículo Usado</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+:root {
+  --navy:#14243a; --blue:#2563eb; --muted:#64748b; --bg:#f1f5f9;
+}
+* { box-sizing:border-box; }
+body {
+  background:var(--bg); color:#172033;
+  font-family:Inter,"Segoe UI",Arial,sans-serif;
+}
+.navbar {
+  background:var(--navy)!important;
+  box-shadow:0 3px 15px #0f172a20; padding:15px 0;
+}
+.navbar-brand { letter-spacing:.3px; }
+.header {
+  background:linear-gradient(120deg,#14243a,#1e40af);
+  color:white; border-radius:20px; padding:32px;
+  box-shadow:0 12px 30px #1e3a8a20;
+}
+.header h2 { font-weight:800; letter-spacing:-.7px; }
+.header p { color:#dbeafe; }
+.kpi,.panel {
+  background:white; border:1px solid #e7edf5;
+  border-radius:18px; box-shadow:0 5px 22px #0f172a0a;
+  height:100%; transition:transform .2s,box-shadow .2s;
+}
+.kpi { padding:22px!important; min-height:125px; }
+.kpi:hover,.panel:hover {
+  transform:translateY(-2px); box-shadow:0 10px 28px #0f172a12;
+}
+.kpi small {
+  color:var(--muted); font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.kpi h2 {
+  font-size:clamp(22px,2.5vw,30px); font-weight:800;
+  color:var(--navy); margin:12px 0 0; overflow-wrap:anywhere;
+}
+.panel { padding:24px; }
+.panel h5 { font-size:16px; font-weight:750; color:var(--navy); margin-bottom:22px; }
+.chart { position:relative; height:280px; }
+.resumen-numero {
+  font-size:clamp(19px,2vw,27px); font-weight:800;
+  color:var(--navy); overflow-wrap:anywhere;
+}
+#cancelacion { color:#0f9f6e; }
+#actualizacion { color:#dbeafe; }
+main.container { max-width:1440px; }
+hr { border-color:#e2e8f0; opacity:1; }
+@media(max-width:767px) {
+  .header { padding:23px; }
+  .panel { padding:18px; }
+  .chart { height:245px; }
+  .kpi { min-height:110px; }
+}
+</style>
+
+
+<style id="ocultar-dashboard-antiguo">
+main.container.py-4 {
+    display: none !important;
+}
+</style>
+
+
+<style id="diseno-spark-azul">
+:root {
+    --spark-navy: #102b50;
+    --spark-blue: #2563eb;
+    --spark-light: #eaf2ff;
+    --spark-muted: #64748b;
+}
+
+/* Fondo y tipografía */
+body {
+    background: #f3f7fc !important;
+    color: #172b4d;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Barra superior */
+.navbar {
+    background: linear-gradient(100deg, #102b50, #1d4e89) !important;
+    padding: 17px 0 !important;
+    box-shadow: 0 4px 18px rgba(16,43,80,.16);
+}
+.navbar-brand {
+    font-size: 19px;
+    letter-spacing: .2px;
+}
+
+/* Contenedor principal */
+#spark-dashboard-section {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto !important;
+    padding: 28px 30px 42px;
+}
+
+/* Encabezado */
+#spark-dashboard-section > .d-flex:first-child {
+    background: linear-gradient(120deg, #102b50, #1e56a0);
+    border-radius: 20px;
+    padding: 28px 30px;
+    color: white;
+    box-shadow: 0 9px 26px rgba(30,78,137,.16);
+}
+#spark-dashboard-section > .d-flex:first-child h2 {
+    color: white;
+    font-size: clamp(23px, 3vw, 31px);
+    font-weight: 800;
+}
+#spark-dashboard-section > .d-flex:first-child p {
+    color: #dbeafe !important;
+}
+#spark-dashboard-section > .d-flex:first-child .badge {
+    background: #dbeafe !important;
+    color: #123b70 !important;
+    border: 1px solid #bfdbfe;
+    border-radius: 9px;
+}
+
+/* Estado de Spark */
+#spark-status {
+    border-radius: 12px;
+    border: 1px solid #bfdbfe;
+    background: #eaf3ff;
+    color: #174477;
+    padding: 16px 20px;
+    margin-top: 20px;
+}
+
+/* Tarjetas */
+#spark-dashboard-section .panel {
+    background: #fff;
+    border: 1px solid #e1eaf5;
+    border-radius: 17px;
+    box-shadow: 0 5px 20px rgba(16,43,80,.055);
+    padding: 23px !important;
+    height: 100%;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+#spark-dashboard-section .panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16,43,80,.10);
+}
+#spark-dashboard-section .panel h5 {
+    color: #173b68;
+    font-size: 16px;
+    font-weight: 750;
+    margin-bottom: 20px;
+}
+#spark-dashboard-section .panel small {
+    color: #647b99;
+}
+#spark-dashboard-section .panel h2,
+#spark-dashboard-section .panel h3 {
+    color: #12345b;
+    font-weight: 800;
+}
+
+/* Indicadores superiores */
+#spark-dashboard-section .row.g-3:first-of-type .panel {
+    min-height: 125px;
+    border-top: 4px solid #3478d4;
+}
+#spark-dashboard-section .row.g-3:first-of-type .panel h2 {
+    font-size: clamp(23px, 2.5vw, 31px);
+    margin-top: 12px;
+}
+
+/* Estado de compras */
+#spark-dashboard-section .row.g-3 .d-flex.justify-content-around {
+    gap: 20px;
+    flex-wrap: wrap;
+}
+#spark-dashboard-section .row.g-3 .d-flex.justify-content-around > div {
+    flex: 1;
+    background: #f1f6fd;
+    border-radius: 12px;
+    padding: 18px 12px;
+}
+
+/* Gráficos */
+#spark-dashboard-section .chart {
+    position: relative;
+    height: 290px;
+}
+#spark-dashboard-section canvas {
+    max-width: 100%;
+}
+
+/* Espaciado uniforme */
+#spark-dashboard-section .row.g-3 {
+    margin-bottom: 22px !important;
+}
+
+/* Adaptación a móviles */
+@media (max-width: 768px) {
+    #spark-dashboard-section {
+        padding: 18px 12px 30px;
+    }
+    #spark-dashboard-section > .d-flex:first-child {
+        padding: 22px 18px;
+        gap: 15px;
+    }
+    #spark-dashboard-section .panel {
+        padding: 17px !important;
+    }
+    #spark-dashboard-section .chart {
+        height: 245px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <span class="navbar-brand fw-bold">Tu Vehículo Usado | Analítica</span>
+        <a href="/admin.html" class="btn btn-outline-light btn-sm">
+            ← Volver al administrador
+        </a>
+    </div>
+</nav>
+
+<main class="container py-4">
+
+<section class="header mb-4">
+    <h2 class="fw-bold">Dashboard de estadísticas</h2>
+    <p class="mb-0">Indicadores generales y análisis de la plataforma</p>
+    <small id="actualizacion">Cargando información...</small>
+</section>
+
+<div id="error" class="alert alert-danger d-none"></div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="kpi p-3">
+            <small>Total de usuarios</small>
+            <h2 id="usuarios">—</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi p-3">
+            <small>Total de vehículos</small>
+            <h2 id="vehiculos">—</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi p-3">
+            <small>Total de compras</small>
+            <h2 id="compras">—</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="kpi p-3">
+            <small>Ingresos totales</small>
+            <h2 id="ingresos">—</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-8">
+        <div class="panel">
+            <h5>Ingresos por mes</h5>
+            <div class="chart">
+                <canvas id="ventasChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel">
+            <h5>Marcas más vendidas</h5>
+            <div class="chart">
+                <canvas id="marcasChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="panel">
+            <h5>Usuarios por ciudad</h5>
+            <div class="chart">
+                <canvas id="ciudadesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="panel">
+            <h5>Métodos de pago</h5>
+            <div class="chart">
+                <canvas id="pagosChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="panel">
+            <h5>Estado de los vehículos</h5>
+            <div class="chart">
+                <canvas id="estadoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="panel">
+            <h5>Resumen de compras</h5>
+
+            <div class="row text-center mt-4 g-2">
+                <div class="col-4">
+                    <small>Total</small>
+                    <div class="resumen-numero" id="totalCompras">—</div>
+                </div>
+                <div class="col-4">
+                    <small>Completadas</small>
+                    <div class="resumen-numero" id="completadas">—</div>
+                </div>
+                <div class="col-4">
+                    <small>Canceladas</small>
+                    <div class="resumen-numero" id="canceladas">—</div>
+                </div>
+            </div>
+
+            <hr>
+            <p class="text-muted mb-1">Tasa de cancelación</p>
+            <div class="resumen-numero" id="cancelacion">—</div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<script>
+const API = "http://192.168.100.2:5000/api/analitica/";
+
+const usuario = JSON.parse(localStorage.getItem("usuario") || "null");
+const rol = String(usuario?.rol || "").trim().toLowerCase();
+
+if (!usuario || !["admin", "administrador"].includes(rol) || !usuario.token) {
+    document.body.innerHTML = `
+        <div class="container py-5">
+            <div class="alert alert-danger">
+                No tienes permisos para acceder. Inicia sesión como administrador.
+            </div>
+            <a href="/index.html" class="btn btn-primary">Ir al inicio</a>
+        </div>`;
+}
+
+const formato = n => Number(n || 0).toLocaleString("es-CO");
+const dinero = n => "$" + Number(n || 0).toLocaleString("es-CO", {
+    maximumFractionDigits: 0
+});
+
+const colores = [
+    "#2563eb","#0ea5e9","#14b8a6","#8b5cf6",
+    "#f59e0b","#ef4444","#64748b","#22c55e",
+    "#ec4899","#a855f7"
+];
+
+let actualizando = false;
+
+async function obtener(ruta) {
+    const respuesta = await fetch(API + ruta, { cache: "no-store" });
+    if (!respuesta.ok) {
+        throw new Error("Error consultando " + ruta);
+    }
+    return respuesta.json();
+}
+
+function actualizarGrafica(id, tipo, etiquetas, valores, opciones = {}) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+
+    const anterior = Chart.getChart(canvas);
+    if (anterior) anterior.destroy();
+
+    new Chart(canvas, {
+        type: tipo,
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: opciones.label || "Cantidad",
+                data: valores,
+                backgroundColor: tipo === "line" ? "#2563eb" : colores,
+                borderColor: tipo === "line" ? "#2563eb" : "#ffffff",
+                borderWidth: 1,
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: tipo !== "bar" || opciones.legend === true
+                }
+            },
+            scales: tipo === "bar" || tipo === "line"
+                ? { y: { beginAtZero: true } }
+                : {}
+        }
+    });
+}
+
+async function cargarDashboard() {
+    if (actualizando) return;
+    actualizando = true;
+
+    try {
+        const [u,v,c,i,m,mar,ci,ve,tc,mp] = await Promise.all([
+            obtener("usuarios"),
+            obtener("vehiculos"),
+            obtener("compras"),
+            obtener("ingresos"),
+            obtener("ventas-mensuales"),
+            obtener("marcas-vendidas"),
+            obtener("usuarios-ciudad"),
+            obtener("vehiculos-estado"),
+            obtener("tasa-cancelacion"),
+            obtener("metodos-pago")
+        ]);
+
+        document.getElementById("usuarios").textContent =
+            formato(u[0].total_usuarios);
+
+        document.getElementById("vehiculos").textContent =
+            formato(v[0].total_vehiculos);
+
+        document.getElementById("compras").textContent =
+            formato(c[0].total_compras);
+
+        document.getElementById("ingresos").textContent =
+            dinero(i[0].ingresos_totales);
+
+        document.getElementById("totalCompras").textContent =
+            formato(c[0].total_compras);
+
+        document.getElementById("completadas").textContent =
+            c[0].compras_completadas == null
+                ? "No disponible"
+                : formato(c[0].compras_completadas);
+
+        document.getElementById("canceladas").textContent =
+            c[0].compras_canceladas == null
+                ? "No disponible"
+                : formato(c[0].compras_canceladas);
+
+        const tasa = Array.isArray(tc) ? tc[0] : tc;
+
+        document.getElementById("cancelacion").textContent =
+            tasa && tasa.disponible === false
+                ? "No disponible"
+                : Number(tasa?.tasa_cancelacion ?? 0).toLocaleString("es-CO") + "%";
+
+        actualizarGrafica(
+            "ventasChart",
+            "line",
+            m.map(x => x.mes + "/" + x.anio),
+            m.map(x => Number(x.ingresos)),
+            { label: "Ingresos (COP)" }
+        );
+
+        actualizarGrafica(
+            "marcasChart",
+            "bar",
+            mar.slice(0,10).map(x => x.marca),
+            mar.slice(0,10).map(x => Number(x.unidades_vendidas))
+        );
+
+        actualizarGrafica(
+            "ciudadesChart",
+            "bar",
+            ci.map(x => x.ciudad),
+            ci.map(x => Number(x.cantidad_usuarios))
+        );
+
+        actualizarGrafica(
+            "estadoChart",
+            "doughnut",
+            ve.map(x => x.estado),
+            ve.map(x => Number(x.cantidad_vehiculos))
+        );
+
+        actualizarGrafica(
+            "pagosChart",
+            "doughnut",
+            mp.map(x => x.metodo_pago),
+            mp.map(x => Number(x.cantidad)),
+            { label: "Compras por método de pago", legend: true }
+        );
+
+        document.getElementById("actualizacion").textContent =
+            "Última consulta: " + new Date().toLocaleString("es-CO");
+
+        document.getElementById("error").classList.add("d-none");
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById("error").textContent =
+            "No fue posible cargar las estadísticas: " + error.message;
+        document.getElementById("error").classList.remove("d-none");
+
+    } finally {
+        actualizando = false;
+    }
+}
+
+if (usuario && ["admin", "administrador"].includes(rol) && usuario.token) {
+    cargarDashboard();
+    setInterval(cargarDashboard, 30000);
+}
+
+
+// ===== ANALITICA AVANZADA: APACHE SPARK =====
+
+const sparkCharts = {};
+
+function sparkNumero(valor) {
+    return Number(valor || 0).toLocaleString("es-CO");
+}
+
+function sparkDinero(valor) {
+    return Number(valor || 0).toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0
+    });
+}
+
+function sparkCSV(texto) {
+    const filas = [];
+    let fila = [];
+    let campo = "";
+    let comillas = false;
+
+    for (let i = 0; i < texto.length; i++) {
+        const c = texto[i];
+
+        if (c === '"') {
+            if (comillas && texto[i + 1] === '"') {
+                campo += '"';
+                i++;
+            } else {
+                comillas = !comillas;
+            }
+        } else if (c === "," && !comillas) {
+            fila.push(campo);
+            campo = "";
+        } else if ((c === "\n" || c === "\r") && !comillas) {
+            if (c === "\r" && texto[i + 1] === "\n") i++;
+            fila.push(campo);
+            if (fila.some(x => x.trim() !== "")) filas.push(fila);
+            fila = [];
+            campo = "";
+        } else {
+            campo += c;
+        }
+    }
+
+    if (campo.length || fila.length) {
+        fila.push(campo);
+        filas.push(fila);
+    }
+
+    if (!filas.length) return [];
+
+    const encabezados = filas.shift().map(x => x.replace(/^\uFEFF/, "").trim());
+
+    return filas.map(f => {
+        const objeto = {};
+        encabezados.forEach((h, i) => objeto[h] = (f[i] || "").trim());
+        return objeto;
+    });
+}
+
+async function sparkLeerCSV(nombre) {
+    const respuesta = await fetch(
+        "datos-spark/" + nombre + "?t=" + Date.now(),
+        { cache: "no-store" }
+    );
+
+    if (!respuesta.ok) {
+        throw new Error("No se pudo leer " + nombre + " (HTTP " + respuesta.status + ")");
+    }
+
+    return sparkCSV(await respuesta.text());
+}
+
+function sparkGrafica(id, tipo, etiquetas, valores, etiqueta) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+
+    if (sparkCharts[id]) sparkCharts[id].destroy();
+
+    sparkCharts[id] = new Chart(canvas, {
+        type: tipo,
+        data: {
+            labels: etiquetas,
+            datasets: [{
+                label: etiqueta,
+                data: valores,
+                borderWidth: 2,
+                tension: 0.3,
+                backgroundColor: [
+                    "#3867d6", "#20bf6b", "#f7b731",
+                    "#eb3b5a", "#8854d0", "#0fb9b1",
+                    "#fa8231", "#4b6584", "#a55eea", "#778ca3"
+                ],
+                borderColor: "#3867d6",
+                fill: tipo === "line"
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: tipo === "doughnut" }
+            },
+            scales: tipo === "doughnut" ? {} : {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+async function cargarAnaliticaSpark() {
+    const estado = document.getElementById("spark-status");
+
+    try {
+        const [
+            usuarios, vehiculos, compras, ingresos,
+            ventas, marcas, pagos, ciudades
+        ] = await Promise.all([
+            sparkLeerCSV("indicadores_usuarios.csv"),
+            sparkLeerCSV("indicadores_vehiculos.csv"),
+            sparkLeerCSV("indicadores_compras.csv"),
+            sparkLeerCSV("indicadores_ingresos.csv"),
+            sparkLeerCSV("ventas_mensuales.csv"),
+            sparkLeerCSV("marcas_mas_vendidas.csv"),
+            sparkLeerCSV("metodos_pago.csv"),
+            sparkLeerCSV("usuarios_ciudad.csv")
+        ]);
+
+        const u = usuarios[0];
+        const v = vehiculos[0];
+        const c = compras[0];
+        const i = ingresos[0];
+
+        if (!u || !v || !c || !i) {
+            throw new Error("Faltan indicadores en los archivos CSV.");
+        }
+
+        const total = Number(c.total_compras || 0);
+        const completadas = Number(c.compras_completadas || 0);
+        const otros = total - completadas;
+
+        document.getElementById("spark-usuarios").textContent =
+            sparkNumero(u.total_usuarios);
+
+        document.getElementById("spark-vehiculos").textContent =
+            sparkNumero(v.total_vehiculos);
+
+        document.getElementById("spark-compras").textContent =
+            sparkNumero(total);
+
+        document.getElementById("spark-ingresos").textContent =
+            sparkDinero(i.ingresos_totales);
+
+        document.getElementById("spark-completadas").textContent =
+            sparkNumero(completadas);
+
+        document.getElementById("spark-otros").textContent =
+            sparkNumero(otros);
+
+        document.getElementById("spark-promedio").textContent =
+            sparkDinero(i.valor_promedio_compra);
+
+        estado.className = "alert alert-success";
+        estado.textContent =
+            "Resultados de Apache Spark cargados correctamente.";
+
+        ventas.sort((a, b) =>
+            Number(a.anio) - Number(b.anio) ||
+            Number(a.mes) - Number(b.mes)
+        );
+
+        sparkGrafica(
+            "spark-ventas-chart",
+            "line",
+            ventas.map(x => String(x.mes).padStart(2, "0") + "/" + x.anio),
+            ventas.map(x => Number(x.ingresos)),
+            "Ingresos mensuales (COP)"
+        );
+
+        const pagosRegistrados = pagos.filter(x =>
+            x.metodo_pago &&
+            x.metodo_pago.trim() !== "" &&
+            x.metodo_pago.toLowerCase().trim() !== "sin método registrado"
+        );
+
+        sparkGrafica(
+            "spark-pagos-chart",
+            "doughnut",
+            pagosRegistrados.map(x => x.metodo_pago),
+            pagosRegistrados.map(x => Number(x.cantidad_compras)),
+            "Compras por método de pago"
+        );
+
+        sparkGrafica(
+            "spark-marcas-chart",
+            "bar",
+            marcas.slice(0, 10).map(x => x.marca),
+            marcas.slice(0, 10).map(x => Number(x.unidades_vendidas)),
+            "Unidades vendidas"
+        );
+
+        sparkGrafica(
+            "spark-ciudades-chart",
+            "bar",
+            ciudades.slice(0, 10).map(x => x.ciudad),
+            ciudades.slice(0, 10).map(x => Number(x.cantidad_usuarios)),
+            "Usuarios"
+        );
+
+        estado.className = "alert alert-success";
+        estado.textContent =
+            "Resultados de Apache Spark cargados correctamente. " +
+            "Dataset procesado: " + sparkNumero(total) + " compras.";
+
+    } catch (error) {
+        console.error("Error en analítica Spark:", error);
+        estado.className = "alert alert-danger";
+        estado.textContent =
+            "No fue posible cargar la analítica Spark: " + error.message;
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", cargarAnaliticaSpark);
+} else {
+    cargarAnaliticaSpark();
+}
+
+// Actualizar los indicadores de Spark cada 30 segundos
+setInterval(cargarAnaliticaSpark, 5000);
+
+</script>
+
+
+<section id="spark-dashboard-section" class="container-fluid mt-5 mb-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold mb-1">Analítica avanzada con Apache Spark</h2>
+            <p class="text-secondary mb-0">
+                Resultados del procesamiento distribuido del conjunto de datos.
+            </p>
+        </div>
+        <span class="badge bg-success p-2">Procesamiento Spark 3.5.1</span>
+    </div>
+
+    <div id="spark-status" class="alert alert-info">
+        Cargando resultados del procesamiento...
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="panel p-3 h-100">
+                <small>Usuarios analizados</small>
+                <h2 id="spark-usuarios">—</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="panel p-3 h-100">
+                <small>Vehículos analizados</small>
+                <h2 id="spark-vehiculos">—</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="panel p-3 h-100">
+                <small>Compras analizadas</small>
+                <h2 id="spark-compras">—</h2>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="panel p-3 h-100">
+                <small>Ingresos del dataset</small>
+                <h2 id="spark-ingresos">—</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-12">
+            <div class="panel p-3">
+                <h5>Estado de las compras procesadas</h5>
+                <div class="d-flex justify-content-around text-center mt-3">
+                    <div>
+                        <small>Completadas</small>
+                        <h3 id="spark-completadas">—</h3>
+                    </div>
+                    <div>
+                        <small>Otras compras registradas</small>
+                        <h3 id="spark-otros">—</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel p-3">
+                <h5>Valor promedio por compra</h5>
+                <h2 id="spark-promedio" class="mt-4">—</h2>
+                <small class="text-secondary">Calculado con las compras completadas</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <div class="panel p-3">
+                <h5>Ingresos mensuales del dataset</h5>
+                <div class="chart">
+                    <canvas id="spark-ventas-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel p-3">
+                <h5>Métodos de pago</h5>
+                <div class="chart">
+                    <canvas id="spark-pagos-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-7">
+            <div class="panel p-3">
+                <h5>Marcas más vendidas</h5>
+                <div class="chart">
+                    <canvas id="spark-marcas-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="panel p-3">
+                <h5>Usuarios por ciudad</h5>
+                <div class="chart">
+                    <canvas id="spark-ciudades-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-secondary small">
+        Fuente: archivos CSV generados por el procesamiento PySpark.
+        Estos indicadores corresponden al dataset analizado y son independientes
+        de las estadísticas operativas consultadas desde MySQL.
+    </p>
+</section>
+
+</body>
+</html>
