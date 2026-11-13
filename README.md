@@ -462,3 +462,9 @@ Pruebas de carga con JMeter
 El código fuente, archivos de configuración y dataset del proyecto se encuentran disponibles públicamente en GitHub:
 
 https://github.com/roxsanaparis/tuvehiculousado
+
+## Documentación de reproducción
+
+Consulta [docs/REPRODUCCION.md](docs/REPRODUCCION.md) para conocer los requisitos, arquitectura, configuración de Docker Swarm, restauración de bases de datos, ejecución de Spark y pruebas del proyecto.
+
+La configuración original de laboratorio utiliza dos nodos Ubuntu. Las direcciones IP, credenciales, secretos y rutas deben adaptarse al entorno donde se instale.

@@ -75,3 +75,16 @@ __pycache__/
 *.backup
 *.bak
 frontend/favicon.ico
+
+# Archivos de respaldo que no forman parte de la entrega
+docker-compose-backup.yml
+docker-stack-antes-analitica.yml
+docker-stack-backup.yml
+docker-stack-error-backup.yml
+haproxy/haproxy.cfg.backup
+frontend/*backup*.html
+vehiculos_backup_antes_atributos/
+analitica/*backup*
+analitica/logs/
+analitica/actualizacion.lock
+analitica/procesamiento_backup.py
