@@ -374,6 +374,17 @@
 
 
 
+
+    <section class="container my-5" id="mis-compras">
+        <div class="mb-4">
+            <h2 class="section-title">Mis compras</h2>
+            <p class="section-subtitle">Consulta el historial de tus vehículos adquiridos.</p>
+        </div>
+        <div id="lista-mis-compras">
+            <p class="text-muted">Cargando historial de compras...</p>
+        </div>
+    </section>
+
 <!-- =========================
      FOOTER
 ========================= -->
@@ -747,65 +758,284 @@ async function cargarVehiculos() {
 // COMPRAR VEHÍCULO
 // ==========================================
 
-// ==========================================
-// COMPRAR VEHICULO
-// ==========================================
 async function comprarProducto(id) {
-    const metodo_pago = prompt(
-        "Seleccione el método de pago:\n1. Efectivo\n2. Transferencia\n3. Tarjeta"
-    );
 
-    const metodos = {
-        "1": "Efectivo",
-        "2": "Transferencia",
-        "3": "Tarjeta"
-    };
+    // Crear estilos del cuadro de compra
+    if (!document.getElementById("estilosCompraModal")) {
+        const estilos = document.createElement("style");
+        estilos.id = "estilosCompraModal";
+        estilos.textContent = `
+            .compra-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.72);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 99999;
+                padding: 20px;
+            }
 
-    if (!metodo_pago || !metodos[metodo_pago.trim()]) {
-        alert("Compra cancelada. Seleccione un método de pago válido.");
-        return;
+            .compra-modal {
+                background: white;
+                width: 100%;
+                max-width: 430px;
+                border-radius: 18px;
+                padding: 30px;
+                color: #222;
+                font-family: Arial, sans-serif;
+                box-shadow: 0 15px 50px rgba(0,0,0,.3);
+            }
+
+            .compra-modal h2 {
+                margin: 0 0 10px;
+                font-size: 23px;
+                text-align: center;
+            }
+
+            .compra-modal p {
+                text-align: center;
+                color: #666;
+                margin-bottom: 22px;
+            }
+
+            .metodo-opcion {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 15px;
+                border: 2px solid #e5e5e5;
+                border-radius: 12px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                transition: .2s;
+            }
+
+            .metodo-opcion:hover {
+                border-color: #2563eb;
+                background: #f3f7ff;
+            }
+
+            .metodo-opcion.seleccionado {
+                border-color: #2563eb;
+                background: #eef4ff;
+            }
+
+            .metodo-opcion input {
+                accent-color: #2563eb;
+                width: 18px;
+                height: 18px;
+            }
+
+            .compra-botones {
+                display: flex;
+                gap: 10px;
+                margin-top: 22px;
+            }
+
+            .compra-botones button {
+                flex: 1;
+                padding: 13px;
+                border: none;
+                border-radius: 9px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .btn-cancelar-compra {
+                background: #eee;
+                color: #333;
+            }
+
+            .btn-confirmar-compra {
+                background: #2563eb;
+                color: white;
+            }
+
+            .btn-confirmar-compra:disabled {
+                opacity: .5;
+                cursor: not-allowed;
+            }
+        `;
+        document.head.appendChild(estilos);
     }
 
-    if (!confirm("¿Confirma la compra con pago mediante " +
-        metodos[metodo_pago.trim()] + "?")) {
-        return;
-    }
+    // Construir ventana modal
+    const overlay = document.createElement("div");
+    overlay.className = "compra-overlay";
 
-    try {
-        const respuesta = await fetch(URL_COMPRAS, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                usuario_id: usuario.id,
-                vehiculo_id: id,
-                metodo_pago: metodos[metodo_pago.trim()]
-            })
+    overlay.innerHTML = `
+        <div class="compra-modal">
+            <h2>Finalizar compra</h2>
+            <p>Selecciona el método de pago que deseas utilizar.</p>
+
+            <label class="metodo-opcion">
+                <input type="radio" name="metodoCompra" value="Efectivo">
+                <span>💵 Pago en efectivo</span>
+            </label>
+
+            <label class="metodo-opcion">
+                <input type="radio" name="metodoCompra" value="Transferencia">
+                <span>🏦 Transferencia bancaria</span>
+            </label>
+
+            <label class="metodo-opcion">
+                <input type="radio" name="metodoCompra" value="Tarjeta">
+                <span>💳 Tarjeta</span>
+            </label>
+
+            <div class="compra-botones">
+                <button class="btn-cancelar-compra">Cancelar</button>
+                <button class="btn-confirmar-compra" disabled>
+                    Confirmar compra
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const opciones = overlay.querySelectorAll(".metodo-opcion");
+    const botonConfirmar = overlay.querySelector(".btn-confirmar-compra");
+    const botonCancelar = overlay.querySelector(".btn-cancelar-compra");
+
+    let metodo_pago = "";
+
+    opciones.forEach(opcion => {
+        opcion.addEventListener("click", () => {
+            opciones.forEach(o => o.classList.remove("seleccionado"));
+            opcion.classList.add("seleccionado");
+
+            metodo_pago = opcion.querySelector("input").value;
+            botonConfirmar.disabled = false;
         });
+    });
 
-        const datos = await respuesta.json();
+    botonCancelar.onclick = () => overlay.remove();
 
-        if (!respuesta.ok) {
-            alert(datos.mensaje || "No se pudo realizar la compra.");
+    botonConfirmar.onclick = async () => {
+
+        if (!metodo_pago) return;
+
+        if (typeof usuario === "undefined" || !usuario || !usuario.id) {
+            alert("No se pudo identificar tu usuario. Inicia sesión nuevamente.");
+            overlay.remove();
             return;
         }
 
-        alert(
-            "¡Compra realizada correctamente!\n\n" +
-            "Número de compra: " + (datos.compra_id || datos.id) +
-            "\nMétodo de pago: " + datos.metodo_pago +
-            "\nEstado: " + datos.estado
-        );
+        botonConfirmar.disabled = true;
+        botonConfirmar.textContent = "Procesando...";
 
-        cargarVehiculos();
+        try {
+            const respuesta = await fetch(URL_COMPRAS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    usuario_id: usuario.id,
+                    vehiculo_id: id,
+                    metodo_pago: metodo_pago
+                })
+            });
 
-    } catch (error) {
-        console.error(error);
-        alert("Error de conexión con el microservicio de compras.");
-    }
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(datos.mensaje || datos.error || "No se pudo realizar la compra.");
+            }
+
+            overlay.remove();
+
+            alert(
+                "¡Compra realizada exitosamente!\n\n" +
+                "Número de compra: " + (datos.compra_id || datos.id) +
+                "\nMétodo de pago: " + metodo_pago +
+                "\nEstado: " + (datos.estado || "completada")
+            );
+
+            cargarVehiculos();
+            cargarMisCompras();
+
+        } catch (error) {
+            alert("Error al realizar la compra: " + error.message);
+            botonConfirmar.disabled = false;
+            botonConfirmar.textContent = "Confirmar compra";
+        }
+    };
 }
 
+
+
+async function cargarMisCompras() {
+    const contenedor = document.getElementById("lista-mis-compras");
+    if (!contenedor) return;
+
+    try {
+        const respuesta = await fetch(
+            URL_COMPRAS + "/usuario/" + encodeURIComponent(usuario.id)
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudo consultar el historial.");
+        }
+
+        const compras = await respuesta.json();
+
+        if (!Array.isArray(compras) || compras.length === 0) {
+            contenedor.innerHTML = `
+                <div class="alert alert-info">
+                    Todavía no tienes compras registradas.
+                </div>`;
+            return;
+        }
+
+        contenedor.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Compra</th>
+                            <th>Vehículo</th>
+                            <th>Precio</th>
+                            <th>Fecha</th>
+                            <th>Método de pago</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${compras.map(c => `
+                            <tr>
+                                <td>#${c.id}</td>
+                                <td>Vehículo #${c.vehiculo_id}</td>
+                                <td>${Number(c.precio).toLocaleString("es-CO", {
+                                    style: "currency",
+                                    currency: "COP",
+                                    maximumFractionDigits: 0
+                                })}</td>
+                                <td>${new Date(c.fecha).toLocaleDateString("es-CO")}</td>
+                                <td>${c.metodo_pago || "Pendiente de registrar"}</td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        ${c.estado || "Registrada"}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>`;
+    } catch (error) {
+        console.error("Error cargando compras:", error);
+        contenedor.innerHTML = `
+            <div class="alert alert-danger">
+                No se pudo cargar tu historial. Intenta nuevamente.
+                <button class="btn btn-sm btn-outline-danger ms-2"
+                    onclick="cargarMisCompras()">Reintentar</button>
+            </div>`;
+    }
+}
 
 
 // ==========================================
@@ -828,7 +1058,7 @@ function cerrarSesion() {
 // ==========================================
 
 cargarVehiculos();
-
+cargarMisCompras();
 
 </script>
 

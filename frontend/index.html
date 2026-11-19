@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,7 +13,6 @@
         rel="stylesheet">
 
     <style>
-
         body {
             min-height: 100vh;
             background:
@@ -20,14 +20,8 @@
                     rgba(15, 23, 42, 0.88),
                     rgba(15, 23, 42, 0.92)
                 ),
-                linear-gradient(
-                    135deg,
-                    #1e293b,
-                    #334155
-                );
-
+                linear-gradient(135deg, #1e293b, #334155);
             font-family: Arial, Helvetica, sans-serif;
-
             display: flex;
             align-items: center;
             justify-content: center;
@@ -60,9 +54,7 @@
             background: white;
             border-radius: 18px;
             padding: 35px;
-
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.30);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.30);
         }
 
         .login-card h2 {
@@ -89,10 +81,7 @@
 
         .form-control:focus {
             border-color: #334155;
-
-            box-shadow:
-                0 0 0 0.2rem
-                rgba(51, 65, 85, 0.15);
+            box-shadow: 0 0 0 0.2rem rgba(51, 65, 85, 0.15);
         }
 
         .btn-login {
@@ -100,10 +89,8 @@
             border: none;
             border-radius: 10px;
             padding: 13px;
-
             background: #1e293b;
             color: white;
-
             font-weight: 600;
         }
 
@@ -115,7 +102,6 @@
             text-align: center;
             margin-top: 25px;
             padding-top: 22px;
-
             border-top: 1px solid #e2e8f0;
         }
 
@@ -144,9 +130,7 @@
             font-size: 13px;
             margin-top: 20px;
         }
-
     </style>
-
 </head>
 
 <body>
@@ -154,357 +138,215 @@
 <div class="login-wrapper">
 
     <div class="brand">
-
-        <h1>
-            Tu Vehículo Usado
-        </h1>
-
-        <p>
-            Compra y venta de vehículos usados
-        </p>
-
+        <h1>Tu Vehículo Usado</h1>
+        <p>Compra y venta de vehículos usados</p>
     </div>
-
 
     <div class="login-card">
 
-        <h2 class="text-center">
-            Iniciar sesión
-        </h2>
+        <h2 class="text-center">Iniciar sesión</h2>
 
         <p class="login-subtitle text-center">
             Ingresa a tu cuenta para continuar
         </p>
 
-
         <form id="formLogin">
 
             <div class="mb-3">
-
-                <label
-                    for="correo"
-                    class="form-label">
-
+                <label for="correo" class="form-label">
                     Correo electrónico
-
                 </label>
 
-<input
-    type="email"
-    id="correo"
-    class="form-control"
-    placeholder="correo@ejemplo.com"
-    autocomplete="off"
-    required>
-
+                <input
+                    type="email"
+                    id="correo"
+                    class="form-control"
+                    placeholder="correo@ejemplo.com"
+                    autocomplete="off"
+                    required>
             </div>
-
 
             <div class="mb-4">
-
-                <label
-                    for="password"
-                    class="form-label">
-
+                <label for="password" class="form-label">
                     Contraseña
-
                 </label>
 
-<input
-    type="password"
-    id="password"
-    class="form-control"
-    placeholder="Ingresa tu contraseña"
-    autocomplete="new-password"
-    required>
-
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="new-password"
+                    required>
             </div>
 
-
-            <button
-                type="submit"
-                class="btn-login">
-
+            <button type="submit" class="btn-login">
                 Iniciar sesión
-
             </button>
 
         </form>
 
-
         <div id="mensaje"></div>
 
-
         <div class="register-section">
-
-            <p>
-                ¿Aún no tienes una cuenta?
-            </p>
+            <p>¿Aún no tienes una cuenta?</p>
 
             <a
                 href="registrar_usuario.html"
                 class="btn btn-outline-dark btn-register">
-
                 Crear una cuenta
-
             </a>
-
         </div>
 
     </div>
 
-
     <div class="footer">
-
         Tu Vehículo Usado · Plataforma de compra y venta
-
     </div>
 
 </div>
-
 
 <script>
 
 document
     .getElementById("formLogin")
-    .addEventListener(
-        "submit",
-        async function(event) {
+    .addEventListener("submit", async function(event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            const correo =
-                document
-                    .getElementById("correo")
-                    .value
-                    .trim();
+        const correo = document
+            .getElementById("correo")
+            .value
+            .trim();
 
-            const password =
-                document
-                    .getElementById("password")
-                    .value;
+        const password = document
+            .getElementById("password")
+            .value;
 
-            const mensaje =
-                document.getElementById("mensaje");
+        const mensaje = document.getElementById("mensaje");
 
+        mensaje.className = "";
+        mensaje.textContent = "Validando información...";
 
-            mensaje.className = "";
+        try {
 
-            mensaje.textContent =
-                "Validando información...";
-
-
-            try {
-
-                const respuesta =
-                    await fetch(
-                        "/api/usuarios/validar?correo=" +
-                        encodeURIComponent(correo) +
-                        "&password=" +
-                        encodeURIComponent(password),
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                const datos =
-                    await respuesta.json();
-
-
-                console.log(
-                    "RESPUESTA LOGIN:",
-                    datos
-                );
-
-
-                if (!respuesta.ok) {
-
-                    mensaje.className =
-                        "text-danger";
-
-                    mensaje.textContent =
-                        datos.mensaje ||
-                        datos.error ||
-                        "Correo o contraseña incorrectos.";
-
-                    return;
-
+            const respuesta = await fetch(
+                "/api/usuarios/validar?correo=" +
+                encodeURIComponent(correo) +
+                "&password=" +
+                encodeURIComponent(password),
+                {
+                    cache: "no-store"
                 }
+            );
 
+            const datos = await respuesta.json();
 
-                if (
-                    !datos.usuario ||
-                    !datos.usuario.id
-                ) {
+            console.log("RESPUESTA LOGIN:", datos);
 
-                    mensaje.className =
-                        "text-danger";
+            if (!respuesta.ok) {
 
-                    mensaje.textContent =
-                        "El servidor no devolvió un usuario válido.";
-
-                    return;
-
-                }
-
-
-                /*
-                 * ==========================================
-                 * NORMALIZAR USUARIO
-                 * ==========================================
-                 */
-
-                const usuario = {
-
-                    id:
-                        datos.usuario.id,
-
-                    nombre:
-                        datos.usuario.nombre || "",
-
-                    correo:
-                        datos.usuario.correo || "",
-
-                    rol:
-                        String(
-                            datos.usuario.rol || ""
-                        )
-                        .trim()
-                        .toLowerCase(),
-
-                    ciudad:
-                        datos.usuario.ciudad || null,
-
-                    telefono:
-                        datos.usuario.telefono || null
-
-                };
-
-
-                console.log(
-                    "USUARIO NORMALIZADO:",
-                    usuario
-                );
-
-
-                console.log(
-                    "ROL DETECTADO:",
-                    usuario.rol
-                );
-
-
-                /*
-                 * ==========================================
-                 * GUARDAR SESIÓN
-                 * ==========================================
-                 */
-
-                localStorage.setItem(
-                    "usuario",
-                    JSON.stringify(usuario)
-                );
-
-
-                /*
-                 * ==========================================
-                 * VERIFICAR QUE SE GUARDÓ
-                 * ==========================================
-                 */
-
-                console.log(
-                    "USUARIO EN LOCALSTORAGE:",
-                    localStorage.getItem("usuario")
-                );
-
-
-                /*
-                 * ==========================================
-                 * ADMIN
-                 * ==========================================
-                 */
-
-                if (
-                    usuario.rol === "admin" ||
-                    usuario.rol === "administrador"
-                ) {
-
-                    console.log(
-                        "ADMIN DETECTADO -> admin.html"
-                    );
-
-
-                    window.location.href =
-                        "/admin.html";
-
-                    return;
-
-                }
-
-
-                /*
-                 * ==========================================
-                 * VENDEDOR
-                 * ==========================================
-                 */
-
-                if (
-                    usuario.rol === "vendedor"
-                ) {
-
-                    console.log(
-                        "VENDEDOR DETECTADO -> vendedor.html"
-                    );
-
-
-                    window.location.href =
-                        "/vendedor.html";
-
-                    return;
-
-                }
-
-
-                /*
-                 * ==========================================
-                 * CLIENTE
-                 * ==========================================
-                 */
-
-                console.log(
-                    "CLIENTE DETECTADO -> cliente.html"
-                );
-
-
-                window.location.href =
-                    "/cliente.html";
-
-            }
-
-
-            catch (error) {
-
-                console.error(
-                    "ERROR LOGIN:",
-                    error
-                );
-
-
-                mensaje.className =
-                    "text-danger";
-
+                mensaje.className = "text-danger";
 
                 mensaje.textContent =
-                    "No fue posible conectar con el servidor.";
+                    datos.mensaje ||
+                    datos.error ||
+                    "Correo o contraseña incorrectos.";
 
+                return;
             }
 
+            if (!datos.usuario || !datos.usuario.id) {
+
+                mensaje.className = "text-danger";
+
+                mensaje.textContent =
+                    "El servidor no devolvió un usuario válido.";
+
+                return;
+            }
+
+            // Normalizar usuario y guardar el token
+            const usuario = {
+
+                id: datos.usuario.id,
+
+                nombre: datos.usuario.nombre || "",
+
+                correo: datos.usuario.correo || "",
+
+                rol: String(datos.usuario.rol || "")
+                    .trim()
+                    .toLowerCase(),
+
+                ciudad: datos.usuario.ciudad || null,
+
+                telefono: datos.usuario.telefono || null,
+
+                token: datos.token || ""
+
+            };
+
+            console.log("USUARIO NORMALIZADO:", usuario);
+            console.log("ROL DETECTADO:", usuario.rol);
+
+            // Verificar que el servidor haya entregado el token
+            if (!usuario.token) {
+
+                mensaje.className = "text-danger";
+
+                mensaje.textContent =
+                    "El servidor no entregó el token de seguridad. Contacta al administrador.";
+
+                return;
+            }
+
+            // Guardar sesión completa
+            localStorage.setItem(
+                "usuario",
+                JSON.stringify(usuario)
+            );
+
+            console.log(
+                "SESIÓN GUARDADA:",
+                {
+                    id: usuario.id,
+                    rol: usuario.rol,
+                    tieneToken: Boolean(usuario.token)
+                }
+            );
+
+            // Redireccionar según el rol
+            if (
+                usuario.rol === "admin" ||
+                usuario.rol === "administrador"
+            ) {
+
+                window.location.href = "/admin.html";
+                return;
+            }
+
+            if (usuario.rol === "vendedor") {
+
+                window.location.href = "/vendedor.html";
+                return;
+            }
+
+            window.location.href = "/cliente.html";
+
+        } catch (error) {
+
+            console.error("ERROR LOGIN:", error);
+
+            mensaje.className = "text-danger";
+
+            mensaje.textContent =
+                "No fue posible conectar con el servidor.";
         }
-    );
+
+    });
 
 </script>
 
 </body>
-
 </html>
-<!-- PRUEBA-ADMIN-TUVEHICULO-2026 -->

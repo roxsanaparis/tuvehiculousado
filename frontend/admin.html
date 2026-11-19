@@ -1,42 +1,27 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Vehículo Usado | Administración</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>Tu Vehículo Usado | Panel de administración</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-
         body {
             background: #f4f6f8;
             min-height: 100vh;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-        }
+        .navbar-brand { font-weight: 700; }
 
         .hero {
-            background: linear-gradient(
-                135deg,
-                #111827,
-                #374151
-            );
-
+            background: linear-gradient(135deg, #111827, #374151);
             color: white;
             border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
+            padding: 30px;
+            margin-bottom: 25px;
         }
 
         .card {
@@ -44,1023 +29,908 @@
             border-radius: 14px;
         }
 
-        .table thead th {
+        .table th { white-space: nowrap; }
+
+        .table td {
             white-space: nowrap;
+            vertical-align: middle;
         }
 
-        .precio {
-            font-weight: 600;
+        .table-responsive { max-height: 650px; }
+        .seccion-titulo { font-weight: 700; }
+        .precio { font-weight: 600; }
+        #errorPanel { display: none; }
+
+        .estadistica {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.05);
         }
 
-        #errorPanel {
-            display: none;
-        }
-
+        .estadistica strong { font-size: 23px; }
     </style>
-
 </head>
-
 
 <body>
 
-
 <nav class="navbar navbar-dark bg-dark">
-
     <div class="container">
-
-        <span class="navbar-brand">
-            Tu Vehículo Usado
-        </span>
-
-        <button
-            type="button"
-            onclick="cerrarSesion()"
-            class="btn btn-outline-light btn-sm">
-
+        <span class="navbar-brand">Tu Vehículo Usado</span>
+        <button class="btn btn-outline-light btn-sm" onclick="cerrarSesion()">
             Cerrar sesión
-
         </button>
-
     </div>
-
 </nav>
 
+<main class="container py-4">
 
-<div class="container py-4">
+    <div id="errorPanel" class="alert alert-danger"></div>
 
+    <section class="hero">
+        <h1>Panel de administración</h1>
+        <p id="bienvenida" class="mb-0">Cargando administrador...</p>
+    </section>
 
-    <div
-        id="errorPanel"
-        class="alert alert-danger">
-
-    </div>
-
-
-    <div class="hero">
-
-        <h1 class="mb-2">
-            Panel de administración
-        </h1>
-
-        <p
-            id="bienvenida"
-            class="mb-0">
-
-            Cargando información del administrador...
-
-        </p>
-
-    </div>
-
-
-    <div
-        id="opcionesAdmin"
-        class="card shadow-sm mb-4">
-
+    <section class="card shadow-sm mb-4">
         <div class="card-body">
-
-            <h4 class="mb-3">
-                Administración
-            </h4>
-
+            <h4>Administración de usuarios</h4>
             <p class="text-muted">
-                Gestiona los usuarios registrados
-                en el sistema.
+                Consulta y gestiona los usuarios registrados.
+            </p>
+            <a href="/usuarios.html" class="btn btn-primary">
+                Gestionar usuarios
+            </a>
+        </div>
+    </section>
+
+
+    <!-- DASHBOARD ANALÍTICO -->
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4>Dashboard de estadísticas</h4>
+            <p class="text-muted">
+                Consulta los indicadores de usuarios, vehículos,
+                compras e ingresos procesados con Apache Spark.
+            </p>
+            <a href="/estadisticas.html" class="btn btn-primary">
+                Ver dashboard
+            </a>
+        </div>
+    </section>
+
+    <!-- AGREGAR VEHÍCULOS -->
+
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h3 class="mb-2">Agregar vehículo</h3>
+            <p class="text-muted">
+                Registra las características del vehículo. El ID y el estado
+                se gestionan automáticamente.
             </p>
 
-            <a
-                href="/usuarios.html"
-                class="btn btn-primary">
-
-                Gestionar usuarios
-
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <div class="card shadow-sm mb-4">
-
-        <div class="card-body">
-
-            <h3 class="mb-3">
-                Agregar vehículo
-            </h3>
-
-
             <form id="formVehiculo">
-
                 <div class="row g-3">
 
-
-                    <div class="col-md-6">
-
-                        <label
-                            for="nombre"
-                            class="form-label">
-
-                            Nombre
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nombre"
-                            class="form-control"
-                            required>
-
+                    <div class="col-md-4">
+                        <label class="form-label">Marca</label>
+                        <input type="text" id="marca" class="form-control" required>
                     </div>
-
-
-                    <div class="col-md-6">
-
-                        <label
-                            for="precio"
-                            class="form-label">
-
-                            Precio
-
-                        </label>
-
-                        <input
-                            type="number"
-                            id="precio"
-                            class="form-control"
-                            min="0"
-                            required>
-
-                    </div>
-
 
                     <div class="col-md-4">
-
-                        <label
-                            for="cantidad"
-                            class="form-label">
-
-                            Cantidad
-
-                        </label>
-
-                        <input
-                            type="number"
-                            id="cantidad"
-                            class="form-control"
-                            min="1"
-                            required>
-
+                        <label class="form-label">Modelo</label>
+                        <input type="text" id="modelo" class="form-control" required>
                     </div>
 
+                    <div class="col-md-4">
+                        <label class="form-label">Año</label>
+                        <input type="number" id="anio" class="form-control"
+                               min="1900" max="2100" required>
+                    </div>
 
                     <div class="col-md-4">
-
-                        <label
-                            for="tipo"
-                            class="form-label">
-
-                            Tipo
-
-                        </label>
-
-                        <select
-                            id="tipo"
-                            class="form-select"
-                            required>
-
-                            <option value="">
-                                Seleccionar
-                            </option>
-
-                            <option value="Automovil">
-                                Automóvil
-                            </option>
-
-                            <option value="Moto">
-                                Moto
-                            </option>
-
-                            <option value="Camioneta">
-                                Camioneta
-                            </option>
-
-                            <option value="Camion">
-                                Camión
-                            </option>
-
+                        <label class="form-label">Tipo</label>
+                        <select id="tipo" class="form-select" required>
+                            <option value="">Seleccionar</option>
+                            <option value="Automovil">Automóvil</option>
+                            <option value="Moto">Moto</option>
+                            <option value="Camioneta">Camioneta</option>
+                            <option value="Camion">Camión</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Hatchback">Hatchback</option>
+                            <option value="Sedan">Sedán</option>
+                            <option value="Pickup">Pickup</option>
                         </select>
-
                     </div>
-
 
                     <div class="col-md-4">
-
-                        <label
-                            for="marca"
-                            class="form-label">
-
-                            Marca
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="marca"
-                            class="form-control"
-                            required>
-
+                        <label class="form-label">Combustible</label>
+                        <select id="combustible" class="form-select" required>
+                            <option value="">Seleccionar</option>
+                            <option value="Gasolina">Gasolina</option>
+                            <option value="Diesel">Diésel</option>
+                            <option value="Eléctrico">Eléctrico</option>
+                            <option value="Híbrido">Híbrido</option>
+                            <option value="Gas">Gas</option>
+                        </select>
                     </div>
-
 
                     <div class="col-md-4">
-
-                        <label
-                            for="modelo"
-                            class="form-label">
-
-                            Modelo
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="modelo"
-                            class="form-control"
-                            required>
-
+                        <label class="form-label">Transmisión</label>
+                        <select id="transmision" class="form-select" required>
+                            <option value="">Seleccionar</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Automática">Automática</option>
+                            <option value="CVT">CVT</option>
+                        </select>
                     </div>
-
 
                     <div class="col-md-4">
-
-                        <label
-                            for="anio"
-                            class="form-label">
-
-                            Año
-
-                        </label>
-
-                        <input
-                            type="number"
-                            id="anio"
-                            class="form-control"
-                            min="1900"
-                            max="2100"
-                            required>
-
+                        <label class="form-label">Kilometraje</label>
+                        <input type="number" id="kilometraje"
+                               class="form-control" min="0" required>
                     </div>
-
 
                     <div class="col-md-4">
-
-                        <label
-                            for="descripcion"
-                            class="form-label">
-
-                            Descripción
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="descripcion"
-                            class="form-control">
-
+                        <label class="form-label">Precio (COP)</label>
+                        <input type="number" id="precio"
+                               class="form-control" min="1" required>
                     </div>
-
 
                     <div class="col-12">
-
-                        <button
-                            type="submit"
-                            class="btn btn-success">
-
+                        <button type="submit" class="btn btn-success">
                             Crear vehículo
-
                         </button>
-
                     </div>
 
                 </div>
-
             </form>
 
+            <div id="mensajeCrear" class="mt-3"></div>
+        </div>
+    </section>
 
-            <div
-                id="mensajeCrear"
-                class="mt-3">
+    <!-- CATÁLOGO DE VEHÍCULOS -->
 
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h3 class="seccion-titulo mb-1">Catálogo de vehículos</h3>
+                    <p class="text-muted mb-0">
+                        Información de los vehículos registrados en el sistema.
+                    </p>
+                </div>
+
+                <button class="btn btn-outline-primary btn-sm"
+                        onclick="cargarVehiculos()">
+                    Actualizar
+                </button>
             </div>
 
-        </div>
-
-    </div>
-
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-
-        <div>
-
-            <h3 class="mb-1">
-                Vehículos
-            </h3>
-
-            <p class="text-muted mb-0">
-                Consulta los vehículos disponibles
-                en el sistema.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="card shadow-sm">
-
-        <div class="card-body p-0">
-
             <div class="table-responsive">
-
-                <table
-                    class="table table-hover align-middle mb-0">
-
+                <table class="table table-hover table-striped align-middle">
                     <thead class="table-dark">
-
                         <tr>
-
-                            <th>ID</th>
-                            <th>Vehículo</th>
+                            <th>ID vehículo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Año</th>
                             <th>Tipo</th>
+                            <th>Combustible</th>
+                            <th>Transmisión</th>
+                            <th>Kilometraje</th>
                             <th>Precio</th>
-                            <th>Cantidad</th>
-
+                            <th>Estado</th>
                         </tr>
-
                     </thead>
 
                     <tbody id="vehiculos">
-
+                        <tr>
+                            <td colspan="10" class="text-center">
+                                Cargando vehículos...
+                            </td>
+                        </tr>
                     </tbody>
-
                 </table>
+            </div>
 
+            <div id="mensajeVehiculos" class="mt-2"></div>
+        </div>
+    </section>
+
+    <!-- COMPRAS REALES DE MYSQL -->
+
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <h3 class="seccion-titulo mb-1">
+                Compras realizadas en la plataforma
+            </h3>
+
+            <p class="text-muted">
+                Transacciones reales realizadas por los usuarios y almacenadas
+                directamente en la base de datos MySQL.
+            </p>
+
+            <div class="row g-3 mb-3">
+
+                <div class="col-md-5">
+                    <label class="form-label">ID del comprador</label>
+                    <input
+                        type="number"
+                        id="buscarUsuarioReal"
+                        class="form-control"
+                        placeholder="Ejemplo: 4">
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <button class="btn btn-primary"
+                            onclick="consultarComprasReales()">
+                        Buscar
+                    </button>
+
+                    <button class="btn btn-outline-secondary"
+                            onclick="limpiarComprasReales()">
+                        Limpiar
+                    </button>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-outline-success w-100"
+                            onclick="consultarComprasReales()">
+                        Actualizar
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <div class="estadistica">
+                        <div class="text-muted">Compras encontradas</div>
+                        <strong id="totalComprasReales">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mensajeComprasReales" class="mb-3"></div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID compra</th>
+                            <th>ID usuario</th>
+                            <th>ID vehículo</th>
+                            <th>Fecha</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaComprasReales">
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                Cargando compras reales...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>
-
-    </div>
-
-
-    <div
-        id="mensaje"
-        class="mt-3">
-
-    </div>
-
-
-</div>
-
-
-<script>
-
-"use strict";
-
-
-/*
-==================================================
-CONFIGURACIÓN
-==================================================
-*/
-
-const URL_VEHICULOS = "/api/vehiculos";
-
-
-/*
-==================================================
-MOSTRAR ERROR
-==================================================
-*/
-
-function mostrarError(texto) {
-
-    const panel =
-        document.getElementById("errorPanel");
-
-    panel.textContent = texto;
-
-    panel.style.display = "block";
-
-}
-
-
-/*
-==================================================
-LEER USUARIO
-==================================================
-*/
-
-let usuario = null;
-
-const usuarioGuardado =
-    localStorage.getItem("usuario");
-
-
-console.log(
-    "ADMIN.HTML - localStorage:",
-    usuarioGuardado
-);
-
-
-/*
-==================================================
-INTENTAR LEER USUARIO
-==================================================
-*/
-
-if (usuarioGuardado) {
-
-    try {
-
-        usuario =
-            JSON.parse(usuarioGuardado);
-
-    } catch (error) {
-
-        console.error(
-            "Error leyendo localStorage:",
-            error
-        );
-
-    }
-
-}
-
-
-/*
-==================================================
-NORMALIZAR ROL
-==================================================
-*/
-
-let rol = "";
-
-if (usuario) {
-
-    rol =
-        String(
-            usuario.rol || ""
-        )
-        .trim()
-        .toLowerCase();
-
-}
-
-
-console.log(
-    "ADMIN.HTML - USUARIO:",
-    usuario
-);
-
-console.log(
-    "ADMIN.HTML - ROL:",
-    rol
-);
-
-
-/*
-==================================================
-IMPORTANTE
-==================================================
-
-NO REDIRIGIMOS AUTOMÁTICAMENTE AL INDEX.
-
-Si no existe sesión mostramos el mensaje.
-Así podemos diagnosticar el problema desde
-el propio panel.
-==================================================
-*/
-
-if (!usuario) {
-
-    mostrarError(
-        "No existe una sesión guardada. Inicia sesión como administrador."
-    );
-
-}
-
-
-if (
-    usuario &&
-    rol !== "admin" &&
-    rol !== "administrador"
-) {
-
-    mostrarError(
-        "El usuario conectado no es administrador. Rol detectado: " +
-        rol
-    );
-
-}
-
-
-/*
-==================================================
-MOSTRAR BIENVENIDA
-==================================================
-*/
-
-if (usuario) {
-
-    document.getElementById(
-        "bienvenida"
-    ).textContent =
-        "Bienvenido, " +
-        (
-            usuario.nombre ||
-            usuario.correo ||
-            "Administrador"
-        );
-
-}
-
-
-/*
-==================================================
-CARGAR VEHÍCULOS
-==================================================
-*/
-
-async function cargarVehiculos() {
-
-    const tabla =
-        document.getElementById(
-            "vehiculos"
-        );
-
-    const mensaje =
-        document.getElementById(
-            "mensaje"
-        );
-
-
-    tabla.innerHTML = `
-
-        <tr>
-
-            <td
-                colspan="8"
-                class="text-center py-4">
-
-                Cargando vehículos...
-
-            </td>
-
-        </tr>
-
-    `;
-
-
-    try {
-
-        const respuesta =
-            await fetch(
-                URL_VEHICULOS,
-                {
-                    cache: "no-store"
-                }
-            );
-
-
-        const texto =
-            await respuesta.text();
-
-
-        let datos;
-
-
-        try {
-
-            datos =
-                JSON.parse(texto);
-
-        } catch {
-
-            throw new Error(
-                "El servidor devolvió una respuesta inválida."
-            );
-
-        }
-
-
-        if (!respuesta.ok) {
-
-            throw new Error(
-                datos.error ||
-                datos.mensaje ||
-                "No se pudieron consultar los vehículos."
-            );
-
-        }
-
-
-        if (
-            !Array.isArray(datos) ||
-            datos.length === 0
-        ) {
-
-            tabla.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="8"
-                        class="text-center py-4 text-muted">
-
-                        No hay vehículos registrados.
-
-                    </td>
-
-                </tr>
-
-            `;
-
-            return;
-
-        }
-
-
-        tabla.innerHTML = "";
-
-
-        datos.forEach(
-            function(vehiculo) {
-
-                const fila =
-                    document.createElement("tr");
-
-
-                fila.innerHTML = `
-
-                    <td>
-                        ${vehiculo.id ?? "-"}
-                    </td>
-
-                    <td>
-
-                        <strong>
-                            ${
-                                vehiculo.nombre ||
-                                "Vehículo"
-                            }
-                        </strong>
-
-                        ${
-                            vehiculo.descripcion
-                            ?
-                            `
-                            <br>
-
-                            <small class="text-muted">
-
-                                ${vehiculo.descripcion}
-
-                            </small>
-                            `
-                            :
-                            ""
-                        }
-
-                    </td>
-
-                    <td>
-                        ${vehiculo.marca || "-"}
-                    </td>
-
-                    <td>
-                        ${vehiculo.modelo || "-"}
-                    </td>
-
-                    <td>
-                        ${vehiculo.anio || "-"}
-                    </td>
-
-                    <td>
-                        ${vehiculo.tipo || "-"}
-                    </td>
-
-                    <td class="precio">
-
-                        $
-                        ${Number(
-                            vehiculo.precio || 0
-                        ).toLocaleString("es-CO")}
-
-                    </td>
-
-                    <td>
-
-                        ${
-                            Number(
-                                vehiculo.cantidad || 0
-                            ) > 0
-                            ?
-                            `
-                            <span
-                                class="badge text-bg-success">
-
-                                ${vehiculo.cantidad}
-
-                            </span>
-                            `
-                            :
-                            `
-                            <span
-                                class="badge text-bg-secondary">
-
-                                Agotado
-
-                            </span>
-                            `
-                        }
-
-                    </td>
-
-                `;
-
-
-                tabla.appendChild(fila);
-
-            }
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error cargando vehículos:",
-            error
-        );
-
-
-        tabla.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    class="text-center py-4 text-danger">
-
-                    No fue posible cargar los vehículos.
-
-                </td>
-
-            </tr>
-
-        `;
-
-
-        mensaje.innerHTML = `
-
-            <div class="alert alert-danger">
-
-                ${error.message}
+    </section>
+
+    <!-- HISTORIAL DEL DATASET CSV -->
+
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <h3 class="seccion-titulo mb-1">Historial de compras</h3>
+
+            <p class="text-muted">
+                Registros originales del archivo compras.csv.
+            </p>
+
+            <div class="row g-3 mb-3">
+
+                <div class="col-md-4">
+                    <label class="form-label">ID del comprador</label>
+                    <input
+                        type="number"
+                        id="buscarUsuario"
+                        class="form-control"
+                        placeholder="Ejemplo: 4197">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Estado de compra</label>
+                    <select id="filtroEstado" class="form-select">
+                        <option value="">Todos los estados</option>
+                        <option value="completada">Completada</option>
+                        <option value="cancelada">Cancelada</option>
+                        <option value="pendiente">Pendiente</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end gap-2">
+                    <button class="btn btn-primary" onclick="consultarHistorial()">
+                        Buscar
+                    </button>
+
+                    <button class="btn btn-outline-secondary" onclick="limpiarFiltros()">
+                        Limpiar
+                    </button>
+                </div>
 
             </div>
 
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <div class="estadistica">
+                        <div class="text-muted">Registros encontrados</div>
+                        <strong id="totalCompras">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mensajeHistorial" class="mb-3"></div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID compra</th>
+                            <th>ID usuario</th>
+                            <th>ID vehículo</th>
+                            <th>Fecha compra</th>
+                            <th>Método de pago</th>
+                            <th>Estado</th>
+                            <th>Descuento</th>
+                            <th>Precio</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaCompras">
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                Consulta el historial para cargar los registros.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <button class="btn btn-outline-primary btn-sm"
+                        id="paginaAnterior"
+                        onclick="cambiarPagina(-1)"
+                        disabled>
+                    Anterior
+                </button>
+
+                <span id="infoPagina" class="text-muted">Página 1</span>
+
+                <button class="btn btn-outline-primary btn-sm"
+                        id="paginaSiguiente"
+                        onclick="cambiarPagina(1)"
+                        disabled>
+                    Siguiente
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<script>
+"use strict";
+
+const URL_VEHICULOS = "/api/vehiculos";
+const URL_HISTORIAL = "/api/compras/dataset/historial";
+const URL_HISTORIAL_REAL = "/api/compras/historial/real";
+
+const usuarioGuardado = localStorage.getItem("usuario");
+let usuario = null;
+
+try {
+    usuario = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
+} catch (error) {
+    usuario = null;
+}
+
+const rol = String(usuario?.rol || "").trim().toLowerCase();
+
+function mostrarError(texto) {
+    const panel = document.getElementById("errorPanel");
+    panel.textContent = texto;
+    panel.style.display = "block";
+}
+
+if (!usuario) {
+    mostrarError("No existe una sesión. Inicia sesión nuevamente.");
+} else if (!["admin", "administrador"].includes(rol)) {
+    mostrarError("No tienes permisos de administrador.");
+} else if (!usuario.token) {
+    mostrarError("Tu sesión no contiene un token de seguridad. Cierra sesión e inicia nuevamente.");
+}
+
+if (usuario) {
+    document.getElementById("bienvenida").textContent =
+        "Bienvenido, " + (usuario.nombre || usuario.correo || "Administrador");
+}
+
+function escapar(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[caracter]);
+}
+
+function extraerDato(descripcion, etiqueta) {
+    const texto = String(descripcion || "");
+    const expresion = new RegExp(etiqueta + "\\s*:\\s*([^;]+)", "i");
+    const resultado = texto.match(expresion);
+    return resultado ? resultado[1].trim() : "-";
+}
+
+function formatoPrecio(valor) {
+    return Number(valor || 0).toLocaleString("es-CO", {
+        maximumFractionDigits: 0
+    });
+}
+
+// ==========================================
+// CARGAR CATÁLOGO DE VEHÍCULOS
+// ==========================================
+
+async function cargarVehiculos() {
+    const tabla = document.getElementById("vehiculos");
+    const mensaje = document.getElementById("mensajeVehiculos");
+
+    tabla.innerHTML = `
+        <tr>
+            <td colspan="10" class="text-center">Cargando vehículos...</td>
+        </tr>
+    `;
+
+    mensaje.textContent = "";
+
+    try {
+        const respuesta = await fetch(URL_VEHICULOS, {
+            cache: "no-store"
+        });
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(datos.error || datos.mensaje || "Error consultando vehículos");
+        }
+
+        if (!Array.isArray(datos) || datos.length === 0) {
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center text-muted">
+                        No hay vehículos registrados.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tabla.innerHTML = datos.map(vehiculo => {
+            const combustible = extraerDato(vehiculo.descripcion, "Combustible");
+            const transmision = extraerDato(vehiculo.descripcion, "Transmision");
+            const kilometraje = extraerDato(vehiculo.descripcion, "Kilometraje");
+
+            const estado = Number(vehiculo.cantidad) > 0
+                ? "disponible"
+                : "vendido";
+
+            return `
+                <tr>
+                    <td>${escapar(vehiculo.id)}</td>
+                    <td>${escapar(vehiculo.marca)}</td>
+                    <td>${escapar(vehiculo.modelo)}</td>
+                    <td>${escapar(vehiculo.anio)}</td>
+                    <td>${escapar(vehiculo.tipo)}</td>
+                    <td>${escapar(combustible)}</td>
+                    <td>${escapar(transmision)}</td>
+                    <td>${escapar(kilometraje)}</td>
+                    <td class="precio">$${formatoPrecio(vehiculo.precio)}</td>
+                    <td>${estado}</td>
+                </tr>
+            `;
+        }).join("");
+
+        mensaje.textContent = "Vehículos consultados: " + datos.length;
+
+    } catch (error) {
+        console.error("Error cargando vehículos:", error);
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="10" class="text-center text-danger">
+                    No fue posible cargar el catálogo.
+                </td>
+            </tr>
         `;
 
+        mensaje.textContent = error.message;
     }
-
 }
 
+// ==========================================
+// CREAR VEHÍCULO
+// ==========================================
 
-/*
-==================================================
-CREAR VEHÍCULO
-==================================================
-*/
+document.getElementById("formVehiculo").addEventListener(
+    "submit",
+    async function(event) {
+        event.preventDefault();
 
-document
-    .getElementById("formVehiculo")
-    .addEventListener(
-        "submit",
-        async function(event) {
+        const mensaje = document.getElementById("mensajeCrear");
 
-            event.preventDefault();
+        const marca = document.getElementById("marca").value.trim();
+        const modelo = document.getElementById("modelo").value.trim();
+        const combustible = document.getElementById("combustible").value;
+        const transmision = document.getElementById("transmision").value;
+        const kilometraje = Number(document.getElementById("kilometraje").value);
+
+        const descripcion =
+            "Combustible: " + combustible +
+            "; Transmision: " + transmision +
+            "; Kilometraje: " + kilometraje +
+            "; Estado dataset: disponible";
 
 
-            const mensaje =
-                document.getElementById(
-                    "mensajeCrear"
+const vehiculo = {
+    nombre: marca + " " + modelo,
+    precio: Number(document.getElementById("precio").value),
+    cantidad: 1,
+    tipo: document.getElementById("tipo").value,
+    marca: marca,
+    modelo: modelo,
+    anio: Number(document.getElementById("anio").value),
+    combustible: document.getElementById("combustible").value,
+    transmision: document.getElementById("transmision").value,
+    kilometraje: Number(document.getElementById("kilometraje").value),
+    estado: "disponible",
+    descripcion: descripcion,
+    usuario_id: usuario ? usuario.id : null
+};
+
+
+
+        mensaje.textContent = "Creando vehículo...";
+
+        try {
+            const respuesta = await fetch(URL_VEHICULOS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(vehiculo)
+            });
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    datos.error || datos.mensaje || "No fue posible crear el vehículo"
                 );
-
-
-            const vehiculo = {
-
-                nombre:
-                    document
-                        .getElementById("nombre")
-                        .value
-                        .trim(),
-
-                precio:
-                    Number(
-                        document
-                            .getElementById("precio")
-                            .value
-                    ),
-
-                cantidad:
-                    Number(
-                        document
-                            .getElementById("cantidad")
-                            .value
-                    ),
-
-                tipo:
-                    document
-                        .getElementById("tipo")
-                        .value,
-
-                marca:
-                    document
-                        .getElementById("marca")
-                        .value
-                        .trim(),
-
-                modelo:
-                    document
-                        .getElementById("modelo")
-                        .value
-                        .trim(),
-
-                anio:
-                    Number(
-                        document
-                            .getElementById("anio")
-                            .value
-                    ),
-
-                descripcion:
-                    document
-                        .getElementById("descripcion")
-                        .value
-                        .trim(),
-
-                usuario_id:
-                    usuario
-                    ? usuario.id
-                    : null
-
-            };
-
-
-            mensaje.innerHTML = `
-
-                <div class="alert alert-info">
-
-                    Creando vehículo...
-
-                </div>
-
-            `;
-
-
-            try {
-
-                const respuesta =
-                    await fetch(
-                        URL_VEHICULOS,
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    vehiculo
-                                )
-
-                        }
-                    );
-
-
-                const texto =
-                    await respuesta.text();
-
-
-                let datos;
-
-
-                try {
-
-                    datos =
-                        JSON.parse(texto);
-
-                } catch {
-
-                    throw new Error(
-                        "Respuesta inválida del servidor: " +
-                        texto.substring(0, 200)
-                    );
-
-                }
-
-
-                if (!respuesta.ok) {
-
-                    throw new Error(
-                        datos.error ||
-                        datos.mensaje ||
-                        "No fue posible crear el vehículo."
-                    );
-
-                }
-
-
-                mensaje.innerHTML = `
-
-                    <div class="alert alert-success">
-
-                        Vehículo creado correctamente.
-
-                    </div>
-
-                `;
-
-
-                document
-                    .getElementById("formVehiculo")
-                    .reset();
-
-
-                await cargarVehiculos();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error creando vehículo:",
-                    error
-                );
-
-
-                mensaje.innerHTML = `
-
-                    <div class="alert alert-danger">
-
-                        ${error.message}
-
-                    </div>
-
-                `;
-
             }
 
+            mensaje.innerHTML =
+                '<div class="alert alert-success">Vehículo creado correctamente.</div>';
+
+            document.getElementById("formVehiculo").reset();
+
+            await cargarVehiculos();
+
+        } catch (error) {
+            console.error(error);
+
+            mensaje.innerHTML =
+                '<div class="alert alert-danger">' +
+                escapar(error.message) +
+                '</div>';
         }
-    );
+    }
+);
 
+// ==========================================
+// COMPRAS REALES DE MYSQL
+// ==========================================
 
-/*
-==================================================
-CERRAR SESIÓN
-==================================================
-*/
+async function consultarComprasReales() {
+    const tabla = document.getElementById("tablaComprasReales");
+    const mensaje = document.getElementById("mensajeComprasReales");
 
-function cerrarSesion() {
+    if (!usuario || !usuario.token) {
+        mensaje.innerHTML =
+            '<div class="alert alert-danger">No hay una sesión válida de administrador.</div>';
+        return;
+    }
 
-    localStorage.removeItem(
-        "usuario"
-    );
+    const idUsuario = document.getElementById("buscarUsuarioReal").value.trim();
+    const parametros = new URLSearchParams();
 
-    window.location.href =
-        "/index.html";
+    if (idUsuario) {
+        parametros.set("id_usuario", idUsuario);
+    }
 
+    tabla.innerHTML = `
+        <tr>
+            <td colspan="5" class="text-center">Consultando compras reales...</td>
+        </tr>
+    `;
+
+    mensaje.textContent = "";
+
+    try {
+        const respuesta = await fetch(
+            URL_HISTORIAL_REAL + "?" + parametros.toString(),
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + usuario.token
+                },
+                cache: "no-store"
+            }
+        );
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.mensaje || "No fue posible consultar las compras reales."
+            );
+        }
+
+        const compras = datos.compras || [];
+
+        document.getElementById("totalComprasReales").textContent =
+            Number(datos.total || 0).toLocaleString("es-CO");
+
+        if (compras.length === 0) {
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        No se encontraron compras realizadas en la plataforma.
+                    </td>
+                </tr>
+            `;
+        } else {
+            tabla.innerHTML = compras.map(compra => `
+                <tr>
+                    <td>${escapar(compra.id)}</td>
+                    <td>${escapar(compra.usuario_id)}</td>
+                    <td>${escapar(compra.vehiculo_id)}</td>
+                    <td>${escapar(compra.fecha)}</td>
+                    <td class="precio">$${formatoPrecio(compra.precio)}</td>
+                </tr>
+            `).join("");
+        }
+
+        mensaje.innerHTML = `
+            <div class="alert alert-success py-2">
+                Se consultaron ${compras.length} compras desde
+                ${escapar(datos.origen)}.
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("Error consultando compras reales:", error);
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center text-danger">
+                    No fue posible cargar las compras reales.
+                </td>
+            </tr>
+        `;
+
+        mensaje.innerHTML = `
+            <div class="alert alert-danger">
+                ${escapar(error.message)}
+            </div>
+        `;
+    }
 }
 
+function limpiarComprasReales() {
+    document.getElementById("buscarUsuarioReal").value = "";
+    consultarComprasReales();
+}
 
-/*
-==================================================
-INICIAR
-==================================================
-*/
+// ==========================================
+// HISTORIAL DE COMPRAS DEL DATASET CSV
+// ==========================================
+
+const REGISTROS_POR_PAGINA = 100;
+
+let comprasDataset = [];
+let paginaActual = 1;
+
+async function consultarHistorial() {
+    const tabla = document.getElementById("tablaCompras");
+    const mensaje = document.getElementById("mensajeHistorial");
+
+    if (!usuario || !usuario.token) {
+        mensaje.innerHTML =
+            '<div class="alert alert-danger">No hay un token de administrador válido. Inicia sesión nuevamente.</div>';
+        return;
+    }
+
+    const idUsuario = document.getElementById("buscarUsuario").value.trim();
+    const estado = document.getElementById("filtroEstado").value;
+
+    const parametros = new URLSearchParams();
+
+    if (idUsuario) parametros.set("id_usuario", idUsuario);
+    if (estado) parametros.set("estado", estado);
+
+    tabla.innerHTML = `
+        <tr>
+            <td colspan="9" class="text-center">Consultando historial...</td>
+        </tr>
+    `;
+
+    mensaje.textContent = "";
+
+    try {
+        const respuesta = await fetch(
+            URL_HISTORIAL + "?" + parametros.toString(),
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + usuario.token
+                },
+                cache: "no-store"
+            }
+        );
+
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.mensaje || "No se pudo consultar el historial"
+            );
+        }
+
+        comprasDataset = datos.compras || [];
+        paginaActual = 1;
+
+        document.getElementById("totalCompras").textContent =
+            Number(datos.total || 0).toLocaleString("es-CO");
+
+        if (comprasDataset.length === 0) {
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="9" class="text-center text-muted">
+                        No se encontraron compras con esos filtros.
+                    </td>
+                </tr>
+            `;
+
+            actualizarPaginacion();
+            mensaje.textContent = "Consulta completada.";
+            return;
+        }
+
+        mostrarPaginaCompras();
+
+        mensaje.innerHTML =
+            '<div class="alert alert-success py-2">' +
+            'Se encontraron ' +
+            Number(datos.total).toLocaleString("es-CO") +
+            ' registros del dataset.' +
+            '</div>';
+
+    } catch (error) {
+        console.error("Error consultando historial:", error);
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="9" class="text-center text-danger">
+                    No fue posible cargar el historial.
+                </td>
+            </tr>
+        `;
+
+        mensaje.innerHTML =
+            '<div class="alert alert-danger">' +
+            escapar(error.message) +
+            '</div>';
+    }
+}
+
+function mostrarPaginaCompras() {
+    const tabla = document.getElementById("tablaCompras");
+
+    const inicio = (paginaActual - 1) * REGISTROS_POR_PAGINA;
+    const comprasPagina = comprasDataset.slice(
+        inicio,
+        inicio + REGISTROS_POR_PAGINA
+    );
+
+    tabla.innerHTML = comprasPagina.map(compra => `
+        <tr>
+            <td>${escapar(compra.id_compra)}</td>
+            <td>${escapar(compra.id_usuario)}</td>
+            <td>${escapar(compra.id_vehiculo)}</td>
+            <td>${escapar(compra.fecha_compra)}</td>
+            <td>${escapar(compra.metodo_pago)}</td>
+            <td>${escapar(compra.estado)}</td>
+            <td>${escapar(compra.descuento)}</td>
+            <td>$${formatoPrecio(compra.precio)}</td>
+            <td>$${formatoPrecio(compra.monto)}</td>
+        </tr>
+    `).join("");
+
+    actualizarPaginacion();
+}
+
+function actualizarPaginacion() {
+    const totalPaginas = Math.max(
+        1,
+        Math.ceil(comprasDataset.length / REGISTROS_POR_PAGINA)
+    );
+
+    document.getElementById("infoPagina").textContent =
+        "Página " + paginaActual + " de " + totalPaginas;
+
+    document.getElementById("paginaAnterior").disabled =
+        paginaActual <= 1;
+
+    document.getElementById("paginaSiguiente").disabled =
+        paginaActual >= totalPaginas;
+}
+
+function cambiarPagina(cambio) {
+    const totalPaginas = Math.max(
+        1,
+        Math.ceil(comprasDataset.length / REGISTROS_POR_PAGINA)
+    );
+
+    paginaActual += cambio;
+
+    if (paginaActual < 1) paginaActual = 1;
+    if (paginaActual > totalPaginas) paginaActual = totalPaginas;
+
+    mostrarPaginaCompras();
+}
+
+function limpiarFiltros() {
+    document.getElementById("buscarUsuario").value = "";
+    document.getElementById("filtroEstado").value = "";
+    consultarHistorial();
+}
+
+// ==========================================
+// CERRAR SESIÓN
+// ==========================================
+
+function cerrarSesion() {
+    localStorage.removeItem("usuario");
+    window.location.href = "/index.html";
+}
+
+// ==========================================
+// INICIAR PANEL
+// ==========================================
 
 cargarVehiculos();
+consultarComprasReales();
 
 </script>
 
-
 </body>
-
 </html>

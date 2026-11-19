@@ -1,834 +1,396 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Gestión de usuarios - Tu Vehículo Usado
-    </title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de usuarios - Tu Vehículo Usado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 
 <body class="bg-light">
 
-
 <nav class="navbar navbar-dark bg-dark">
-
     <div class="container">
-
-        <span class="navbar-brand">
-            Tu Vehículo Usado
-        </span>
-
-        <a
-            href="admin.html"
-            class="btn btn-outline-light">
-
-            Volver al panel
-
-        </a>
-
+        <span class="navbar-brand">Tu Vehículo Usado</span>
+        <a href="admin.html" class="btn btn-outline-light">Volver al panel</a>
     </div>
-
 </nav>
-
 
 <div class="container py-4">
 
-
-    <!-- ENCABEZADO -->
-
     <div class="mb-4">
-
-        <h2>
-            Gestión de usuarios
-        </h2>
-
-        <p
-            id="bienvenida"
-            class="text-muted">
-        </p>
-
+        <h2>Gestión de usuarios</h2>
+        <p id="bienvenida" class="text-muted"></p>
     </div>
-
-
-    <!-- MENSAJES -->
 
     <div id="mensaje"></div>
 
-
-    <!-- FORMULARIO -->
-
     <div class="card shadow mb-4">
-
         <div class="card-body">
-
-            <h4 class="mb-4">
-                Crear / editar usuario
-            </h4>
-
+            <h4 class="mb-4">Crear / editar usuario</h4>
 
             <form id="formUsuario">
-
-
-                <input
-                    type="hidden"
-                    id="usuarioId">
-
+                <input type="hidden" id="usuarioId">
 
                 <div class="row">
 
-
-                    <!-- NOMBRE -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="nombre"
-                            class="form-label">
-
-                            Nombre completo
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nombre"
-                            class="form-control"
-                            required>
-
+                        <label for="nombre" class="form-label">Nombre completo</label>
+                        <input type="text" id="nombre" class="form-control" required>
                     </div>
 
-
-                    <!-- CORREO -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="correo"
-                            class="form-label">
-
-                            Correo
-
-                        </label>
-
-                        <input
-                            type="email"
-                            id="correo"
-                            class="form-control"
-                            required>
-
+                        <label for="correo" class="form-label">Correo</label>
+                        <input type="email" id="correo" class="form-control" required>
                     </div>
 
-
-                    <!-- PASSWORD -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="password"
-                            class="form-label">
-
-                            Contraseña
-
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            class="form-control"
-                            required>
-
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required minlength="4">
                     </div>
 
-
-                    <!-- ROL -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="rol"
-                            class="form-label">
-
-                            Rol
-
-                        </label>
-
-                        <select
-                            id="rol"
-                            class="form-select"
-                            required>
-
-                            <option value="">
-                                Seleccione un rol
-                            </option>
-
-                            <option value="cliente">
-                                Cliente
-                            </option>
-
-                            <option value="vendedor">
-                                Vendedor
-                            </option>
-
-                            <option value="administrador">
-                                Administrador
-                            </option>
-
+                        <label for="rol" class="form-label">Rol</label>
+                        <select id="rol" class="form-select" required>
+                            <option value="">Seleccione un rol</option>
+                            <option value="cliente">Cliente</option>
+                            <option value="vendedor">Vendedor</option>
+                            <option value="administrador">Administrador</option>
                         </select>
-
                     </div>
 
-
-                    <!-- CIUDAD -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="ciudad"
-                            class="form-label">
-
-                            Ciudad
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="ciudad"
-                            class="form-control"
-                            required>
-
+                        <label for="ciudad" class="form-label">Ciudad</label>
+                        <input type="text" id="ciudad" class="form-control" required>
                     </div>
 
-
-                    <!-- TELEFONO -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="telefono"
-                            class="form-label">
-
-                            Teléfono
-
-                        </label>
-
-                        <input
-                            type="text"
-                            id="telefono"
-                            class="form-control"
-                            required>
-
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" id="telefono" class="form-control" required>
                     </div>
 
-
-                    <!-- ESTADO -->
-
                     <div class="col-md-6 mb-3">
-
-                        <label
-                            for="estado"
-                            class="form-label">
-
-                            Estado
-
-                        </label>
-
-                        <select
-                            id="estado"
-                            class="form-select"
-                            required>
-
-                            <option value="activo">
-                                Activo
-                            </option>
-
-                            <option value="inactivo">
-                                Inactivo
-                            </option>
-
+                        <label for="estado" class="form-label">Estado</label>
+                        <select id="estado" class="form-select" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
                         </select>
-
                     </div>
-
 
                 </div>
 
-
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-
+                <button type="submit" id="btnGuardar" class="btn btn-primary">
                     Guardar usuario
-
                 </button>
 
-
-                <button
-                    type="button"
-                    id="btnCancelar"
-                    class="btn btn-secondary">
-
+                <button type="button" id="btnCancelar" class="btn btn-secondary">
                     Cancelar
-
                 </button>
-
-
             </form>
-
         </div>
-
     </div>
-
-
-    <!-- TABLA -->
 
     <div class="card shadow">
-
         <div class="card-body">
 
-            <div
-                class="d-flex justify-content-between align-items-center mb-3">
-
-                <h4>
-                    Usuarios registrados
-                </h4>
-
-                <button
-                    class="btn btn-outline-primary"
-                    onclick="cargarUsuarios()">
-
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Usuarios registrados</h4>
+                <button class="btn btn-outline-primary" id="btnActualizar">
                     🔄 Actualizar
-
                 </button>
-
             </div>
 
-
             <div class="table-responsive">
-
-                <table
-                    class="table table-bordered table-hover align-middle">
-
+                <table class="table table-bordered table-hover align-middle">
                     <thead class="table-dark">
-
                         <tr>
-
                             <th>ID</th>
-
                             <th>Nombre</th>
-
                             <th>Correo</th>
-
                             <th>Rol</th>
-
                             <th>Ciudad</th>
-
                             <th>Teléfono</th>
-
                             <th>Fecha registro</th>
-
                             <th>Estado</th>
-
                             <th>Acciones</th>
-
                         </tr>
-
                     </thead>
-
-
-                    <tbody
-                        id="tablaUsuarios">
-
-                    </tbody>
-
+                    <tbody id="tablaUsuarios"></tbody>
                 </table>
-
             </div>
 
         </div>
-
     </div>
-
 
 </div>
 
-
 <script>
-
 const API = "/api/usuarios";
 
-
-// ==========================================
-// USUARIO ACTUAL
-// ==========================================
-
-const usuarioActual =
-    JSON.parse(
-        localStorage.getItem("usuario")
-    );
-
-
-// ==========================================
-// COMPROBAR ADMIN
-// ==========================================
+const usuarioActual = JSON.parse(localStorage.getItem("usuario") || "null");
 
 if (
     !usuarioActual ||
-    (
-        usuarioActual.rol !== "admin" &&
-        usuarioActual.rol !== "administrador"
-    )
+    !["admin", "administrador"].includes(usuarioActual.rol)
 ) {
-
-    window.location.href =
-        "login.html";
-
+    window.location.href = "login.html";
 }
-
-
-// ==========================================
-// BIENVENIDA
-// ==========================================
 
 if (usuarioActual) {
-
-    document
-        .getElementById("bienvenida")
-        .textContent =
-        "Bienvenido, " +
-        usuarioActual.nombre;
-
+    document.getElementById("bienvenida").textContent =
+        "Bienvenido, " + usuarioActual.nombre;
 }
 
+function mostrarMensaje(texto, tipo) {
+    const mensaje = document.getElementById("mensaje");
+    mensaje.innerHTML = "";
 
-// ==========================================
-// MENSAJES
-// ==========================================
+    const alerta = document.createElement("div");
+    alerta.className = "alert alert-" + tipo;
+    alerta.textContent = texto;
 
-function mostrarMensaje(
-    texto,
-    tipo
-) {
-
-    document
-        .getElementById("mensaje")
-        .innerHTML = `
-
-            <div class="alert alert-${tipo}">
-
-                ${texto}
-
-            </div>
-
-        `;
-
+    mensaje.appendChild(alerta);
 }
 
+async function leerRespuesta(respuesta) {
+    const texto = await respuesta.text();
 
-// ==========================================
-// CARGAR USUARIOS
-// ==========================================
-
-async function cargarUsuarios() {
+    let datos;
 
     try {
+        datos = JSON.parse(texto);
+    } catch {
+        datos = { error: texto || "Respuesta no válida del servidor" };
+    }
 
-        const respuesta = await fetch(API, {
-            cache: "no-store"
-        });
+    if (!respuesta.ok) {
+        throw new Error(
+            datos.error || datos.mensaje || "Error en la solicitud"
+        );
+    }
 
-        const datos = await respuesta.json();
+    return datos;
+}
 
-        console.log("USUARIOS RECIBIDOS:", datos);
+// CONSULTAR USUARIOS
+async function cargarUsuarios() {
+    const tabla = document.getElementById("tablaUsuarios");
 
-        if (!respuesta.ok) {
-            throw new Error(
-                datos.error ||
-                "No se pudieron cargar los usuarios"
-            );
-        }
-
-        const tabla =
-            document.getElementById("tablaUsuarios");
+    try {
+        const respuesta = await fetch(API, { cache: "no-store" });
+        const datos = await leerRespuesta(respuesta);
 
         if (!Array.isArray(datos)) {
-            throw new Error(
-                "La API no devolvió un arreglo de usuarios"
-            );
+            throw new Error("La API no devolvió una lista de usuarios");
         }
 
-        if (datos.length === 0) {
+        tabla.innerHTML = "";
 
+        if (datos.length === 0) {
             tabla.innerHTML = `
                 <tr>
                     <td colspan="9" class="text-center">
                         No hay usuarios registrados.
                     </td>
-                </tr>
-            `;
-
+                </tr>`;
             return;
         }
 
-        const filas = datos.map(usuario => {
+        datos.forEach(usuario => {
+            const fila = document.createElement("tr");
 
-            let colorRol = "primary";
-
-            if (
-                usuario.rol === "admin" ||
-                usuario.rol === "administrador"
-            ) {
-                colorRol = "danger";
-            }
-            else if (usuario.rol === "vendedor") {
-                colorRol = "warning";
-            }
-
-            const colorEstado =
-                usuario.estado === "activo"
-                    ? "success"
-                    : "secondary";
-
-            const fecha =
+            const valores = [
+                usuario.id,
+                usuario.nombre,
+                usuario.correo,
+                usuario.rol,
+                usuario.ciudad || "Sin registrar",
+                usuario.telefono || "Sin registrar",
                 usuario.fecha_registro
-                    ? new Date(
-                        usuario.fecha_registro
-                    ).toLocaleString("es-CO")
-                    : "Sin fecha";
+                    ? new Date(usuario.fecha_registro).toLocaleString("es-CO")
+                    : "Sin fecha",
+                usuario.estado || "Sin estado"
+            ];
 
-            return `
-                <tr>
+            valores.forEach(valor => {
+                const celda = document.createElement("td");
+                celda.textContent = valor ?? "";
+                fila.appendChild(celda);
+            });
 
-                    <td>
-                        ${usuario.id}
-                    </td>
+            const acciones = document.createElement("td");
 
-                    <td>
-                        ${usuario.nombre || ""}
-                    </td>
+            const btnEditar = document.createElement("button");
+            btnEditar.className = "btn btn-warning btn-sm me-1";
+            btnEditar.textContent = "✏️";
+            btnEditar.addEventListener("click", () => editarUsuario(usuario.id));
 
-                    <td>
-                        ${usuario.correo || ""}
-                    </td>
+            const btnEliminar = document.createElement("button");
+            btnEliminar.className = "btn btn-danger btn-sm";
+            btnEliminar.textContent = "🗑️";
+            btnEliminar.addEventListener("click", () => eliminarUsuario(usuario.id));
 
-                    <td>
-                        <span class="badge bg-${colorRol}">
-                            ${usuario.rol || ""}
-                        </span>
-                    </td>
+            acciones.appendChild(btnEditar);
+            acciones.appendChild(btnEliminar);
+            fila.appendChild(acciones);
 
-                    <td>
-                        ${usuario.ciudad || "Sin registrar"}
-                    </td>
-
-                    <td>
-                        ${usuario.telefono || "Sin registrar"}
-                    </td>
-
-                    <td>
-                        ${fecha}
-                    </td>
-
-                    <td>
-                        <span class="badge bg-${colorEstado}">
-                            ${usuario.estado || "Sin estado"}
-                        </span>
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="btn btn-warning btn-sm me-1"
-                            onclick="editarUsuario(${usuario.id})">
-                            ✏️
-                        </button>
-
-                        <button
-                            class="btn btn-danger btn-sm"
-                            onclick="eliminarUsuario(${usuario.id})">
-                            🗑️
-                        </button>
-
-                    </td>
-
-                </tr>
-            `;
-        }).join("");
-
-        tabla.innerHTML = filas;
+            tabla.appendChild(fila);
+        });
 
     } catch (error) {
-
-        console.error(
-            "ERROR CARGANDO USUARIOS:",
-            error
-        );
-
-        const tabla =
-            document.getElementById("tablaUsuarios");
-
+        console.error("ERROR CARGANDO USUARIOS:", error);
         tabla.innerHTML = `
             <tr>
                 <td colspan="9" class="text-center text-danger">
-                    Error cargando usuarios:
                     ${error.message}
                 </td>
-            </tr>
-        `;
+            </tr>`;
     }
 }
 
+// CREAR Y ACTUALIZAR USUARIOS
+document.getElementById("formUsuario").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-async function editarUsuario(id) {
+    const id = document.getElementById("usuarioId").value;
+
+    const usuario = {
+        nombre: document.getElementById("nombre").value.trim(),
+        correo: document.getElementById("correo").value.trim(),
+        password: document.getElementById("password").value,
+        rol: document.getElementById("rol").value,
+        ciudad: document.getElementById("ciudad").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        estado: document.getElementById("estado").value
+    };
+
+    if (
+        !usuario.nombre ||
+        !usuario.correo ||
+        !usuario.password ||
+        !usuario.rol ||
+        !usuario.ciudad ||
+        !usuario.telefono
+    ) {
+        mostrarMensaje("Debes completar todos los campos, incluida la contraseña.", "danger");
+        return;
+    }
+
+    if (usuario.password.length < 4) {
+        mostrarMensaje("La contraseña debe tener al menos 4 caracteres.", "danger");
+        return;
+    }
+
+    const boton = document.getElementById("btnGuardar");
+    boton.disabled = true;
+    boton.textContent = "Guardando...";
 
     try {
+        const url = id ? `${API}/${id}` : API;
+        const metodo = id ? "PUT" : "POST";
 
-        const respuesta =
-            await fetch(
-                API + "/" + id
-            );
+        console.log("ENVIANDO USUARIO:", metodo, url);
 
-
-        const usuario =
-            await respuesta.json();
-
-
-        if (!respuesta.ok) {
-
-            throw new Error(
-                usuario.error ||
-                "No se pudo consultar el usuario"
-            );
-
-        }
-
-
-        document
-            .getElementById(
-                "usuarioId"
-            )
-            .value =
-            usuario.id;
-
-
-        document
-            .getElementById(
-                "nombre"
-            )
-            .value =
-            usuario.nombre;
-
-
-        document
-            .getElementById(
-                "correo"
-            )
-            .value =
-            usuario.correo;
-
-
-        document
-            .getElementById(
-                "password"
-            )
-            .value = "";
-
-
-        document
-            .getElementById(
-                "rol"
-            )
-            .value =
-            usuario.rol;
-
-
-        document
-            .getElementById(
-                "ciudad"
-            )
-            .value =
-            usuario.ciudad || "";
-
-
-        document
-            .getElementById(
-                "telefono"
-            )
-            .value =
-            usuario.telefono || "";
-
-
-        document
-            .getElementById(
-                "estado"
-            )
-            .value =
-            usuario.estado || "activo";
-
-
-        mostrarMensaje(
-            "Usuario cargado para editar.",
-            "info"
-        );
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+        const respuesta = await fetch(url, {
+            method: metodo,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(usuario)
         });
 
-
-    } catch (error) {
-
-        console.error(error);
+        const datos = await leerRespuesta(respuesta);
 
         mostrarMensaje(
-            error.message,
-            "danger"
-        );
-
-    }
-
-}
-
-
-// ==========================================
-// ELIMINAR
-// ==========================================
-
-async function eliminarUsuario(id) {
-
-    const confirmar =
-        confirm(
-            "¿Seguro que deseas eliminar este usuario?"
-        );
-
-
-    if (!confirmar) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const respuesta =
-            await fetch(
-                API + "/" + id,
-                {
-
-                    method:
-                        "DELETE"
-
-                }
-            );
-
-
-        const datos =
-            await respuesta.json();
-
-
-        if (!respuesta.ok) {
-
-            throw new Error(
-                datos.error ||
-                "No se pudo eliminar"
-            );
-
-        }
-
-
-        mostrarMensaje(
-            datos.mensaje ||
-            "Usuario eliminado correctamente",
+            datos.mensaje || (id
+                ? "Usuario actualizado correctamente."
+                : "Usuario creado correctamente."),
             "success"
         );
 
+        limpiarFormulario();
+        await cargarUsuarios();
+
+    } catch (error) {
+        console.error("ERROR GUARDANDO USUARIO:", error);
+        mostrarMensaje(error.message, "danger");
+    } finally {
+        boton.disabled = false;
+        boton.textContent = "Guardar usuario";
+    }
+});
+
+// CONSULTAR UN USUARIO PARA EDITAR
+async function editarUsuario(id) {
+    try {
+        const respuesta = await fetch(`${API}/${id}`);
+        const usuario = await leerRespuesta(respuesta);
+
+        document.getElementById("usuarioId").value = usuario.id;
+        document.getElementById("nombre").value = usuario.nombre || "";
+        document.getElementById("correo").value = usuario.correo || "";
+        document.getElementById("password").value = "";
+        document.getElementById("rol").value = usuario.rol || "";
+        document.getElementById("ciudad").value = usuario.ciudad || "";
+        document.getElementById("telefono").value = usuario.telefono || "";
+        document.getElementById("estado").value = usuario.estado || "activo";
+
+        mostrarMensaje(
+            "Usuario cargado. Escribe una contraseña para guardar los cambios.",
+            "info"
+        );
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+    } catch (error) {
+        mostrarMensaje(error.message, "danger");
+    }
+}
+
+// ELIMINAR USUARIO
+async function eliminarUsuario(id) {
+    if (!confirm("¿Seguro que deseas eliminar este usuario?")) {
+        return;
+    }
+
+    try {
+        const respuesta = await fetch(`${API}/${id}`, {
+            method: "DELETE"
+        });
+
+        const datos = await leerRespuesta(respuesta);
+
+        mostrarMensaje(
+            datos.mensaje || "Usuario eliminado correctamente.",
+            "success"
+        );
 
         await cargarUsuarios();
 
-
     } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            error.message,
-            "danger"
-        );
-
+        mostrarMensaje(error.message, "danger");
     }
-
 }
 
-
-// ==========================================
 // LIMPIAR FORMULARIO
-// ==========================================
-
 function limpiarFormulario() {
-
-    document
-        .getElementById(
-            "formUsuario"
-        )
-        .reset();
-
-
-    document
-        .getElementById(
-            "usuarioId"
-        )
-        .value = "";
-
-
-    document
-        .getElementById(
-            "estado"
-        )
-        .value =
-        "activo";
-
+    document.getElementById("formUsuario").reset();
+    document.getElementById("usuarioId").value = "";
+    document.getElementById("estado").value = "activo";
 }
 
+// BOTONES
+document.getElementById("btnCancelar").addEventListener("click", function() {
+    limpiarFormulario();
+    document.getElementById("mensaje").innerHTML = "";
+});
 
-// ==========================================
-// CANCELAR
-// ==========================================
+document.getElementById("btnActualizar").addEventListener("click", cargarUsuarios);
 
-document
-    .getElementById(
-        "btnCancelar"
-    )
-    .addEventListener(
-        "click",
-        limpiarFormulario
-    );
-
-
-// ==========================================
-// CARGAR AL ENTRAR
-// ==========================================
-
-cargarUsuarios();
-
+// CARGAR UNA SOLA VEZ
 cargarUsuarios();
 </script>
 
-
 </body>
-
 </html>
